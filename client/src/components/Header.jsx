@@ -1,15 +1,27 @@
 import React from 'react';
-import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2, Bell, RefreshCw } from 'lucide-react';
+import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2, Binary } from 'lucide-react';
 
-export default function Header({ onOpenReportModal, activeTab, setActiveTab }) {
+export default function Header({
+  onOpenReportModal,
+  activeTab,
+  setActiveTab,
+  matrixMode,
+  setMatrixMode
+}) {
   const handleExportStix = () => {
     window.open('http://localhost:5000/api/intel/export/stix', '_blank');
+  };
+
+  const toggleMatrix = () => {
+    if (matrixMode === 'subtle') setMatrixMode('cinema');
+    else if (matrixMode === 'cinema') setMatrixMode('off');
+    else setMatrixMode('subtle');
   };
 
   return (
     <header className="border-b border-[#143535] bg-[#071717]/95 backdrop-blur-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
-        {/* Brand - Sentinel Nexus style */}
+        {/* Brand */}
         <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveTab('scanner')}>
           <div className="p-2 rounded-xl bg-gradient-to-br from-[#00f2c3]/20 to-[#0e3b38]/40 border border-[#00f2c3]/40 shadow-neon-sm">
             <Shield className="w-5 h-5 text-[#00f2c3]" />
@@ -29,7 +41,7 @@ export default function Header({ onOpenReportModal, activeTab, setActiveTab }) {
           </div>
         </div>
 
-        {/* Navigation Tabs - Emerald Dark Buttons */}
+        {/* Navigation Tabs */}
         <nav className="flex items-center bg-[#091d1d] p-1 rounded-xl border border-[#143838] overflow-x-auto">
           <button
             onClick={() => setActiveTab('scanner')}
@@ -80,8 +92,25 @@ export default function Header({ onOpenReportModal, activeTab, setActiveTab }) {
           </button>
         </nav>
 
-        {/* Quick Action Badges */}
+        {/* Quick Actions with Cyber Matrix Rain Toggle */}
         <div className="flex items-center space-x-2">
+          {/* Matrix Rain Mode Switch */}
+          <button
+            onClick={toggleMatrix}
+            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border text-xs font-mono transition-all ${
+              matrixMode === 'cinema'
+                ? 'bg-[#00f2c3]/20 border-[#00f2c3] text-[#00f2c3] shadow-neon-sm font-bold'
+                : matrixMode === 'subtle'
+                ? 'bg-[#0b2222] border-[#184242] text-[#00f2c3] hover:border-[#00f2c3]/50'
+                : 'bg-[#061414] border-[#143535] text-[#5c807e] hover:text-[#80a4a2]'
+            }`}
+            title="Toggle Hacker Cyber Green Rain Background (Subtle / Cinema / Off)"
+          >
+            <Binary className="w-3.5 h-3.5 animate-pulse" />
+            <span className="hidden sm:inline">Rain:</span>
+            <span className="capitalize">{matrixMode}</span>
+          </button>
+
           <button
             onClick={handleExportStix}
             className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#0b2222] hover:bg-[#112f2f] border border-[#184242] text-[#a1c4c2] text-xs font-medium transition-colors"

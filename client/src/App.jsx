@@ -12,6 +12,7 @@ import CollaborativeHub from './components/CollaborativeHub.jsx';
 import WorkingMechanism from './components/WorkingMechanism.jsx';
 import ValidationLab from './components/ValidationLab.jsx';
 import ReportModal from './components/ReportModal.jsx';
+import MatrixRain from './components/MatrixRain.jsx';
 import { Download, ChevronDown, ChevronUp, Terminal } from 'lucide-react';
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
   const [scenarioMeta, setScenarioMeta] = useState(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [showAdvancedForensics, setShowAdvancedForensics] = useState(false);
+  const [matrixMode, setMatrixMode] = useState('subtle'); // 'subtle' | 'cinema' | 'off'
 
   useEffect(() => {
     fetchScenarios();
@@ -115,17 +117,26 @@ export default function App() {
     URL.revokeObjectURL(url);
   };
 
+  const matrixOpacity = matrixMode === 'cinema' ? 0.38 : matrixMode === 'subtle' ? 0.18 : 0;
+
   return (
-    <div className="min-h-screen bg-[#061313] text-[#e2f1f0] flex flex-col font-sans selection:bg-[#00f2c3] selection:text-[#041513]">
-      {/* Header in Sentinel Nexus aesthetic */}
+    <div className="min-h-screen bg-[#061313] text-[#e2f1f0] flex flex-col font-sans selection:bg-[#00f2c3] selection:text-[#041513] relative overflow-x-hidden">
+      {/* Flowing Cyber Green Matrix Rain Canvas in Background */}
+      {matrixMode !== 'off' && (
+        <MatrixRain opacity={matrixOpacity} intensity={matrixMode} />
+      )}
+
+      {/* Header in Sentinel aesthetic */}
       <Header
         onOpenReportModal={() => setIsReportModalOpen(true)}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        matrixMode={matrixMode}
+        setMatrixMode={setMatrixMode}
       />
 
-      {/* Main Container */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+      {/* Main Workspace with z-10 for perfect contrast and interaction */}
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6 relative z-10">
         {/* Top 4 Hero Metric Cards from Sentinel Nexus Design */}
         <HeroMetricCards />
 
@@ -150,7 +161,7 @@ export default function App() {
               <div className="pt-1">
                 <button
                   onClick={() => setShowAdvancedForensics(!showAdvancedForensics)}
-                  className="w-full py-3 px-4 rounded-xl bg-[#0b2020] hover:bg-[#112d2d] border border-[#174242] text-xs font-semibold text-[#a1c4c2] flex items-center justify-between transition-colors shadow-card-dark"
+                  className="w-full py-3 px-4 rounded-xl bg-[#0b2020]/90 backdrop-blur-md hover:bg-[#112d2d] border border-[#174242] text-xs font-semibold text-[#a1c4c2] flex items-center justify-between transition-colors shadow-card-dark"
                 >
                   <div className="flex items-center space-x-2">
                     <Terminal className="w-4 h-4 text-[#00f2c3]" />
@@ -210,10 +221,10 @@ export default function App() {
       </main>
 
       {/* Footer in Deep Emerald theme */}
-      <footer className="border-t border-[#133535] bg-[#040e0e] py-4 mt-auto">
+      <footer className="border-t border-[#133535] bg-[#040e0e]/90 backdrop-blur-md py-4 mt-auto relative z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#5c8280] gap-2">
           <span>TrustMatrix AI Nexus • Enterprise SOC Threat Intelligence Platform</span>
-          <span className="text-[#00f2c3]/90 font-mono">Emerald Neon UI • NIST SP 800-30 Validated</span>
+          <span className="text-[#00f2c3]/90 font-mono">Matrix Rain Canvas Active • NIST SP 800-30 Validated</span>
         </div>
       </footer>
 
