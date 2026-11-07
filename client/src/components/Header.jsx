@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Sparkles, BookOpen, Radio, PlusCircle, FileCode2 } from 'lucide-react';
+import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2 } from 'lucide-react';
 
 export default function Header({ onOpenReportModal, activeTab, setActiveTab }) {
   const handleExportStix = () => {
@@ -29,11 +29,11 @@ export default function Header({ onOpenReportModal, activeTab, setActiveTab }) {
           </div>
         </div>
 
-        {/* Clean, Simple Tabs */}
-        <nav className="flex items-center bg-slate-900 p-1 rounded-xl border border-slate-800">
+        {/* Navigation Tabs */}
+        <nav className="flex items-center bg-slate-900 p-1 rounded-xl border border-slate-800 overflow-x-auto">
           <button
             onClick={() => setActiveTab('scanner')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
               activeTab === 'scanner'
                 ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
                 : 'text-slate-400 hover:text-slate-200'
@@ -45,7 +45,7 @@ export default function Header({ onOpenReportModal, activeTab, setActiveTab }) {
 
           <button
             onClick={() => setActiveTab('mechanism')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
               activeTab === 'mechanism'
                 ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
                 : 'text-slate-400 hover:text-slate-200'
@@ -56,8 +56,20 @@ export default function Header({ onOpenReportModal, activeTab, setActiveTab }) {
           </button>
 
           <button
+            onClick={() => setActiveTab('validation')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
+              activeTab === 'validation'
+                ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
+                : 'text-cyan-400/90 hover:text-cyan-300'
+            }`}
+          >
+            <BarChart3 className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Validation & Benchmark Lab</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('community')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
               activeTab === 'community'
                 ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
                 : 'text-slate-400 hover:text-slate-200'

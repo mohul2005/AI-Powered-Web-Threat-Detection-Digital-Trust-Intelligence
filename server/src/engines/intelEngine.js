@@ -1,10 +1,14 @@
 import { threatStore } from '../data/threatStore.js';
+import { verifyThreatMultiSource } from './intelVerificationEngine.js';
 
-// Threat Intelligence Correlation & Graph Construction Engine
+// Threat Intelligence Correlation & Multi-Source Verification Engine
 
 export function correlateThreatIntel(domain, ipAddress = null, certFingerprint = null) {
   const cleanDomain = domain.toLowerCase().replace(/^www\./, '');
   const matchedReports = threatStore.findByDomain(cleanDomain);
+
+  // Multi-Source Feed Cross-Verification (PhishTank, URLhaus, Spamhaus DBL, crt.sh)
+  const multiSourceVerification = verifyThreatMultiSource(cleanDomain, `https://${cleanDomain}`);
 
   let totalUpvotes = 0;
   let totalDownvotes = 0;
@@ -14,8 +18,10 @@ export function correlateThreatIntel(domain, ipAddress = null, certFingerprint =
   }
 
   // Reputation score (100 = spotless/verified benign, 0 = universally condemned malicious)
-  let reputationScore = 75; // neutral baseline
-  if (matchedReports.length > 0) {
+  let reputationScore = 80;
+  if (multiSourceVerification.verified) {
+    reputationScore = Math.max(5, 100 - (multiSourceVerification.matchedFeeds.length * 45));
+  } else if (matchedReports.length > 0) {
     const maliciousRatio = (totalUpvotes + 1) / (totalUpvotes + totalDownvotes + 2);
     reputationScore = Math.max(5, Math.floor(100 - (maliciousRatio * 90)));
   }
@@ -47,7 +53,7 @@ export function correlateThreatIntel(domain, ipAddress = null, certFingerprint =
     });
   }
 
-  // Build Graph Nodes and Edges for Visual Threat Network
+  // Build Graph Nodes and Edges
   const graphNodes = [
     { id: 'target', label: cleanDomain, type: 'domain', risk: reputationScore < 50 ? 'high' : 'safe' }
   ];
@@ -78,6 +84,9 @@ export function correlateThreatIntel(domain, ipAddress = null, certFingerprint =
     iocs.push(`DOMAIN: ${cleanDomain}`);
     iocs.push(`IP: ${resolvedIp}`);
     if (certFingerprint) iocs.push(`FINGERPRINT: ${certFingerprint}`);
+    if (multiSourceVerification.cryptographicProofHash) {
+      iocs.push(`VERIFICATION_HASH: ${multiSourceVerification.cryptographicProofHash}`);
+    }
   }
 
   return {
@@ -87,6 +96,7 @@ export function correlateThreatIntel(domain, ipAddress = null, certFingerprint =
       benign: totalDownvotes
     },
     matchedReports,
+    multiSourceVerification,
     matchingThreatClusters: clusters,
     iocs,
     graph: {
