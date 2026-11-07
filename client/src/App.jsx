@@ -8,9 +8,9 @@ import CertTrustCard from './components/CertTrustCard.jsx';
 import WebSecCard from './components/WebSecCard.jsx';
 import ThreatGraphCard from './components/ThreatGraphCard.jsx';
 import CollaborativeHub from './components/CollaborativeHub.jsx';
-import PkiRadarView from './components/PkiRadarView.jsx';
+import WorkingMechanism from './components/WorkingMechanism.jsx';
 import ReportModal from './components/ReportModal.jsx';
-import { Download, Shield, RefreshCw } from 'lucide-react';
+import { Download, ChevronDown, ChevronUp, Terminal, Shield, Sparkles } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('scanner');
@@ -22,8 +22,8 @@ export default function App() {
   const [scanLogs, setScanLogs] = useState([]);
   const [scenarioMeta, setScenarioMeta] = useState(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [showAdvancedForensics, setShowAdvancedForensics] = useState(false);
 
-  // Fetch scenarios on initial load and run default scenario (eMudhra incident)
   useEffect(() => {
     fetchScenarios();
   }, []);
@@ -34,7 +34,6 @@ export default function App() {
       const data = await res.json();
       if (data.success) {
         setScenarios(data.scenarios);
-        // Automatically load the eMudhra incident scenario as the starter showcase!
         triggerScenario('emudhra-weak-key-incident');
       }
     } catch (err) {
@@ -46,7 +45,7 @@ export default function App() {
     setIsLoading(true);
     setActiveScenarioId(null);
     setScenarioMeta(null);
-    setScanLogs([`[INIT] Launching real-time intelligence scan for ${url}...`]);
+    setScanLogs([`[INIT] Scanning target: ${url}...`]);
 
     try {
       const res = await fetch('http://localhost:5000/api/scan', {
@@ -59,10 +58,10 @@ export default function App() {
         setScanResult(data.result);
         setScanLogs(data.scanLogs);
       } else {
-        setScanLogs(prev => [...prev, `[ERROR] Scan execution failed: ${data.error}`]);
+        setScanLogs(prev => [...prev, `[ERROR] Scan failed: ${data.error}`]);
       }
     } catch (err) {
-      setScanLogs(prev => [...prev, `[ERROR] Network error connecting to scanner engine: ${err.message}`]);
+      setScanLogs(prev => [...prev, `[ERROR] Network error: ${err.message}`]);
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +70,7 @@ export default function App() {
   const triggerScenario = async (scenarioId) => {
     setIsLoading(true);
     setActiveScenarioId(scenarioId);
-    setScanLogs([`[INIT] Loading pre-configured incident scenario: ${scenarioId}...`]);
+    setScanLogs([`[INIT] Running pre-configured scenario: ${scenarioId}...`]);
 
     try {
       const res = await fetch('http://localhost:5000/api/scan', {
@@ -85,10 +84,10 @@ export default function App() {
         setScanLogs(data.scanLogs);
         setScenarioMeta(data.scenarioMeta);
         setUrlInput(data.result.url);
-        setActiveTab('scanner'); // switch to scanner to view results
+        setActiveTab('scanner');
       }
     } catch (err) {
-      console.error('Failed to trigger scenario:', err);
+      console.error('Failed to run scenario:', err);
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +98,7 @@ export default function App() {
     const jsonStr = JSON.stringify(
       {
         timestamp: new Date().toISOString(),
-        engine: 'TrustMatrix AI v2.0 Enterprise',
+        engine: 'TrustMatrix AI v2.0',
         dossier: scanResult
       },
       null,
@@ -109,26 +108,26 @@ export default function App() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `trustmatrix-security-dossier-${scanResult.domain}.json`;
+    link.download = `trustmatrix-${scanResult.domain}.json`;
     link.click();
     URL.revokeObjectURL(url);
   };
 
   return (
     <div className="min-h-screen bg-[#070a13] text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-black">
-      {/* Top SOC Navbar */}
+      {/* Header */}
       <Header
         onOpenReportModal={() => setIsReportModalOpen(true)}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
 
-      {/* Main Workspace */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        {/* Render Tab Contents */}
+      {/* Main Container */}
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+        {/* TAB 1: THREAT SCANNER */}
         {activeTab === 'scanner' && (
           <div className="space-y-6">
-            {/* Top Scanning Input & Preset Launcher */}
+            {/* Simple URL Search Bar & Quick Demos */}
             <ScanBar
               urlInput={urlInput}
               setUrlInput={setUrlInput}
@@ -139,67 +138,78 @@ export default function App() {
               activeScenarioId={activeScenarioId}
             />
 
-            {/* Live Terminal Telemetry Output */}
-            <ScanLogs logs={scanLogs} />
-
-            {/* Overall Digital Trust Gauge */}
+            {/* Clear, High-Level Trust Score Gauge */}
             {scanResult && (
               <TrustGauge result={scanResult} scenarioMeta={scenarioMeta} />
             )}
 
-            {/* Deep Forensic Cards Grid */}
+            {/* Collapsible Advanced Forensic Details & Logs */}
             {scanResult && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* 1. AI Phishing & Brand Impersonation */}
-                <PhishingCard aiPhishing={scanResult.aiPhishing} />
-
-                {/* 2. Certificate & PKI Trust Infrastructure */}
-                <CertTrustCard certTrust={scanResult.certTrust} />
-
-                {/* 3. Web Application Security Posture */}
-                <WebSecCard webSec={scanResult.webSec} />
-
-                {/* 4. Collaborative Threat Graph & IOCs */}
-                <ThreatGraphCard
-                  collaborativeIntel={scanResult.collaborativeIntel}
-                  domain={scanResult.domain}
-                />
-              </div>
-            )}
-
-            {/* Export Bar */}
-            {scanResult && (
-              <div className="flex items-center justify-between p-4 bg-slate-900/60 border border-slate-800 rounded-2xl backdrop-blur-md">
-                <div className="flex items-center space-x-2 text-xs text-slate-400 font-mono">
-                  <Shield className="w-4 h-4 text-cyan-400" />
-                  <span>Dossier ready for compliance audit & SIEM ingestion</span>
-                </div>
+              <div className="pt-2">
                 <button
-                  onClick={handleDownloadDossier}
-                  className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 hover:text-white transition-all shadow-sm"
+                  onClick={() => setShowAdvancedForensics(!showAdvancedForensics)}
+                  className="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-300 flex items-center justify-between transition-colors shadow-sm"
                 >
-                  <Download className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Download Forensic Dossier (JSON)</span>
+                  <div className="flex items-center space-x-2">
+                    <Terminal className="w-4 h-4 text-cyan-400" />
+                    <span>{showAdvancedForensics ? 'Hide' : 'View'} Advanced Forensic Telemetry, PKI Chains & Threat Graph</span>
+                  </div>
+                  {showAdvancedForensics ? (
+                    <ChevronUp className="w-4 h-4 text-slate-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-slate-400" />
+                  )}
                 </button>
+
+                {showAdvancedForensics && (
+                  <div className="mt-4 space-y-5 animate-fade-in">
+                    {/* Live Terminal Log */}
+                    <ScanLogs logs={scanLogs} />
+
+                    {/* 4 Deep Cards Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <PhishingCard aiPhishing={scanResult.aiPhishing} />
+                      <CertTrustCard certTrust={scanResult.certTrust} />
+                      <WebSecCard webSec={scanResult.webSec} />
+                      <ThreatGraphCard
+                        collaborativeIntel={scanResult.collaborativeIntel}
+                        domain={scanResult.domain}
+                      />
+                    </div>
+
+                    {/* Download JSON Dossier */}
+                    <div className="flex justify-end pt-2">
+                      <button
+                        onClick={handleDownloadDossier}
+                        className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition-all shadow-sm"
+                      >
+                        <Download className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>Download Technical Dossier (JSON)</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
         )}
 
-        {activeTab === 'pki-radar' && (
-          <PkiRadarView onScanScenario={triggerScenario} />
+        {/* TAB 2: WORKING MECHANISM (HOW IT WORKS) */}
+        {activeTab === 'mechanism' && (
+          <WorkingMechanism />
         )}
 
+        {/* TAB 3: COMMUNITY FEED */}
         {activeTab === 'community' && (
           <CollaborativeHub onOpenReportModal={() => setIsReportModalOpen(true)} />
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950/80 py-4 mt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 font-mono gap-2">
-          <span>TrustMatrix AI © 2026 • AI-Powered Web Threat Detection & Digital Trust Intelligence</span>
-          <span className="text-cyan-500/80">Addressing Phishing, PKI Subversion & eMudhra Incident Defense</span>
+      {/* Clean Footer */}
+      <footer className="border-t border-slate-800/80 bg-slate-950 py-4 mt-auto">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+          <span>TrustMatrix AI • Web Threat & Digital Trust Intelligence</span>
+          <span className="text-cyan-400/80 font-mono">Defending Against Phishing, PKI Subversion & Weak Key Exploits</span>
         </div>
       </footer>
 
@@ -207,9 +217,7 @@ export default function App() {
       <ReportModal
         isOpen={isReportModalOpen}
         onClose={() => setIsReportModalOpen(false)}
-        onReportSubmitted={() => {
-          // If in community view, user will see the newly published report
-        }}
+        onReportSubmitted={() => {}}
       />
     </div>
   );
