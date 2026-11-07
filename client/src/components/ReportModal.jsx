@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, PlusCircle, AlertTriangle, CheckCircle, Loader2 } from 'lucide-react';
+import { X, PlusCircle, CheckCircle, Loader2 } from 'lucide-react';
 
 export default function ReportModal({ isOpen, onClose, onReportSubmitted }) {
   const [targetUrl, setTargetUrl] = useState('');
@@ -53,51 +53,51 @@ export default function ReportModal({ isOpen, onClose, onReportSubmitted }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative">
+      <div className="bg-[#0b2020] border border-[#174242] rounded-2xl w-full max-w-lg p-6 shadow-2xl relative shadow-neon-sm">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-200 transition-colors"
+          className="absolute top-4 right-4 text-[#80a4a2] hover:text-white transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="flex items-center space-x-2.5 mb-4">
-          <div className="p-2 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400">
+          <div className="p-2 rounded-lg bg-[#00f2c3]/10 border border-[#00f2c3]/30 text-[#00f2c3]">
             <PlusCircle className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-slate-100">Submit Threat to Collaborative Registry</h3>
-            <p className="text-xs text-slate-400 font-mono">Contribute verified IOCs to the decentralized defense network</p>
+            <h3 className="text-base font-bold text-white">Submit Threat to Collaborative Registry</h3>
+            <p className="text-xs text-[#80a4a2] font-mono">Protected by automated DNS & TLS anti-poisoning probes</p>
           </div>
         </div>
 
         {success ? (
           <div className="p-6 text-center space-y-2">
-            <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto animate-bounce" />
-            <h4 className="font-bold text-slate-100">Report Successfully Logged!</h4>
-            <p className="text-xs text-slate-400 font-mono">IOC published to community threat graph and STIX feed.</p>
+            <CheckCircle className="w-12 h-12 text-[#00f2c3] mx-auto animate-bounce" />
+            <h4 className="font-bold text-white">Report Successfully Logged!</h4>
+            <p className="text-xs text-[#80a4a2] font-mono">IOC verified & published to community threat graph and STIX feed.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-3.5 text-xs font-mono">
             <div>
-              <label className="text-slate-300 font-semibold block mb-1">Target URL / Malicious Link *</label>
+              <label className="text-[#a1c4c2] font-semibold block mb-1">Target URL / Malicious Link *</label>
               <input
                 type="text"
                 required
                 value={targetUrl}
                 onChange={(e) => setTargetUrl(e.target.value)}
                 placeholder="https://malicious-login-portal.xyz/verify"
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-400"
+                className="w-full px-3 py-2 bg-[#061414] border border-[#174242] rounded-xl text-white focus:outline-none focus:ring-1 focus:ring-[#00f2c3]"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-slate-300 font-semibold block mb-1">Threat Category</label>
+                <label className="text-[#a1c4c2] font-semibold block mb-1">Threat Category</label>
                 <select
                   value={threatCategory}
                   onChange={(e) => setThreatCategory(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-400"
+                  className="w-full px-3 py-2 bg-[#061414] border border-[#174242] rounded-xl text-white focus:outline-none focus:ring-1 focus:ring-[#00f2c3]"
                 >
                   <option value="Phishing & Brand Impersonation">Phishing & Brand Impersonation</option>
                   <option value="PKI Subversion & Rogue CA">PKI Subversion & Rogue CA</option>
@@ -108,46 +108,46 @@ export default function ReportModal({ isOpen, onClose, onReportSubmitted }) {
               </div>
 
               <div>
-                <label className="text-slate-300 font-semibold block mb-1">Impersonated Entity</label>
+                <label className="text-[#a1c4c2] font-semibold block mb-1">Impersonated Entity</label>
                 <input
                   type="text"
                   value={targetEntity}
                   onChange={(e) => setTargetEntity(e.target.value)}
                   placeholder="e.g. State Bank of India, Google"
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-400"
+                  className="w-full px-3 py-2 bg-[#061414] border border-[#174242] rounded-xl text-white focus:outline-none focus:ring-1 focus:ring-[#00f2c3]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="text-slate-300 font-semibold block mb-1">Threat Analysis & Behavior Summary</label>
+              <label className="text-[#a1c4c2] font-semibold block mb-1">Threat Analysis & Behavior Summary</label>
               <textarea
                 rows="2"
                 value={summary}
                 onChange={(e) => setSummary(e.target.value)}
                 placeholder="Observed credential harvesting, fake SMS redirects, stolen favicons..."
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-400"
+                className="w-full px-3 py-2 bg-[#061414] border border-[#174242] rounded-xl text-white focus:outline-none focus:ring-1 focus:ring-[#00f2c3]"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-slate-300 font-semibold block mb-1">Your Analyst Handle</label>
+                <label className="text-[#a1c4c2] font-semibold block mb-1">Your Analyst Handle</label>
                 <input
                   type="text"
                   value={reporterHandle}
                   onChange={(e) => setReporterHandle(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-400"
+                  className="w-full px-3 py-2 bg-[#061414] border border-[#174242] rounded-xl text-white focus:outline-none focus:ring-1 focus:ring-[#00f2c3]"
                 />
               </div>
 
               <div>
-                <label className="text-slate-300 font-semibold block mb-1">Tags (comma-separated)</label>
+                <label className="text-[#a1c4c2] font-semibold block mb-1">Tags (comma-separated)</label>
                 <input
                   type="text"
                   value={tags}
                   onChange={(e) => setTags(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-400"
+                  className="w-full px-3 py-2 bg-[#061414] border border-[#174242] rounded-xl text-white focus:outline-none focus:ring-1 focus:ring-[#00f2c3]"
                 />
               </div>
             </div>
@@ -156,14 +156,14 @@ export default function ReportModal({ isOpen, onClose, onReportSubmitted }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-colors"
+                className="px-4 py-2 bg-[#091a1a] hover:bg-[#112a2a] text-[#80a4a2] rounded-xl transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={submitting || !targetUrl.trim()}
-                className="px-5 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl flex items-center space-x-1.5 transition-all shadow-md shadow-rose-600/30 disabled:opacity-50"
+                className="px-5 py-2 bg-[#00f2c3] hover:bg-[#2dd4bf] text-[#041513] font-extrabold rounded-xl flex items-center space-x-1.5 transition-all shadow-neon-sm disabled:opacity-50"
               >
                 {submitting ? (
                   <>

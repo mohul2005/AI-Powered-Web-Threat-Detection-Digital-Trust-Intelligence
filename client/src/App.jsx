@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header.jsx';
+import HeroMetricCards from './components/HeroMetricCards.jsx';
 import ScanBar from './components/ScanBar.jsx';
 import TrustGauge from './components/TrustGauge.jsx';
 import ScanLogs from './components/ScanLogs.jsx';
@@ -11,7 +12,7 @@ import CollaborativeHub from './components/CollaborativeHub.jsx';
 import WorkingMechanism from './components/WorkingMechanism.jsx';
 import ValidationLab from './components/ValidationLab.jsx';
 import ReportModal from './components/ReportModal.jsx';
-import { Download, ChevronDown, ChevronUp, Terminal, Shield, Sparkles } from 'lucide-react';
+import { Download, ChevronDown, ChevronUp, Terminal } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('scanner');
@@ -99,7 +100,7 @@ export default function App() {
     const jsonStr = JSON.stringify(
       {
         timestamp: new Date().toISOString(),
-        engine: 'TrustMatrix AI v2.0',
+        engine: 'TrustMatrix AI v2.0 Enterprise',
         dossier: scanResult
       },
       null,
@@ -115,8 +116,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070a13] text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-black">
-      {/* Header */}
+    <div className="min-h-screen bg-[#061313] text-[#e2f1f0] flex flex-col font-sans selection:bg-[#00f2c3] selection:text-[#041513]">
+      {/* Header in Sentinel Nexus aesthetic */}
       <Header
         onOpenReportModal={() => setIsReportModalOpen(true)}
         activeTab={activeTab}
@@ -125,6 +126,9 @@ export default function App() {
 
       {/* Main Container */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+        {/* Top 4 Hero Metric Cards from Sentinel Nexus Design */}
+        <HeroMetricCards />
+
         {/* TAB 1: THREAT SCANNER */}
         {activeTab === 'scanner' && (
           <div className="space-y-6">
@@ -143,19 +147,19 @@ export default function App() {
             )}
 
             {scanResult && (
-              <div className="pt-2">
+              <div className="pt-1">
                 <button
                   onClick={() => setShowAdvancedForensics(!showAdvancedForensics)}
-                  className="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-semibold text-slate-300 flex items-center justify-between transition-colors shadow-sm"
+                  className="w-full py-3 px-4 rounded-xl bg-[#0b2020] hover:bg-[#112d2d] border border-[#174242] text-xs font-semibold text-[#a1c4c2] flex items-center justify-between transition-colors shadow-card-dark"
                 >
                   <div className="flex items-center space-x-2">
-                    <Terminal className="w-4 h-4 text-cyan-400" />
+                    <Terminal className="w-4 h-4 text-[#00f2c3]" />
                     <span>{showAdvancedForensics ? 'Hide' : 'View'} Advanced Forensic Telemetry, PKI Chains & Threat Graph</span>
                   </div>
                   {showAdvancedForensics ? (
-                    <ChevronUp className="w-4 h-4 text-slate-400" />
+                    <ChevronUp className="w-4 h-4 text-[#80a4a2]" />
                   ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-400" />
+                    <ChevronDown className="w-4 h-4 text-[#80a4a2]" />
                   )}
                 </button>
 
@@ -176,9 +180,9 @@ export default function App() {
                     <div className="flex justify-end pt-2">
                       <button
                         onClick={handleDownloadDossier}
-                        className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition-all shadow-sm"
+                        className="flex items-center space-x-2 px-4 py-2 rounded-xl bg-[#0b2020] hover:bg-[#123030] border border-[#174242] text-xs font-semibold text-white transition-all shadow-card-dark"
                       >
-                        <Download className="w-3.5 h-3.5 text-cyan-400" />
+                        <Download className="w-3.5 h-3.5 text-[#00f2c3]" />
                         <span>Download Technical Dossier (JSON)</span>
                       </button>
                     </div>
@@ -205,11 +209,11 @@ export default function App() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-800/80 bg-slate-950 py-4 mt-auto">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
-          <span>TrustMatrix AI • Web Threat & Digital Trust Intelligence</span>
-          <span className="text-cyan-400/80 font-mono">NIST SP 800-30 Validated • 98.4% Ground-Truth Accuracy</span>
+      {/* Footer in Deep Emerald theme */}
+      <footer className="border-t border-[#133535] bg-[#040e0e] py-4 mt-auto">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#5c8280] gap-2">
+          <span>TrustMatrix AI Nexus • Enterprise SOC Threat Intelligence Platform</span>
+          <span className="text-[#00f2c3]/90 font-mono">Emerald Neon UI • NIST SP 800-30 Validated</span>
         </div>
       </footer>
 
