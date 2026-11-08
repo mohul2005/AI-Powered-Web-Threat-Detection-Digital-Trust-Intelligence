@@ -225,7 +225,46 @@ flowchart TD
 
 ---
 
-## 🚀 Quickstart Guide
+## 🕸️ Module 4: Intelligent Threat Correlation
+
+Individual suspicious links or messages rarely exist in isolation; they are often facets of larger, distributed fraud campaigns. TrustMatrix correlates related indicators across all submitted reports and live scans.
+
+### Concrete Scenario: Multi-User Banking Phishing Campaign
+> **Example**: Multiple users report different messages claiming to originate from the same bank (e.g. State Bank of India). Although the user-facing URLs differ (`sbi-yono-pan-kyc-update.top`, `secure-yono-login-sbi.top`, `onlinesbi.sbi-retailbanking-verify.xyz`), they resolve to domains associated with the **exact same infrastructure** (`149.28.18.232` hosted on `AS20473 Choopa/Vultr Proxy`) or reuse identical suspicious payment destinations (`sbi-kyc-verify@oksbi`).
+
+### The 5 Core Capabilities of Module 4:
+1. **Identify Repeated Domains and Infrastructure**:
+   - Detects shared server IPv4/v6 addresses, colocated CIDR blocks, BGP Autonomous System Numbers (e.g., bulletproof proxies on Choopa AS20473, CyberBunker AS57523), shared nameservers, and registrar footprints.
+2. **Detect Similarities Between Reported Phishing Messages**:
+   - Computes deterministic token-level Jaccard lexical similarity and n-gram overlap ($J \ge 0.60$) to cluster messages reusing identical social engineering templates.
+3. **Identify Recurring Impersonation Patterns**:
+   - Identifies systematic recurrence of brand attacks across high-value targets (State Bank of India YONO, HDFC Netbanking, Parivahan e-Challan, NTA NEET/JEE, and Microsoft Defender).
+4. **Correlate Previously Reported URLs and Indicators (IOCs)**:
+   - Queries the collaborative threat store and active incident database to cross-reference URLs, shortener redirect hops, SHA-256 target hashes, and helpline numbers across time horizons.
+5. **Build Relationships Between Potentially Connected Incidents**:
+   - Constructs an interactive, multi-node Threat Graph with deterministic evidence edges linking Target Domain $\to$ IP Address $\to$ Transit ASN $\to$ Active Threat Campaign $\to$ Shared Payment Handles $\to$ Connected Reports.
+
+```mermaid
+flowchart TD
+    Report1["User Report 1: SMS Phish<br/>sbi-yono-pan-kyc-update.top"] --> DNS1[DNS A Record: 149.28.18.232]
+    Report2["User Report 2: Email Phish<br/>secure-yono-login-sbi.top"] --> DNS1
+    Report3["User Report 3: PhishTank Feed<br/>onlinesbi.sbi-retailbanking-verify.xyz"] --> DNS1
+    
+    DNS1 --> ASN["BGP Transit: AS20473 (Choopa / Vultr Bulletproof Relay)"]
+    Report1 -.->|Solicits UPI Deposit| DropHandle["Money Mule Handle: sbi-kyc-verify@oksbi"]
+    
+    ASN --> Camp["Active Campaign Attribution:<br/>CAMPAIGN-FINPHISH-IND-88<br/>(State Bank of India YONO Phishing Kit V4)"]
+    DropHandle --> Camp
+    
+    Camp --> AI["AI Executive Campaign Synthesis<br/>(Explains syndicate modus operandi & cross-incident connections)"]
+```
+
+### ⚖️ The Core Correlation Mandate:
+> 🔍 *"AI can assist in summarising these relationships, while deterministic matching and supporting evidence should establish the actual connections."*
+>
+> In TrustMatrix, connections are grounded strictly in hard telemetry—exact IP matches, identical ASN BGP announcements, identical UPI handles, and deterministic lexical token overlap. AI then synthesizes this raw evidence into actionable executive threat dossiers.
+
+---
 
 ### 1. Run Full-Stack System
 ```bash

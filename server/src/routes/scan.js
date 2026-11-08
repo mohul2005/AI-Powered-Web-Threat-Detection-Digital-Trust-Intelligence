@@ -12,6 +12,7 @@ import { analyzeEmailThreat } from '../engines/emailEngine.js';
 import { analyzeMessageThreat } from '../engines/messageEngine.js';
 import { inspectDnsCharacteristics } from '../engines/dnsEngine.js';
 import { analyzeSocialEngineering } from '../engines/scamEngine.js';
+import { correlateThreatIndicators } from '../engines/correlationEngine.js';
 
 const router = express.Router();
 
@@ -90,6 +91,15 @@ router.post('/scan', async (req, res) => {
       `[COMPLETE] Email assessment finalized. Trust Score: ${emailResult.trustScore}/100 [${emailResult.threatLevel}]`
     ];
 
+    const module4CorrelationReport = correlateThreatIndicators({
+      url: 'Email Content',
+      domain: emailResult.impersonatedBrand || 'Email Gateway',
+      content: rawContent,
+      impersonatedBrand: emailResult.impersonatedBrand,
+      extractedEntities: emailResult.extractedEntities,
+      scamForensics: emailResult
+    });
+
     return res.json({
       success: true,
       scanLogs,
@@ -116,7 +126,8 @@ router.post('/scan', async (req, res) => {
         evidenceDossier: emailResult.evidence.map((ev, i) => ({ title: `Finding ${i+1}`, detail: ev })),
         actionableGuidance: emailResult.actionableGuidance,
         scamForensics: emailResult,
-        module3ScamReport: emailResult.module3ScamReport
+        module3ScamReport: emailResult.module3ScamReport,
+        module4CorrelationReport
       }
     });
   }
@@ -132,11 +143,20 @@ router.post('/scan', async (req, res) => {
       'SMS / Smishing Fraud'
     );
 
+    const module4CorrelationReport = correlateThreatIndicators({
+      url: rawContent,
+      domain: 'SMS / Social Message',
+      content: rawContent,
+      extractedEntities: messageResult.extractedEntities,
+      scamForensics: messageResult
+    });
+
     const scanLogs = [
       `[INIT] Commencing AI Smishing & Scam Message Analysis...`,
       `[SHORTLINK_SCAN] Parsing obfuscated redirects and telecom filter bypasses...`,
       `[FINANCIAL_LURES] Scanning for fake KYC, utility disconnection, and lottery triggers...`,
       `[CREDENTIAL_CHECK] Evaluating requests for OTP, UPI PIN, or bank passwords...`,
+      `[THREAT_CORRELATION] Correlating IOCs against campaigns and community database...`,
       `[WEB3_ATTEST] Generating tamper-proof cryptographic attestation on Ethereum ledger...`,
       `[COMPLETE] Smishing assessment finalized. Trust Score: ${messageResult.trustScore}/100 [${messageResult.threatLevel}]`
     ];
@@ -167,7 +187,8 @@ router.post('/scan', async (req, res) => {
         evidenceDossier: messageResult.evidence.map((ev, i) => ({ title: `Indicator ${i+1}`, detail: ev })),
         actionableGuidance: messageResult.actionableGuidance,
         scamForensics: messageResult,
-        module3ScamReport: messageResult.module3ScamReport
+        module3ScamReport: messageResult.module3ScamReport,
+        module4CorrelationReport
       }
     });
   }
@@ -362,7 +383,18 @@ router.post('/scan', async (req, res) => {
     };
 
     const urlScamAnalysis = analyzeSocialEngineering(formattedUrl);
+    const module4CorrelationReport = correlateThreatIndicators({
+      url: formattedUrl,
+      domain: hostname,
+      content: formattedUrl,
+      ip: dnsInfo?.primaryA_Record || '149.28.18.232',
+      asn: dnsInfo?.asnOrg || 'AS20473 (Choopa / Vultr)',
+      impersonatedBrand: aiPhishing?.impersonatedBrand,
+      extractedEntities: urlScamAnalysis?.extractedEntities,
+      scamForensics: urlScamAnalysis
+    });
 
+    scanLogs.push(`[THREAT_CORRELATION] Correlated against active campaigns. Connected nodes: ${module4CorrelationReport.threatGraph.nodesCount}`);
     scanLogs.push(`[COMPLETE] Unified Trust Assessment: ${trustScore}/100 [Level: ${threatLevel}]. Attested on-chain.`);
 
     res.json({
@@ -386,7 +418,8 @@ router.post('/scan', async (req, res) => {
         actionableGuidance,
         module1Analysis,
         scamForensics: urlScamAnalysis,
-        module3ScamReport: urlScamAnalysis.module3ScamReport
+        module3ScamReport: urlScamAnalysis.module3ScamReport,
+        module4CorrelationReport
       }
     });
   } catch (error) {

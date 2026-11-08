@@ -1,7 +1,17 @@
 import express from 'express';
 import { threatStore } from '../data/threatStore.js';
+import { KNOWN_THREAT_CAMPAIGNS } from '../engines/correlationEngine.js';
 
 const router = express.Router();
+
+// Get active threat campaigns (Module 4)
+router.get('/campaigns', (req, res) => {
+  res.json({
+    success: true,
+    count: KNOWN_THREAT_CAMPAIGNS.length,
+    campaigns: KNOWN_THREAT_CAMPAIGNS
+  });
+});
 
 // Get all community threat reports
 router.get('/reports', (req, res) => {

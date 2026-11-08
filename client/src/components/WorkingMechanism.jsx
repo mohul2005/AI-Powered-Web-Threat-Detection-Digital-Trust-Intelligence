@@ -299,6 +299,61 @@ export default function WorkingMechanism() {
           </div>
         </div>
       </div>
+
+      {/* Module 4: Intelligent Threat Correlation Architecture */}
+      <div className="p-6 rounded-2xl bg-[#0b2020] border border-[#00f2c3]/40 shadow-card-dark space-y-4">
+        <div className="flex items-center space-x-3">
+          <div className="p-2.5 rounded-xl bg-[#00f2c3]/15 border border-[#00f2c3]/40 text-[#00f2c3]">
+            <Globe className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <h3 className="font-bold text-white text-base">Module 4: Intelligent Threat Correlation</h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00f2c3]/20 text-[#00f2c3] border border-[#00f2c3]/40 font-bold">
+                Campaign Clustering
+              </span>
+            </div>
+            <p className="text-xs text-[#80a4a2] font-mono">Connecting disparate links and messages across shared adversary infrastructure</p>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl bg-[#061414] border border-[#153a3a] text-xs text-[#a1c4c2] leading-relaxed space-y-2 font-mono">
+          <p>
+            <strong className="text-white">Beyond Isolated Incidents:</strong> Individual suspicious links or messages are rarely isolated events; they are frequently facets of organized industrial fraud campaigns. TrustMatrix correlates related indicators across all submitted reports.
+          </p>
+          <div className="p-3 rounded-lg bg-[#0e2727] border border-[#00f2c3]/30 text-[11px] text-[#00f2c3]">
+            ⚖️ <strong>Engineering Mandate:</strong> <em>"AI can assist in summarising these relationships, while deterministic matching and supporting evidence should establish the actual connections."</em>
+          </div>
+        </div>
+
+        {/* The 5 Module 4 Pillars */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs font-mono">
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">1. Repeated Infrastructure</span>
+            <span className="text-[10px] text-[#80a4a2]">Matches shared BGP Autonomous System Numbers (Choopa AS20473), server IPv4/v6 hosts, and nameservers.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">2. Message Similarity</span>
+            <span className="text-[10px] text-[#80a4a2]">Deterministic Jaccard n-gram matching detects identical phishing templates across independent reports.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">3. Recurring Impersonation</span>
+            <span className="text-[10px] text-[#80a4a2]">Tracks recurring brand targeting patterns across banking (SBI), exams (NTA), and transport (Parivahan).</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">4. Indicator Cross-Referencing</span>
+            <span className="text-[10px] text-[#80a4a2]">Cross-checks previously reported URLs, SHA-256 proofs, and shortlink redirect endpoints in community stores.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">5. Connected Incident Graph</span>
+            <span className="text-[10px] text-[#80a4a2]">Builds verified graph topologies connecting Target Domain &rarr; Host IP &rarr; ASN &rarr; Campaign &rarr; Money Mule UPI.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">6. AI Executive Synthesis</span>
+            <span className="text-[10px] text-[#80a4a2]">AI synthesizes complex multi-hop telemetry into actionable executive summaries for security teams.</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
