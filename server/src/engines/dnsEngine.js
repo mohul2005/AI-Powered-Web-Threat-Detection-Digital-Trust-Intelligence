@@ -2,6 +2,7 @@
 // Implements Module 1 Requirement 6: Identify suspicious DNS and domain characteristics
 
 import dns from 'dns/promises';
+import { cacheManager } from '../db/redisCache.js';
 
 const DISPOSABLE_OR_HIGH_RISK_NAMESERVERS = [
   'cloudflare.com', // Cloudflare itself is legitimate, but anonymous free accounts are often used
@@ -12,6 +13,14 @@ const DISPOSABLE_OR_HIGH_RISK_NAMESERVERS = [
 ];
 
 export async function inspectDnsCharacteristics(hostname) {
+  const cacheKey = `dns:${(hostname || '').toLowerCase()}`;
+  try {
+    const cached = await cacheManager.get(cacheKey);
+    if (cached) return cached;
+  } catch (err) {
+    // ignore cache read failure
+  }
+
   const result = {
     resolved: false,
     ipAddresses: [],
@@ -101,6 +110,12 @@ export async function inspectDnsCharacteristics(hostname) {
   if (!result.resolved) {
     result.ipAddresses = ['198.51.100.42 (Simulated Isolated Host)'];
     result.signals.push('DNS Query Sandbox Mode: Analyzed using active threat intelligence registry.');
+  }
+
+  try {
+    await cacheManager.set(cacheKey, result, 300);
+  } catch (err) {
+    // ignore cache write error
   }
 
   return result;
