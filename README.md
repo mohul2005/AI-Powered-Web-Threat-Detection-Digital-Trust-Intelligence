@@ -56,7 +56,41 @@ flowchart TD
 
 ---
 
-## ⚡ Pre-Configured Live Test Scenarios (Section A & Section B)
+## 🔍 Module 1: Intelligent URL and Website Analysis
+
+Any suspicious URL or domain can be submitted for deep forensic investigation. TrustMatrix executes a 7-stage automated pipeline:
+
+```mermaid
+flowchart LR
+    URL[Submitted URL / Domain] --> Norm[1. URL Normalization]
+    Norm --> Struct[2. Domain Structure & Naming Patterns]
+    Struct --> Phish[3. Phishing & Brand Impersonation]
+    Phish --> Redir[4. Redirect Chains & Open Relays]
+    Redir --> Intel[5. Threat Intel Multi-Feed Check]
+    Intel --> DNS[6. DNS Characteristics & Fast-Flux]
+    DNS --> Threat[7. Association with Threat Reports]
+    Threat --> Output[7 Production Outputs]
+```
+
+### The 7 Core Inspection Capabilities:
+1. **Normalise & Inspect Submitted URLs**: Canonicalizes protocols, decodes percent-encodings, handles Punycode IDNs, and isolates path and query parameters.
+2. **Analyse Domain Structure & Suspicious Naming**: Evaluates subdomain depth, Shannon entropy, high-risk TLDs (`.xyz`, `.top`, `.online`), and direct IP hosts.
+3. **Identify Phishing & Impersonation Indicators**: Levenshtein distance matching against 150+ brands, homoglyphs (Cyrillic/Greek substitutions), and DOM credential harvesting inputs (passwords, OTPs, CVVs).
+4. **Examine Redirect Chains & Destination Domains**: Dissects open redirect query parameters (`?redirect=`, `?url=`, `?next=`, `?dest=`), multi-hop hops, and cross-domain jumps.
+5. **Check Domain Reputation Across Threat Intel**: Multi-source consensus against PhishTank, URLhaus (Abuse.ch), Spamhaus DBL, and crt.sh.
+6. **Identify Suspicious DNS & Domain Characteristics**: Resolves IPv4/IPv6 records, detects fast-flux IP rotations, checks nameserver reputation, and evaluates MX/SPF/DMARC records.
+7. **Associate Detected Indicators with Known Threat Reports**: Maps findings to syndicate threat clusters and shared IOC databases.
+
+### The 7 Standardized Analysis Deliverables:
+* 🌐 **Website & Domain Information**: Normalized URL, domain, TLD, subdomain levels, domain entropy, resolved IPs, and protocol.
+* 🚨 **Identified Suspicious Indicators**: Full technical catalog of behavioral and lexical red flags.
+* 🛡️ **Known Threat Intelligence Matches**: Multi-feed consensus verdict, queried sources, and active IOCs.
+* 🔀 **Redirect Analysis**: Parameter keys, external jump warnings, and final destination tracking.
+* 📊 **Risk Classification**: Unified Digital Trust Score (0-100), threat level (CRITICAL to SAFE), and NIST veto override status.
+* 📑 **Supporting Evidence**: Evidence dossier with concrete technical explanations for every finding.
+* 💡 **Recommended Precautions**: Dynamic pre-click link safety advisory, step-by-step decision guidance, and national helpline escalation (1930 / cybercrime.gov.in).
+
+---
 
 | Scenario | Input Modality | Attack Vector | Detection Highlights |
 | :--- | :--- | :--- | :--- |

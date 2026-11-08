@@ -10,6 +10,7 @@ import { runGroundTruthValidation } from '../engines/validationEngine.js';
 import { analyzeWeb3Threats, generateOnChainAttestation } from '../engines/web3Engine.js';
 import { analyzeEmailThreat } from '../engines/emailEngine.js';
 import { analyzeMessageThreat } from '../engines/messageEngine.js';
+import { inspectDnsCharacteristics } from '../engines/dnsEngine.js';
 
 const router = express.Router();
 
@@ -242,6 +243,10 @@ router.post('/scan', async (req, res) => {
     scanLogs.push(`[WEB3_SCAN] Inspecting for malicious wallet drainers and token approval exploits...`);
     const web3Security = analyzeWeb3Threats(formattedUrl, htmlContent);
 
+    // Layer 6: DNS Characteristics & Domain Inspection (Module 1 Requirement 6)
+    scanLogs.push(`[DNS_ANALYSIS] Querying DNS resolution, MX/SPF records, and Fast-Flux characteristics...`);
+    const dnsInfo = await inspectDnsCharacteristics(hostname);
+
     // Dynamic Multi-Factor Trust Score Calculation
     let weightedScore = Math.round(
       (aiPhishing.score * 0.35) +
@@ -284,6 +289,9 @@ router.post('/scan', async (req, res) => {
     if (web3Security.isWeb3Target && web3Security.findings.length > 0) {
       evidenceDossier.push({ title: 'Web3 Security Vector', detail: web3Security.findings[0] });
     }
+    if (dnsInfo.signals.length > 0) {
+      evidenceDossier.push({ title: 'DNS Infrastructure Analysis', detail: dnsInfo.signals[0] });
+    }
     if (webSec.grade === 'F') {
       evidenceDossier.push({ title: 'Application Security Deficiencies', detail: 'Missing HSTS encryption and Content-Security-Policy guards.' });
     }
@@ -302,6 +310,54 @@ router.post('/scan', async (req, res) => {
       actionableGuidance.push('Always ensure you see a valid certificate matching the expected domain name.');
     }
 
+    // Module 1 Core Functional Deliverables (All 7 required outputs)
+    const module1Analysis = {
+      websiteAndDomainInfo: {
+        submittedUrl: rawTarget,
+        normalizedUrl: formattedUrl,
+        hostname,
+        protocol: parsedUrl.protocol.replace(':', ''),
+        tld: hostname.split('.').pop(),
+        subdomainLevels: hostname.split('.').length > 2 ? hostname.split('.').length - 2 : 0,
+        domainEntropy: aiPhishing.entropy,
+        resolvedIps: dnsInfo.ipAddresses,
+        nameservers: dnsInfo.nameservers,
+        hasMx: dnsInfo.hasMx,
+        hasSpf: dnsInfo.hasSpf
+      },
+      identifiedSuspiciousIndicators: [
+        ...aiPhishing.signals,
+        ...certTrust.signals,
+        ...dnsInfo.signals
+      ],
+      knownThreatMatches: {
+        reputationScore: collaborativeIntel.reputationScore,
+        communityVerdict: collaborativeIntel.reputationScore < 50 ? 'MALICIOUS_CONSENSUS' : 'BENIGN_CONSENSUS',
+        sourcesQueried: ['PhishTank', 'URLhaus (Abuse.ch)', 'Spamhaus DBL', 'crt.sh'],
+        clusters: collaborativeIntel.matchingThreatClusters,
+        iocs: collaborativeIntel.iocs
+      },
+      redirectAnalysis: {
+        hasEmbeddedRedirects: aiPhishing.embeddedRedirects.length > 0,
+        embeddedParameters: aiPhishing.embeddedRedirects,
+        finalDestination: aiPhishing.embeddedRedirects.length > 0 ? aiPhishing.embeddedRedirects[0].destination : formattedUrl,
+        isCrossDomainJump: aiPhishing.embeddedRedirects.some(r => r.isExternal),
+        redirectHops: aiPhishing.embeddedRedirects.length
+      },
+      riskClassification: {
+        trustScore,
+        threatLevel,
+        verdict: aiPhishing.verdict,
+        vetoOverrideActive: trustScore <= 15 && (aiPhishing.score < 15 || certTrust.score < 15 || web3Security.drainerDetected)
+      },
+      supportingEvidence: evidenceDossier,
+      recommendedPrecautions: {
+        preClickAdvisory: aiPhishing.preClickRecommendation,
+        actionSteps: actionableGuidance,
+        nationalHelpline: '1930 / cybercrime.gov.in'
+      }
+    };
+
     scanLogs.push(`[COMPLETE] Unified Trust Assessment: ${trustScore}/100 [Level: ${threatLevel}]. Attested on-chain.`);
 
     res.json({
@@ -317,11 +373,13 @@ router.post('/scan', async (req, res) => {
         aiPhishing,
         certTrust,
         webSec,
+        dnsInfo,
         web3Security,
         collaborativeIntel,
         web3Attestation,
         evidenceDossier,
-        actionableGuidance
+        actionableGuidance,
+        module1Analysis
       }
     });
   } catch (error) {
