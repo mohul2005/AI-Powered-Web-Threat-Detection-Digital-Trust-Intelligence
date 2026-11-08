@@ -13,6 +13,7 @@ import { analyzeMessageThreat } from '../engines/messageEngine.js';
 import { inspectDnsCharacteristics } from '../engines/dnsEngine.js';
 import { analyzeSocialEngineering } from '../engines/scamEngine.js';
 import { correlateThreatIndicators } from '../engines/correlationEngine.js';
+import { evaluateStandardRiskClassification } from '../engines/riskClassificationEngine.js';
 
 const router = express.Router();
 
@@ -55,6 +56,24 @@ router.post('/scan', async (req, res) => {
         `[COMPLETE] Threat assessment finalized. Trust Score: ${scenario.mockData.trustScore}/100 [${scenario.mockData.threatLevel}]`
       ];
 
+      const section6RiskReport = evaluateStandardRiskClassification({
+        trustScore: scenario.mockData.trustScore,
+        threatLevel: scenario.mockData.threatLevel,
+        url: scenario.mockData.url,
+        domain: scenario.mockData.domain,
+        aiPhishing: scenario.mockData.aiPhishing,
+        certTrust: scenario.mockData.certTrust,
+        webSec: scenario.mockData.webSec,
+        web3Security: scenario.mockData.web3Security,
+        collaborativeIntel: scenario.mockData.collaborativeIntel
+      });
+
+      const enrichedResult = {
+        ...scenario.mockData,
+        section6RiskReport,
+        riskClassification: section6RiskReport.overallRiskClassification
+      };
+
       return res.json({
         success: true,
         isScenario: true,
@@ -66,7 +85,7 @@ router.post('/scan', async (req, res) => {
           description: scenario.description
         },
         scanLogs,
-        result: scenario.mockData
+        result: enrichedResult
       });
     }
   }
@@ -100,6 +119,15 @@ router.post('/scan', async (req, res) => {
       scamForensics: emailResult
     });
 
+    const section6RiskReport = evaluateStandardRiskClassification({
+      trustScore: emailResult.trustScore,
+      threatLevel: emailResult.threatLevel,
+      url: 'Email Content',
+      domain: emailResult.impersonatedBrand || 'Email Gateway',
+      aiPhishing: { signals: emailResult.evidence, impersonatedBrand: emailResult.impersonatedBrand },
+      scamForensics: emailResult
+    });
+
     return res.json({
       success: true,
       scanLogs,
@@ -109,6 +137,8 @@ router.post('/scan', async (req, res) => {
         url: 'Submitted Email Text / Headers',
         trustScore: emailResult.trustScore,
         threatLevel: emailResult.threatLevel,
+        section6RiskReport,
+        riskClassification: section6RiskReport.overallRiskClassification,
         aiPhishing: {
           score: emailResult.trustScore,
           verdict: emailResult.threatLevel === 'SAFE' ? 'BENIGN_EMAIL' : 'PHISHING_EMAIL_SUSPECT',
@@ -151,6 +181,14 @@ router.post('/scan', async (req, res) => {
       scamForensics: messageResult
     });
 
+    const section6RiskReport = evaluateStandardRiskClassification({
+      trustScore: messageResult.trustScore,
+      threatLevel: messageResult.threatLevel,
+      url: rawContent,
+      domain: 'SMS / Social Message',
+      scamForensics: messageResult
+    });
+
     const scanLogs = [
       `[INIT] Commencing AI Smishing & Scam Message Analysis...`,
       `[SHORTLINK_SCAN] Parsing obfuscated redirects and telecom filter bypasses...`,
@@ -170,6 +208,8 @@ router.post('/scan', async (req, res) => {
         url: rawContent.substring(0, 60) + (rawContent.length > 60 ? '...' : ''),
         trustScore: messageResult.trustScore,
         threatLevel: messageResult.threatLevel,
+        section6RiskReport,
+        riskClassification: section6RiskReport.overallRiskClassification,
         aiPhishing: {
           score: messageResult.trustScore,
           verdict: messageResult.threatLevel === 'SAFE' ? 'BENIGN_MESSAGE' : 'SMISHING_SCAM_DETECTED',
@@ -395,6 +435,20 @@ router.post('/scan', async (req, res) => {
       scamForensics: urlScamAnalysis
     });
 
+    const section6RiskReport = evaluateStandardRiskClassification({
+      trustScore,
+      threatLevel,
+      url: formattedUrl,
+      domain: hostname,
+      aiPhishing,
+      certTrust,
+      webSec,
+      dnsInfo,
+      web3Security,
+      collaborativeIntel,
+      scamForensics: urlScamAnalysis
+    });
+
     scanLogs.push(`[THREAT_CORRELATION] Correlated against active campaigns. Connected nodes: ${module4CorrelationReport.threatGraph.nodesCount}`);
     scanLogs.push(`[COMPLETE] Unified Trust Assessment: ${trustScore}/100 [Level: ${threatLevel}]. Attested on-chain.`);
 
@@ -408,6 +462,8 @@ router.post('/scan', async (req, res) => {
         domain: hostname,
         trustScore,
         threatLevel,
+        section6RiskReport,
+        riskClassification: section6RiskReport.overallRiskClassification,
         aiPhishing,
         certTrust,
         webSec,

@@ -659,6 +659,114 @@ export default function WorkingMechanism() {
           </div>
         </div>
       </div>
+
+      {/* Section 6: Risk Classification Architecture */}
+      <div className="p-6 rounded-2xl bg-[#0b2020] border border-[#00f2c3]/40 shadow-card-dark space-y-5">
+        <div className="flex items-center space-x-3">
+          <div className="p-2.5 rounded-xl bg-[#00f2c3]/15 border border-[#00f2c3]/40 text-[#00f2c3]">
+            <Scale className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <h3 className="font-bold text-white text-base">Section 6: Consistent Risk Classification Mechanism</h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00f2c3]/20 text-[#00f2c3] border border-[#00f2c3]/40 font-bold">
+                5-Tier Standard
+              </span>
+            </div>
+            <p className="text-xs text-[#80a4a2] font-mono">Standardized 5-tier classification & 8-deliverable assessment dossier</p>
+          </div>
+        </div>
+
+        {/* The 5 Standard Classification Tiers Table */}
+        <div className="space-y-2 font-mono text-xs">
+          <span className="text-white font-bold block">1. The 5 Consistent Classification Tiers:</span>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-2.5">
+            <div className="p-3 rounded-xl bg-[#061414] border border-[#00f2c3]/40 space-y-1">
+              <span className="text-[#00f2c3] font-bold block text-[11px]">Low Risk</span>
+              <p className="text-[10px] text-[#a1c4c2] leading-tight">
+                No significant malicious indicators identified within the available checks.
+              </p>
+            </div>
+            <div className="p-3 rounded-xl bg-[#061414] border border-[#eab308]/40 space-y-1">
+              <span className="text-[#eab308] font-bold block text-[11px]">Suspicious</span>
+              <p className="text-[10px] text-[#a1c4c2] leading-tight">
+                One or more indicators require further investigation.
+              </p>
+            </div>
+            <div className="p-3 rounded-xl bg-[#061414] border border-[#f59e0b]/40 space-y-1">
+              <span className="text-[#f59e0b] font-bold block text-[11px]">High Risk</span>
+              <p className="text-[10px] text-[#a1c4c2] leading-tight">
+                Multiple significant indicators suggest a substantial security threat.
+              </p>
+            </div>
+            <div className="p-3 rounded-xl bg-[#061414] border border-[#f43f5e]/40 space-y-1">
+              <span className="text-[#f43f5e] font-bold block text-[11px]">Confirmed Malicious</span>
+              <p className="text-[10px] text-[#a1c4c2] leading-tight">
+                Supported by authoritative threat intelligence or sufficiently validated evidence.
+              </p>
+            </div>
+            <div className="p-3 rounded-xl bg-[#061414] border border-[#5c8280]/40 space-y-1">
+              <span className="text-[#80a4a2] font-bold block text-[11px]">Inconclusive</span>
+              <p className="text-[10px] text-[#80a4a2] leading-tight">
+                Insufficient data or unavailable verification sources.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* The 8 Mandated Deliverables in Each Assessment */}
+        <div className="space-y-2 font-mono text-xs">
+          <span className="text-white font-bold block">2. The 8 Mandated Deliverables in Every Assessment:</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">1. Overall Risk Classification</span>
+              <span className="text-[10px] text-[#80a4a2]">One of the 5 standardized tiers with descriptive rationale.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">2. Threat Indicators</span>
+              <span className="text-[10px] text-[#80a4a2]">Concrete signals across DNS, TLS, content, and headers.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">3. Supporting Evidence</span>
+              <span className="text-[10px] text-[#80a4a2]">Technical proof, key sizes, entropy, and form input names.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">4. Source of Findings</span>
+              <span className="text-[10px] text-[#80a4a2]">Exact origin (DNS Resolver, CT Log, URLhaus, DOM Scraper).</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">5. Analysis Timestamp</span>
+              <span className="text-[10px] text-[#80a4a2]">Precise ISO 8601 execution timestamp.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">6. Evidence Coverage</span>
+              <span className="text-[10px] text-[#80a4a2]">Confidence rating across active inspection layers.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">7. Recommended Actions</span>
+              <span className="text-[10px] text-[#80a4a2]">Step-by-step precautions and emergency helpline 1930.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">8. Scope Limitations</span>
+              <span className="text-[10px] text-[#80a4a2]">Passive boundary, unaccessible server code, WHOIS privacy.</span>
+            </div>
+          </div>
+        </div>
+
+        {/* The Fundamental Axiom */}
+        <div className="p-4 rounded-xl bg-[#0e2727] border border-[#f59e0b]/40 space-y-2 text-xs font-mono">
+          <div className="flex items-center space-x-2 text-[#f59e0b] font-bold">
+            <Scale className="w-4 h-4 shrink-0" />
+            <span>Essential Section 6 Security Axiom</span>
+          </div>
+          <p className="text-white italic text-[11px] leading-relaxed">
+            "The system must not treat the absence of known threats as proof that a website is safe."
+          </p>
+          <p className="text-[#a1c4c2] text-[10.5px] leading-relaxed">
+            Absence of evidence is not evidence of absence. Zero-day phishing links, newly registered adversary domains, and unlisted subdomains may exhibit zero historical threat reports while harboring malicious intent. TrustMatrix guarantees evidence-based risk grading and cautious link advisories rather than declaring unconditional safety.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

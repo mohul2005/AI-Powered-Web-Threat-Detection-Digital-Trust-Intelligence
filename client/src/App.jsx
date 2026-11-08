@@ -207,6 +207,7 @@ export default function App() {
                 actionableGuidance={scanResult.actionableGuidance}
                 web3Attestation={scanResult.web3Attestation}
                 web3Security={scanResult.web3Security}
+                section6RiskReport={scanResult.section6RiskReport}
               />
             )}
 

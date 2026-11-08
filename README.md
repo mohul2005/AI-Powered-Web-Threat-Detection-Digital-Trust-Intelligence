@@ -414,6 +414,35 @@ flowchart LR
 
 ---
 
+## 📊 6. Consistent Risk Classification Mechanism
+
+TrustMatrix AI enforces a strict, deterministic 5-tier classification mechanism across all scan modalities (URLs, Domains, Emails, SMS Messages, and Scenarios):
+
+| Classification Tier | Canonical Definition & System Description | Score Threshold & Typical Evidence |
+| :--- | :--- | :--- |
+| **Confirmed Malicious** | Supported by authoritative threat intelligence or sufficiently validated evidence | Score $\le 25/100$, positive URLhaus/PhishTank match, duplicate RSA modulus collision, AnyDesk remote control, or wallet drainer payload |
+| **High Risk** | Multiple significant indicators suggest a substantial security threat | Score $26 - 50/100$, brand typosquatting + deceptive homoglyph + missing CT log + suspicious TLD |
+| **Suspicious** | One or more indicators require further investigation | Score $51 - 70/100$, high-entropy domain, expired certificate, or urgent social engineering language |
+| **Low Risk** | No significant malicious indicators identified within the available checks | Score $71 - 100/100$, valid 2048+ bit TLS cert, public CT logs (Argon/Nimbus), clean DNS, zero threat matches |
+| **Inconclusive** | Insufficient data or unavailable verification sources | Host unreachable, DNS SERVFAIL, or third-party feed downtime |
+
+### The 8 Mandated Deliverables in Each Assessment Dossier:
+1. **Overall Risk Classification**: The canonical tier assigned to the artifact (`Low Risk`, `Suspicious`, `High Risk`, `Confirmed Malicious`, or `Inconclusive`).
+2. **Identified Threat Indicators**: Granular catalog of all detected flags across DNS, TLS, content, and headers.
+3. **Supporting Technical Evidence**: Concrete technical proof (e.g. 1024-bit RSA key modulus, raw HTTP response headers, nameserver IPs).
+4. **Source of Each Important Finding**: Explicit provenance attribution (`Live DNS Resolver 8.8.8.8`, `Google Argon CT Logs`, `URLhaus Abuse.ch`, `DOM Scraper`).
+5. **Analysis Timestamp**: ISO 8601 UTC timestamp documenting exact execution time.
+6. **Confidence or Evidence Coverage**: Quantitative coverage rating (e.g. `96.8% Coverage across 5 active layers`).
+7. **Recommended Actions**: Step-by-step containment steps, pre-click link safety advice, and national escalation helplines (1930 / cybercrime.gov.in).
+8. **Limitations and Unavailable Checks**: Explicit disclosure of passive reconnaissance constraints, inaccessible private server code, and WHOIS privacy masking.
+
+### ⚖️ The Critical Section 6 Security Axiom:
+> 🛡️ *"The system must not treat the absence of known threats as proof that a website is safe."*
+>
+> **Why this matters**: A freshly registered zero-day phishing domain will have zero entries on blocklists and may present a valid Let's Encrypt TLS certificate. Treating the lack of prior blacklisting as "proof" of absolute safety would lure users into a false sense of security. TrustMatrix labels clean targets as `Low Risk` (not "Safe"), accompanied by evidence coverage scores and explicit cautionary guidance.
+
+---
+
 ## 🚀 Quickstart Guide
 ```bash
 npm run dev
