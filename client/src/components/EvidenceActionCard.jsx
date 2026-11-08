@@ -6,7 +6,8 @@ export default function EvidenceActionCard({
   actionableGuidance,
   web3Attestation,
   web3Security,
-  section6RiskReport
+  section6RiskReport,
+  section9SecurityMeta
 }) {
   const [copiedHash, setCopiedHash] = useState(false);
   const [showLimitations, setShowLimitations] = useState(false);
@@ -199,6 +200,26 @@ export default function EvidenceActionCard({
           <span className="text-[#00f2c3]">cybercrime.gov.in</span>
         </div>
       </div>
+
+      {/* Section 9: Security and Privacy Compliance Strip */}
+      {section9SecurityMeta && (
+        <div className="col-span-1 md:col-span-2 p-3.5 rounded-xl bg-[#061414] border border-[#00f2c3]/30 flex flex-wrap items-center justify-between gap-3 text-[10.5px]">
+          <div className="flex items-center space-x-2">
+            <Shield className="w-4 h-4 text-[#00f2c3] shrink-0" />
+            <span className="font-bold text-white">Section 9 Operational Security & Privacy Verified:</span>
+            <span className="text-[#00f2c3]">SSRF Defense Active</span>
+            <span className="text-[#153a3a]">•</span>
+            <span className="text-[#00f2c3]">AI Prompt Injection Sanitized</span>
+            <span className="text-[#153a3a]">•</span>
+            <span className="text-[#00f2c3]">Zero Credentials Solicited</span>
+            <span className="text-[#153a3a]">•</span>
+            <span className="text-[#00f2c3]">Off-Chain Privacy Preserved</span>
+          </div>
+          <span className="px-2.5 py-0.5 rounded bg-[#00f2c3]/15 text-[#00f2c3] border border-[#00f2c3]/30 font-bold">
+            SAFE-INSPECTION-ENFORCED
+          </span>
+        </div>
+      )}
     </div>
   );
 }

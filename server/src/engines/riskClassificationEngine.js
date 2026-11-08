@@ -76,6 +76,8 @@ export function evaluateStandardRiskClassification({
   web3Security = {},
   collaborativeIntel = {},
   scamForensics = {},
+  aiSecurity = {},
+  privacyAudit = {},
   isUnreachable = false,
   insufficientData = false
 }) {
@@ -93,7 +95,8 @@ export function evaluateStandardRiskClassification({
     web3Security?.drainerDetected === true ||
     aiPhishing?.verdict === 'CONFIRMED_CREDENTIAL_HARVESTER' ||
     scamForensics?.indicators?.remoteAccessTools?.detected === true ||
-    scamForensics?.fraudStatus === 'VERIFIED_EVIDENCE_OF_FRAUD'
+    scamForensics?.fraudStatus === 'VERIFIED_EVIDENCE_OF_FRAUD' ||
+    aiSecurity?.promptInjectionDetected === true
   );
 
   const significantIndicatorsCount = [
@@ -106,7 +109,8 @@ export function evaluateStandardRiskClassification({
     dnsInfo?.signals?.length > 0,
     webSec?.grade === 'F',
     web3Security?.isWeb3Target === true && web3Security?.findings?.length > 0,
-    scamForensics?.indicators?.unusualPayments?.detected === true
+    scamForensics?.indicators?.unusualPayments?.detected === true,
+    aiSecurity?.promptInjectionDetected === true
   ].filter(Boolean).length;
 
   if (isUnreachable || insufficientData) {
@@ -223,6 +227,38 @@ export function evaluateStandardRiskClassification({
       indicator: finding,
       technicalEvidence: 'Detected keywords associated with AnyDesk remote desktop control',
       potentialImpact: 'Total victim device takeover and direct unauthorized banking transactions'
+    });
+  }
+
+  // Source: AI Security & Prompt Injection Guard (Section 9)
+  if (aiSecurity?.promptInjectionDetected) {
+    const finding = 'Adversarial Prompt Injection Attempt Detected';
+    threatIndicators.push(finding);
+    sourceOfFindings.push({
+      finding,
+      source: 'Section 9 AI Security Input Guard (Anti-Jailbreak / Prompt Neutralizer)',
+      timestamp: analysisTimestamp
+    });
+    supportingTechnicalEvidence.push({
+      indicator: finding,
+      technicalEvidence: aiSecurity.detectedInjections?.map(d => d.sample).join('; ') || 'Adversarial instruction patterns detected in untrusted payload',
+      potentialImpact: 'Attempted manipulation of automated threat scoring algorithms'
+    });
+  }
+
+  // Source: Privacy & Credential Interception (Section 9)
+  if (privacyAudit?.redactedCredentials?.length > 0) {
+    const finding = `Sensitive Credentials Intercepted and Redacted (${privacyAudit.redactedCredentials.length} item(s))`;
+    threatIndicators.push(finding);
+    sourceOfFindings.push({
+      finding,
+      source: 'Section 9 Privacy Credential Sanitizer (Zero-Knowledge Telemetry)',
+      timestamp: analysisTimestamp
+    });
+    supportingTechnicalEvidence.push({
+      indicator: finding,
+      technicalEvidence: `Scrubbed types: ${[...new Set(privacyAudit.redactedCredentials.map(r => r.type))].join(', ')}`,
+      potentialImpact: 'Prevented credential exposure, PCI-DSS leak, or on-chain disclosure'
     });
   }
 

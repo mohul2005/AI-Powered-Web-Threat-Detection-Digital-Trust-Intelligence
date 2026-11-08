@@ -208,6 +208,7 @@ export default function App() {
                 web3Attestation={scanResult.web3Attestation}
                 web3Security={scanResult.web3Security}
                 section6RiskReport={scanResult.section6RiskReport}
+                section9SecurityMeta={scanResult.section9SecurityMeta}
               />
             )}
 

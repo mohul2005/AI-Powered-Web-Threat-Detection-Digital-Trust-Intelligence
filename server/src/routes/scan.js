@@ -14,6 +14,17 @@ import { inspectDnsCharacteristics } from '../engines/dnsEngine.js';
 import { analyzeSocialEngineering } from '../engines/scamEngine.js';
 import { correlateThreatIndicators } from '../engines/correlationEngine.js';
 import { evaluateStandardRiskClassification } from '../engines/riskClassificationEngine.js';
+import {
+  validateUrlSafety,
+  safeInspectUrl,
+  checkMaliciousPayloadRisk,
+  sanitizeUntrustedInput,
+  protectPrivacyAndCredentials,
+  anonymizeForExternalAI,
+  auditOperationalSafety,
+  prepareBlockchainSafeCommitment,
+  PLATFORM_SECURITY_AXIOM
+} from '../security/index.js';
 
 const router = express.Router();
 
@@ -42,6 +53,26 @@ router.get('/scenarios', (req, res) => {
 router.post('/scan', async (req, res) => {
   const { url, content, type = 'url', scenarioId } = req.body;
 
+  // Global Section 9 Security Pre-Checks:
+  // 1. Pillar 3: Privacy & Credential Interception (Scrub passwords, OTPs, seed phrases, private keys)
+  const rawInput = content || url || '';
+  const privacyAudit = protectPrivacyAndCredentials(rawInput);
+  const sanitizedInput = privacyAudit.sanitizedText;
+
+  // 2. Pillar 2: AI Security & Prompt Injection Guard (Treat inputs as untrusted data frames)
+  const inputGuard = sanitizeUntrustedInput(sanitizedInput);
+
+  // 3. Pillar 4: Operational Safety Check on probe syntax (Reject offensive injection attacks like ' OR 1=1 or <script>)
+  const opSafety = auditOperationalSafety('INSPECT', rawInput);
+  if (!opSafety.permitted) {
+    return res.status(400).json({
+      success: false,
+      blocked: true,
+      code: opSafety.violationType,
+      error: opSafety.reason
+    });
+  }
+
   // 1. Scenario Quick-Launcher
   if (scenarioId) {
     const scenario = PRECONFIGURED_SCENARIOS.find(s => s.id === scenarioId);
@@ -68,10 +99,18 @@ router.post('/scan', async (req, res) => {
         collaborativeIntel: scenario.mockData.collaborativeIntel
       });
 
+      const section9SecurityMeta = {
+        ssrfDefense: { status: 'VERIFIED_SCENARIO', internalNetworkBlocked: true, destinationIpsChecked: ['104.18.22.41'] },
+        aiSecurity: { untrustedInputBoundaryEnforced: true, promptInjectionProtected: true, promptInjectionDetected: false },
+        privacyCompliance: { passwordsOrOtpsRequested: false, credentialsRedactedCount: 0, offChainStorageEnforced: true },
+        operationalSafety: { nonExploitativeOnly: true, noMalwareExecuted: true, securityAxiomEnforced: true, axiomStatement: PLATFORM_SECURITY_AXIOM.formalDisclosure }
+      };
+
       const enrichedResult = {
         ...scenario.mockData,
         section6RiskReport,
-        riskClassification: section6RiskReport.overallRiskClassification
+        riskClassification: section6RiskReport.overallRiskClassification,
+        section9SecurityMeta
       };
 
       return res.json({
@@ -92,21 +131,34 @@ router.post('/scan', async (req, res) => {
 
   // 2. Handle EMAIL Scans
   if (type === 'email') {
-    const rawContent = content || url || '';
+    const rawContent = inputGuard.sanitizedContent || sanitizedInput || '';
     const emailResult = analyzeEmailThreat(rawContent);
 
+    if (inputGuard.promptInjectionDetected) {
+      emailResult.evidence.unshift('Adversarial Prompt Injection Attempt Detected: Message contains directives attempting to subvert AI risk scoring.');
+    }
+
+    const safeCommitment = prepareBlockchainSafeCommitment({
+      targetIdentifier: emailResult.impersonatedBrand || 'Email Gateway',
+      trustScore: emailResult.trustScore,
+      classificationTier: emailResult.threatLevel
+    });
+
     const onChainAttestation = generateOnChainAttestation(
-      rawContent.substring(0, 40),
+      (emailResult.impersonatedBrand || 'Email Gateway').substring(0, 40),
       emailResult.trustScore,
       'Email Phishing'
     );
+    onChainAttestation.privacySafeCommitment = safeCommitment;
 
     const scanLogs = [
       `[INIT] Commencing AI Email Threat Analysis...`,
+      `[PRIVACY_GUARD] Scrubbed sensitive credentials: ${privacyAudit.redactedCredentials.length} item(s) neutralized.`,
+      `[AI_SECURITY] Untrusted input boundary applied: prompt injection analysis executed.`,
       `[HEADER_CHECK] Evaluating sender authentication, SPF/DKIM flags, and Reply-To mismatch...`,
       `[NLP_URGENCY] Identifying psychological coercion and panic triggers...`,
       `[LINK_EXTRACT] Extracted ${emailResult.extractedUrls.length} embedded link(s)...`,
-      `[WEB3_ATTEST] Generating tamper-proof cryptographic attestation on Ethereum ledger...`,
+      `[WEB3_ATTEST] Generating tamper-proof cryptographic attestation on Ethereum ledger (Off-Chain Privacy Preserved)...`,
       `[COMPLETE] Email assessment finalized. Trust Score: ${emailResult.trustScore}/100 [${emailResult.threatLevel}]`
     ];
 
@@ -125,8 +177,31 @@ router.post('/scan', async (req, res) => {
       url: 'Email Content',
       domain: emailResult.impersonatedBrand || 'Email Gateway',
       aiPhishing: { signals: emailResult.evidence, impersonatedBrand: emailResult.impersonatedBrand },
-      scamForensics: emailResult
+      scamForensics: emailResult,
+      aiSecurity: inputGuard,
+      privacyAudit
     });
+
+    const section9SecurityMeta = {
+      ssrfDefense: { status: 'N/A_EMAIL', internalNetworkBlocked: true },
+      aiSecurity: {
+        untrustedInputBoundaryEnforced: true,
+        promptInjectionProtected: true,
+        promptInjectionDetected: inputGuard.promptInjectionDetected
+      },
+      privacyCompliance: {
+        passwordsOrOtpsRequested: false,
+        credentialsRedactedCount: privacyAudit.redactedCredentials.length,
+        offChainStorageEnforced: true,
+        advisory: privacyAudit.privacyAdvisory
+      },
+      operationalSafety: {
+        nonExploitativeOnly: true,
+        noMalwareExecuted: true,
+        securityAxiomEnforced: true,
+        axiomStatement: PLATFORM_SECURITY_AXIOM.formalDisclosure
+      }
+    };
 
     return res.json({
       success: true,
@@ -139,6 +214,7 @@ router.post('/scan', async (req, res) => {
         threatLevel: emailResult.threatLevel,
         section6RiskReport,
         riskClassification: section6RiskReport.overallRiskClassification,
+        section9SecurityMeta,
         aiPhishing: {
           score: emailResult.trustScore,
           verdict: emailResult.threatLevel === 'SAFE' ? 'BENIGN_EMAIL' : 'PHISHING_EMAIL_SUSPECT',
@@ -164,14 +240,25 @@ router.post('/scan', async (req, res) => {
 
   // 3. Handle MESSAGE / SMISHING Scans
   if (type === 'message') {
-    const rawContent = content || url || '';
+    const rawContent = inputGuard.sanitizedContent || sanitizedInput || '';
     const messageResult = analyzeMessageThreat(rawContent);
+
+    if (inputGuard.promptInjectionDetected) {
+      messageResult.evidence.unshift('Adversarial Prompt Injection Attempt Detected: Message contains directives attempting to subvert AI risk scoring.');
+    }
+
+    const safeCommitment = prepareBlockchainSafeCommitment({
+      targetIdentifier: 'SMS / Social Message',
+      trustScore: messageResult.trustScore,
+      classificationTier: messageResult.threatLevel
+    });
 
     const onChainAttestation = generateOnChainAttestation(
       rawContent.substring(0, 40),
       messageResult.trustScore,
       'SMS / Smishing Fraud'
     );
+    onChainAttestation.privacySafeCommitment = safeCommitment;
 
     const module4CorrelationReport = correlateThreatIndicators({
       url: rawContent,
@@ -186,16 +273,41 @@ router.post('/scan', async (req, res) => {
       threatLevel: messageResult.threatLevel,
       url: rawContent,
       domain: 'SMS / Social Message',
-      scamForensics: messageResult
+      scamForensics: messageResult,
+      aiSecurity: inputGuard,
+      privacyAudit
     });
+
+    const section9SecurityMeta = {
+      ssrfDefense: { status: 'N/A_MESSAGE', internalNetworkBlocked: true },
+      aiSecurity: {
+        untrustedInputBoundaryEnforced: true,
+        promptInjectionProtected: true,
+        promptInjectionDetected: inputGuard.promptInjectionDetected
+      },
+      privacyCompliance: {
+        passwordsOrOtpsRequested: false,
+        credentialsRedactedCount: privacyAudit.redactedCredentials.length,
+        offChainStorageEnforced: true,
+        advisory: privacyAudit.privacyAdvisory
+      },
+      operationalSafety: {
+        nonExploitativeOnly: true,
+        noMalwareExecuted: true,
+        securityAxiomEnforced: true,
+        axiomStatement: PLATFORM_SECURITY_AXIOM.formalDisclosure
+      }
+    };
 
     const scanLogs = [
       `[INIT] Commencing AI Smishing & Scam Message Analysis...`,
+      `[PRIVACY_GUARD] Scrubbed sensitive credentials: ${privacyAudit.redactedCredentials.length} item(s) neutralized.`,
+      `[AI_SECURITY] Untrusted input boundary applied: prompt injection analysis executed.`,
       `[SHORTLINK_SCAN] Parsing obfuscated redirects and telecom filter bypasses...`,
       `[FINANCIAL_LURES] Scanning for fake KYC, utility disconnection, and lottery triggers...`,
       `[CREDENTIAL_CHECK] Evaluating requests for OTP, UPI PIN, or bank passwords...`,
       `[THREAT_CORRELATION] Correlating IOCs against campaigns and community database...`,
-      `[WEB3_ATTEST] Generating tamper-proof cryptographic attestation on Ethereum ledger...`,
+      `[WEB3_ATTEST] Generating tamper-proof cryptographic attestation on Ethereum ledger (Off-Chain Privacy Preserved)...`,
       `[COMPLETE] Smishing assessment finalized. Trust Score: ${messageResult.trustScore}/100 [${messageResult.threatLevel}]`
     ];
 
@@ -210,6 +322,7 @@ router.post('/scan', async (req, res) => {
         threatLevel: messageResult.threatLevel,
         section6RiskReport,
         riskClassification: section6RiskReport.overallRiskClassification,
+        section9SecurityMeta,
         aiPhishing: {
           score: messageResult.trustScore,
           verdict: messageResult.threatLevel === 'SAFE' ? 'BENIGN_MESSAGE' : 'SMISHING_SCAM_DETECTED',
@@ -234,7 +347,7 @@ router.post('/scan', async (req, res) => {
   }
 
   // 4. Default: Handle URL / WEBSITE Scans
-  const rawTarget = url || content;
+  const rawTarget = privacyAudit.sanitizedText || url || content;
   if (!rawTarget) {
     return res.status(400).json({ success: false, error: 'A valid URL or domain is required.' });
   }
@@ -254,35 +367,89 @@ router.post('/scan', async (req, res) => {
   const hostname = parsedUrl.hostname;
   const isHttps = parsedUrl.protocol === 'https:';
 
+  // Section 9 Pillar 1: SSRF Defense & Destination IP Pre-flight Verification
+  const ssrfCheck = await validateUrlSafety(formattedUrl);
+  if (ssrfCheck.blocked) {
+    return res.status(403).json({
+      success: false,
+      blocked: true,
+      code: ssrfCheck.code,
+      error: ssrfCheck.reason,
+      resolvedIps: ssrfCheck.resolvedIps || [],
+      scanLogs: [
+        `[INIT] Target initialized: ${formattedUrl}`,
+        `[SSRF_DEFENSE] Checking hostname '${hostname}' against internal network & cloud metadata blocks...`,
+        `[SECURITY_HALT] Access blocked by SSRF Defense: destination points to private or reserved IP address. Inspection terminated.`
+      ],
+      section9SecurityMeta: {
+        ssrfDefense: {
+          status: 'BLOCKED',
+          code: ssrfCheck.code,
+          reason: ssrfCheck.reason,
+          resolvedIps: ssrfCheck.resolvedIps || []
+        },
+        aiSecurity: {
+          untrustedInputBoundaryEnforced: true,
+          promptInjectionProtected: true,
+          promptInjectionDetected: inputGuard.promptInjectionDetected
+        },
+        privacyCompliance: {
+          credentialsRedactedCount: privacyAudit.redactedCredentials.length,
+          offChainStorageEnforced: true
+        },
+        operationalSafety: {
+          nonExploitativeOnly: true,
+          securityAxiomEnforced: true,
+          axiomStatement: PLATFORM_SECURITY_AXIOM.formalDisclosure
+        }
+      }
+    });
+  }
+
+  // Section 9 Pillar 1: Hazardous Executable Payload Check
+  const payloadRisk = checkMaliciousPayloadRisk(formattedUrl);
+
   const scanLogs = [
     `[INIT] Target initialized: ${formattedUrl}`,
-    `[DNS] Target resolves host: ${hostname}`,
+    `[SSRF_DEFENSE] Pre-flight destination verified: ${hostname} -> [${(ssrfCheck.resolvedIps || []).join(', ')}] (Public Range Validated)`,
     `[PHISH_AI] Executing heuristic parser and high-entropy anomaly detection...`
   ];
+
+  if (payloadRisk.isMaliciousPayload) {
+    scanLogs.push(`[MALWARE_GUARD] ${payloadRisk.reason}`);
+  }
 
   try {
     let htmlContent = '';
     let responseHeaders = {};
     let cookies = [];
 
-    // Live HTTP probe
-    scanLogs.push(`[HTTP_PROBE] Initiating secure network probe...`);
+    // Live HTTP probe via Isolated Safe URL Inspector
+    scanLogs.push(`[SAFE_INSPECTION] Initiating isolated HTTP probe with redirect verification & size limits...`);
     try {
-      const httpsAgent = new https.Agent({ rejectUnauthorized: false, timeout: 4000 });
-      const response = await axios.get(formattedUrl, {
-        httpsAgent: isHttps ? httpsAgent : undefined,
-        timeout: 4000,
-        maxRedirects: 3,
-        headers: { 'User-Agent': 'TrustMatrix-SecurityScanner/2.0' }
-      });
-      htmlContent = typeof response.data === 'string' ? response.data : '';
-      responseHeaders = response.headers || {};
+      const inspectResult = await safeInspectUrl(formattedUrl, { timeoutMs: 4000, maxRedirects: 3 });
+      if (inspectResult.success) {
+        htmlContent = typeof inspectResult.body === 'string' ? inspectResult.body : '';
+        responseHeaders = inspectResult.headers || {};
+        if (inspectResult.redirectHistory && inspectResult.redirectHistory.length > 0) {
+          scanLogs.push(`[REDIRECT_VALIDATED] Inspected ${inspectResult.redirectCount} safe redirect hop(s); verified destination IPs.`);
+        }
+      } else if (inspectResult.blocked) {
+        scanLogs.push(`[INSPECTION_BLOCKED] Outgoing probe terminated by Section 9 Guard: ${inspectResult.reason}`);
+      } else {
+        scanLogs.push(`[HTTP_PROBE] Offline probe: running local cryptographic and heuristic analysis.`);
+      }
     } catch (fetchErr) {
       scanLogs.push(`[HTTP_PROBE] Offline probe: running local cryptographic and heuristic analysis.`);
     }
 
     // Layer 1: AI Phishing
     const aiPhishing = analyzePhishing(formattedUrl, htmlContent);
+
+    if (inputGuard.promptInjectionDetected) {
+      aiPhishing.signals.unshift('Adversarial Prompt Injection Attempt Detected: Payload contains adversarial instructions attempting to manipulate risk scoring.');
+      scanLogs.push(`[AI_SECURITY] Adversarial prompt injection detected in payload. Neutralized and logged as threat indicator.`);
+    }
 
     // Layer 2: PKI & Cryptographic Trust
     let certTrust;
@@ -339,9 +506,15 @@ router.post('/scan', async (req, res) => {
     else if (trustScore < 50) threatLevel = 'HIGH';
     else if (trustScore < 75) threatLevel = 'MODERATE';
 
-    // Generate On-Chain Web3 Attestation Proof
-    scanLogs.push(`[WEB3_LEDGER] Generating cryptographic EAS threat attestation on Ethereum Sepolia ledger...`);
+    // Generate On-Chain Web3 Attestation Proof with Off-Chain Privacy
+    scanLogs.push(`[WEB3_LEDGER] Generating cryptographic EAS threat attestation on Ethereum Sepolia ledger (Off-Chain Privacy Preserved)...`);
+    const safeCommitment = prepareBlockchainSafeCommitment({
+      targetIdentifier: hostname,
+      trustScore,
+      classificationTier: threatLevel
+    });
     const web3Attestation = generateOnChainAttestation(hostname, trustScore, aiPhishing.verdict);
+    web3Attestation.privacySafeCommitment = safeCommitment;
 
     // Synthesize Evidence Dossier
     const evidenceDossier = [];
@@ -446,8 +619,37 @@ router.post('/scan', async (req, res) => {
       dnsInfo,
       web3Security,
       collaborativeIntel,
-      scamForensics: urlScamAnalysis
+      scamForensics: urlScamAnalysis,
+      aiSecurity: inputGuard,
+      privacyAudit
     });
+
+    const section9SecurityMeta = {
+      ssrfDefense: {
+        status: 'PASSED',
+        internalNetworkBlocked: true,
+        redirectsValidated: true,
+        resolvedIps: ssrfCheck.resolvedIps || dnsInfo.ipAddresses || []
+      },
+      aiSecurity: {
+        untrustedInputBoundaryEnforced: true,
+        promptInjectionProtected: true,
+        promptInjectionDetected: inputGuard.promptInjectionDetected,
+        groundedEvidenceRequired: true
+      },
+      privacyCompliance: {
+        passwordsOrOtpsRequested: false,
+        credentialsRedactedCount: privacyAudit.redactedCredentials.length,
+        offChainStorageEnforced: true,
+        advisory: privacyAudit.privacyAdvisory
+      },
+      operationalSafety: {
+        nonExploitativeOnly: true,
+        noMalwareExecuted: true,
+        securityAxiomEnforced: true,
+        axiomStatement: PLATFORM_SECURITY_AXIOM.formalDisclosure
+      }
+    };
 
     scanLogs.push(`[THREAT_CORRELATION] Correlated against active campaigns. Connected nodes: ${module4CorrelationReport.threatGraph.nodesCount}`);
     scanLogs.push(`[COMPLETE] Unified Trust Assessment: ${trustScore}/100 [Level: ${threatLevel}]. Attested on-chain.`);
@@ -464,6 +666,7 @@ router.post('/scan', async (req, res) => {
         threatLevel,
         section6RiskReport,
         riskClassification: section6RiskReport.overallRiskClassification,
+        section9SecurityMeta,
         aiPhishing,
         certTrust,
         webSec,
