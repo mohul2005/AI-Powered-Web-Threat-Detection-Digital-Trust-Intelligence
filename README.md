@@ -56,15 +56,56 @@ flowchart TD
 
 ---
 
-## ⚡ Pre-Configured Live Test Scenarios
+## ⚡ Pre-Configured Live Test Scenarios (Section A & Section B)
 
 | Scenario | Input Modality | Attack Vector | Detection Highlights |
 | :--- | :--- | :--- | :--- |
 | **1. eMudhra Rogue TLS Incident** | 🌐 URL | PKI Subversion & Weak Keys | 1024-bit RSA key, duplicate modulus collision alert, missing CT log SCTs, unverified CA. |
-| **2. Uniswap Web3 Wallet Drainer** | 🌐 URL (IPFS) | Web3 Crypto Scam | `Permit2` / `setApprovalForAll` signature drainer on decentralized `.eth.limo` gateway. |
-| **3. SBI Online Banking Phishing** | 🌐 URL | Credential Harvester | Typo-squatting domain (`.xyz`), cloned netbanking layout, SMS OTP & password exfiltration. |
-| **4. SBI YONO Suspension Smishing** | 💬 SMS Message | Mobile Telecom Fraud | Urgency panic trigger, obfuscated `bit.ly` redirect, unauthorized PAN KYC harvesting. |
-| **5. GitHub Enterprise Baseline** | 🌐 URL | Legitimate Trust Baseline | Hardened TLS 1.3, DigiCert EV trust chain, public CT log proofs, HSTS preload, strict CSP. |
+| **2. India Post / FedEx Customs Phish** | 🌐 URL | Parcel Delivery Scam | Claims detained parcel, open redirect parameter `?redirect=`, payment card CVV & PIN harvester. |
+| **3. NTA NEET-JEE Exam Admit Card Fraud** | 🌐 URL | Education Portal Phish | Fake admit card paywall, candidate roll number harvesting, unverified `.site` domain. |
+| **4. Parivahan e-Challan Traffic Fine** | 🌐 URL | Government Service Fraud | Threatens vehicle impoundment / arrest warrant in 48h, routes fines to fraudulent personal UPI IDs. |
+| **5. Instagram Copyright Appeal Phish** | 🌐 URL | Account Recovery Theft | Simulates 24h deletion notice, open redirect `?next=`, steals passwords and 2FA recovery backup codes. |
+| **6. Uniswap Web3 Wallet Drainer** | 🌐 URL (IPFS) | Web3 Crypto Scam | `Permit2` / `setApprovalForAll` signature drainer on decentralized `.eth.limo` gateway. |
+| **7. SBI Online Banking Phishing** | 🌐 URL | Credential Harvester | Typo-squatting domain (`.xyz`), cloned netbanking layout, SMS OTP & password exfiltration. |
+| **8. Google Careers Hiring Scam** | 🌐 URL | Recruitment Fraud | Offers remote role, demands upfront ₹2,500 security deposit, harvests applicant Aadhaar PII. |
+| **9. Shortened URL Open Redirect Chain** | 🌐 URL | Redirect Obfuscation | Multi-hop redirect (`bit.ly` &rarr; relay proxy &rarr; payload), evasive traffic distribution system. |
+| **10. SBI YONO Suspension Smishing** | 💬 SMS Message | Mobile Telecom Fraud | Urgency panic trigger, obfuscated `bit.ly` redirect, unauthorized PAN KYC harvesting. |
+| **11. GitHub Enterprise Baseline** | 🌐 URL | Legitimate Trust Baseline | Hardened TLS 1.3, DigiCert EV trust chain, public CT log proofs, HSTS preload, strict CSP. |
+
+---
+
+## 🔐 Section B: Website Certificates and Digital Trust Vulnerabilities
+
+### The Fundamental Fallacy: Why HTTPS $\ne$ Legitimate
+HTTPS is commonly perceived as an indication that a website is trustworthy. However, **HTTPS primarily provides an encrypted connection and certificate-based authentication. It does not guarantee that a website is legitimate or free from fraud.**
+Weaknesses in TLS certificates, certificate authorities, cryptographic implementations, and trust chains can introduce significant security risks.
+
+### Diagnostic Categorization: Ordinary Configuration Issues vs Compromised Trust Incidents
+
+TrustMatrix explicitly classifies every PKI inspection into two distinct diagnostic categories:
+
+```mermaid
+flowchart TD
+    Handshake[TLS Handshake & X.509 Extraction] --> Decision{Diagnostic Classification}
+    
+    Decision -->|Administrative / Host Configuration| CatA[Category 1: Ordinary Configuration Issues]
+    Decision -->|CA Subversion / Systemic Risk| CatB[Category 2: Compromised Cryptographic Trust Incidents]
+    
+    CatA --> A1[Expired or Not Yet Valid Timestamps]
+    CatA --> A2[Hostname & SAN Identity Mismatches]
+    CatA --> A3[Untrusted Local or Self-Signed Roots]
+    CatA --> A4[Missing Intermediate Chain Bundle]
+    CatA --> A5[Suboptimal RSA Key Size < 2048-bit]
+    
+    CatB --> B1[Known Compromised or Distrusted CAs: eMudhra, DigiNotar, WoSign]
+    CatB --> B2[Certificate Transparency CT Anomalies & Missing SCTs]
+    CatB --> B3[Unexpected Certificate Issuance on Protected High-Value Domains]
+    CatB --> B4[Revoked Roots & Intermediate Certificates CRL / OCSP]
+```
+
+### Forensic Principle: Handling eMudhra-like Incidents Truthfully
+* **How TrustMatrix Detects Compromised Trust**: In an eMudhra-like scenario, TrustMatrix identifies certificates linked to known compromised or distrusted certificate authorities using **trusted security intelligence** and **certificate chain information** (cross-referencing root program incident disclosures from the CA/Browser Forum, Mozilla, and Chromium).
+* **Engineering Integrity Mandate**: **TrustMatrix does NOT claim to independently detect the internal key-generation weakness (HSM/PRNG entropy failure) of a Certificate Authority merely from a website URL.** Rather, it evaluates public X.509 parameters, verifies key lengths, checks Certificate Transparency (CT) log proofs in Google Argon & Cloudflare Nimbus, and matches authority identifiers against authoritative root store blacklists.
 
 ---
 

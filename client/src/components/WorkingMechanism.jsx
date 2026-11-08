@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Lock, Cpu, Globe, Users, KeyRound, Layers, Blocks, Terminal } from 'lucide-react';
+import { Shield, Lock, Cpu, Globe, Users, KeyRound, Layers, Blocks, Terminal, AlertTriangle, AlertOctagon, CheckCircle2, Info } from 'lucide-react';
 
 export default function WorkingMechanism() {
   return (
@@ -40,7 +40,7 @@ export default function WorkingMechanism() {
           <span className="text-[11px] font-mono font-bold text-[#10b981] block uppercase tracking-wider">Pillar 2</span>
           <h3 className="font-bold text-white text-base">Cybersecurity & PKI</h3>
           <p className="text-xs text-[#80a4a2] leading-relaxed">
-            Real TLS socket negotiation, <strong>eMudhra-style weak key / duplicate modulus checks</strong>, Certificate Transparency (CT) log audits, and defensive HTTP security headers (HSTS, CSP).
+            Live TLS socket handshakes, Certificate Transparency (CT) log audits, defensive HTTP security headers (HSTS, CSP), and <strong>Section B PKI vulnerability distinction</strong>.
           </p>
         </div>
 
@@ -73,81 +73,127 @@ export default function WorkingMechanism() {
         </div>
       </div>
 
-      {/* 4 Deep-Dive Modules */}
-      <div className="space-y-4">
+      {/* Section B: Deep-Dive into Website Certificates & Digital Trust Vulnerabilities */}
+      <div className="p-6 rounded-2xl bg-[#0b2020] border border-[#00f2c3]/40 shadow-card-dark space-y-5">
+        <div className="flex items-center space-x-3">
+          <div className="p-2.5 rounded-xl bg-[#00f2c3]/15 border border-[#00f2c3]/40 text-[#00f2c3]">
+            <KeyRound className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <h3 className="font-bold text-white text-base">Section B: Website Certificates and Digital Trust Vulnerabilities</h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00f2c3]/20 text-[#00f2c3] border border-[#00f2c3]/40 font-bold">
+                PKI & CT Audit
+              </span>
+            </div>
+            <p className="text-xs text-[#80a4a2] font-mono">Why HTTPS is not a guarantee of legitimacy: Distinguishing Configuration Flaws from Compromised Trust</p>
+          </div>
+        </div>
+
+        {/* The Fundamental Premise */}
+        <div className="p-4 rounded-xl bg-[#061414] border border-[#153a3a] text-xs text-[#a1c4c2] leading-relaxed">
+          <p>
+            <strong className="text-white">The HTTPS Fallacy:</strong> HTTPS is commonly perceived as an indication that a website is trustworthy. However, HTTPS primarily provides an encrypted connection and certificate-based authentication. <em>It does not guarantee that a website is legitimate or free from fraud.</em> Weaknesses in TLS certificates, certificate authorities, cryptographic implementations, and trust chains can introduce significant security risks.
+          </p>
+        </div>
+
+        {/* The Two-Way Distinction Table */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+          {/* Category 1: Ordinary Config Problems */}
+          <div className="p-4 rounded-xl bg-[#061414] border border-[#f59e0b]/40 space-y-2">
+            <div className="flex items-center space-x-1.5 text-[#f59e0b] font-bold">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              <span>1. Ordinary Certificate Configuration Issues</span>
+            </div>
+            <p className="text-[11px] text-[#80a4a2] leading-relaxed">
+              Operational or administrative setup flaws that do not imply malicious root infrastructure compromise:
+            </p>
+            <ul className="text-[11px] text-[#a1c4c2] space-y-1 list-disc list-inside">
+              <li><strong>Expired or Not Yet Valid:</strong> Validity timestamp exceeded or in the future.</li>
+              <li><strong>Hostname & Identity Mismatch:</strong> Requested domain does not match certificate SANs or Common Name.</li>
+              <li><strong>Untrusted or Self-Signed Roots:</strong> Cert generated locally without trusted third-party root.</li>
+              <li><strong>Incorrect Certificate Chain:</strong> Missing intermediate CA bundle causing handshake breaks.</li>
+              <li><strong>Weak Cryptography / Key Size:</strong> Inadequate RSA key lengths (&lt; 2048-bit) or obsolete SHA-1/MD5 digests.</li>
+            </ul>
+          </div>
+
+          {/* Category 2: Compromised Cryptographic Trust */}
+          <div className="p-4 rounded-xl bg-[#061414] border border-[#f43f5e]/40 space-y-2">
+            <div className="flex items-center space-x-1.5 text-[#f43f5e] font-bold">
+              <AlertOctagon className="w-4 h-4 shrink-0" />
+              <span>2. Incidents Involving Compromised Trust</span>
+            </div>
+            <p className="text-[11px] text-[#80a4a2] leading-relaxed">
+              Systemic breaches of cryptographic trust requiring root authority revocation or sanctions:
+            </p>
+            <ul className="text-[11px] text-[#a1c4c2] space-y-1 list-disc list-inside">
+              <li><strong>Known Compromised / Distrusted CAs:</strong> Authorities under root program sanctions (eMudhra, DigiNotar, WoSign, StartCom, TrustCor).</li>
+              <li><strong>Certificate Transparency (CT) Anomalies:</strong> Missing public Signed Certificate Timestamps (SCTs) in Google Argon / Cloudflare Nimbus.</li>
+              <li><strong>Unexpected Certificate Issuance:</strong> Monitoring public CT logs when an unauthorized CA issues a certificate for a high-value protected domain.</li>
+              <li><strong>Revoked Certificates & Sub-CAs:</strong> OCSP / CRL revocation for compromised signing keys.</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* The eMudhra Scenario & Scientific Methodology Notice */}
+        <div className="p-4 rounded-xl bg-[#0e2727] border border-[#00f2c3]/40 space-y-2 text-xs font-mono">
+          <div className="flex items-center space-x-2 text-[#00f2c3] font-bold">
+            <Info className="w-4 h-4 shrink-0" />
+            <span>Forensic Methodology: Handling eMudhra-like Incidents Truthfully</span>
+          </div>
+          <p className="text-[#a1c4c2] text-[11px] leading-relaxed">
+            In an <strong>eMudhra-like scenario</strong>, the platform is capable of identifying certificates linked to known compromised or distrusted certificate authorities using <strong>trusted security intelligence</strong> and <strong>certificate chain information</strong> (cross-referencing root store disclosures, CRLs, and CA/B Forum audit alerts).
+          </p>
+          <div className="p-3 rounded-lg bg-[#061414] border border-[#163838] text-[11px] text-[#00f2c3] font-semibold">
+            ⚖️ <strong>Engineering Integrity Mandate:</strong> TrustMatrix does NOT claim to independently detect the internal key-generation weakness (HSM/RNG entropy failure) of a Certificate Authority merely from a website URL. Instead, it inspects the public X.509 parameters, verifies public key sizes, checks CT logs, and correlates issuer identifiers against published root-program threat disclosures.
+          </div>
+        </div>
+      </div>
+
+      {/* 3 Additional Operational Deep-Dives */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Module 1: AI Heuristics */}
-        <div className="p-6 rounded-2xl bg-[#0b2020] border border-[#174242] shadow-card-dark space-y-3">
+        <div className="p-5 rounded-2xl bg-[#0b2020] border border-[#174242] shadow-card-dark space-y-3">
           <div className="flex items-center space-x-3">
             <div className="p-2.5 rounded-xl bg-[#00f2c3]/10 border border-[#00f2c3]/30 text-[#00f2c3]">
               <Cpu className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-white text-base">1. AI Threat & Content Investigation</h3>
-              <p className="text-xs text-[#80a4a2] font-mono">Levenshtein distance, Punycode/IDN homoglyphs, and form scraping</p>
+              <h3 className="font-bold text-white text-sm">1. AI Threat & Content Investigation</h3>
+              <p className="text-[11px] text-[#80a4a2] font-mono">Levenshtein distance, Punycode homoglyphs, and form scraping</p>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-            <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1">
-              <span className="font-bold text-[#00f2c3] block">Brand Homoglyphs</span>
-              <p className="text-[#80a4a2]">Detects deceptive lookalike characters across Cyrillic and Greek alphabets.</p>
+          <div className="space-y-2 text-xs font-mono">
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="font-bold text-[#00f2c3] block mb-0.5">Brand Typosquatting</span>
+              <p className="text-[#80a4a2] text-[11px]">Computes edit distance against 150+ brands and flags Cyrillic/Greek deceptive homoglyphs.</p>
             </div>
-            <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1">
-              <span className="font-bold text-[#00f2c3] block">Email Header Forgery</span>
-              <p className="text-[#80a4a2]">Flags mismatched From vs Reply-To headers and urgent social engineering cues.</p>
-            </div>
-            <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1">
-              <span className="font-bold text-[#00f2c3] block">Smishing Shortlink Resolvers</span>
-              <p className="text-[#80a4a2]">Unpacks bit.ly/tinyurl obfuscations targeting mobile telecom banking users.</p>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="font-bold text-[#00f2c3] block mb-0.5">Credential Form Harvesting</span>
+              <p className="text-[#80a4a2] text-[11px]">Detects password, OTP, CVV, and PAN form fields communicating with external drop hosts.</p>
             </div>
           </div>
         </div>
 
-        {/* Module 2: The eMudhra PKI Incident */}
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0e2c2c] via-[#091f1f] to-[#071717] border border-[#00f2c3]/40 shadow-card-dark space-y-3">
-          <div className="flex items-center space-x-3">
-            <div className="p-2.5 rounded-xl bg-[#00f2c3]/15 border border-[#00f2c3]/40 text-[#00f2c3]">
-              <KeyRound className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <h3 className="font-bold text-white text-base">2. Cryptographic Validation & The eMudhra Incident</h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#f59e0b]/20 text-[#f59e0b] border border-[#f59e0b]/40 font-bold">
-                  PKI Integrity
-                </span>
-              </div>
-              <p className="text-xs text-[#80a4a2] font-mono">Why HTTPS green padlocks can lie: Defective entropy and rogue certificates</p>
-            </div>
-          </div>
-          <div className="p-4 rounded-xl bg-[#061414] border border-[#153a3a] text-xs text-[#a1c4c2] leading-relaxed space-y-2">
-            <p>
-              In the eMudhra incident, flaws in Certificate Authority key generation produced duplicate RSA moduli, allowing unauthorized certificates to be generated. TrustMatrix directly checks for <strong>RSA &ge; 2048-bit standards</strong>, scans for <strong>duplicate public key moduli</strong>, and verifies <strong>Certificate Transparency (CT) log proofs</strong> in Google Argon and Cloudflare Nimbus.
-            </p>
-          </div>
-        </div>
-
-        {/* Module 3: Web3 Security & On-Chain Ledger */}
-        <div className="p-6 rounded-2xl bg-[#0b2020] border border-[#174242] shadow-card-dark space-y-3">
+        {/* Module 2: Web3 Security & On-Chain Ledger */}
+        <div className="p-5 rounded-2xl bg-[#0b2020] border border-[#174242] shadow-card-dark space-y-3">
           <div className="flex items-center space-x-3">
             <div className="p-2.5 rounded-xl bg-[#2dd4bf]/15 border border-[#2dd4bf]/30 text-[#2dd4bf]">
               <Blocks className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-white text-base">3. Web3 Threat Vectors & Decentralized Trust Ledger</h3>
-              <p className="text-xs text-[#80a4a2] font-mono">Malicious Permit2 drainer detection and immutable smart contract attestations</p>
+              <h3 className="font-bold text-white text-sm">2. Web3 Threat Vectors & Decentralized Ledger</h3>
+              <p className="text-[11px] text-[#80a4a2] font-mono">Permit2 drainer detection and smart contract attestations</p>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-            <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1">
-              <span className="font-bold text-[#2dd4bf] block">Wallet Drainer Signatures</span>
-              <p className="text-[#80a4a2]">
-                Identifies deceptive <code>setApprovalForAll</code> and <code>Permit2</code> signature requests trying to siphon tokens and NFTs.
-              </p>
+          <div className="space-y-2 text-xs font-mono">
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="font-bold text-[#2dd4bf] block mb-0.5">Wallet Drainer Signatures</span>
+              <p className="text-[#80a4a2] text-[11px]">Flags deceptive <code>setApprovalForAll</code> and <code>Permit2</code> signatures draining tokens.</p>
             </div>
-            <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1">
-              <span className="font-bold text-[#2dd4bf] block">On-Chain Smart Contract Ledger</span>
-              <p className="text-[#80a4a2]">
-                Every verified assessment is cryptographically hashed and recorded on our Ethereum/Polygon Sepolia smart contract (<code>TrustMatrixRegistry.sol</code>).
-              </p>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="font-bold text-[#2dd4bf] block mb-0.5">Immutable EAS Smart Contract</span>
+              <p className="text-[#80a4a2] text-[11px]">Attestations anchored on Ethereum Sepolia / Polygon POS (<code>TrustMatrixRegistry.sol</code>).</p>
             </div>
           </div>
         </div>
