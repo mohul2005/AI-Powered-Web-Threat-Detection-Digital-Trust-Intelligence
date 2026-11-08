@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2, Binary } from 'lucide-react';
+import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2, Binary, Award } from 'lucide-react';
 
 export default function Header({
   onOpenReportModal,
@@ -65,6 +65,18 @@ export default function Header({
           >
             <BookOpen className="w-3.5 h-3.5" />
             <span>Working Mechanism</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('deliverables')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
+              activeTab === 'deliverables'
+                ? 'bg-[#00f2c3] text-[#051715] shadow-neon-sm font-bold'
+                : 'text-[#85a8a6] hover:text-white'
+            }`}
+          >
+            <Award className="w-3.5 h-3.5" />
+            <span>Expected Deliverables</span>
           </button>
 
           <button

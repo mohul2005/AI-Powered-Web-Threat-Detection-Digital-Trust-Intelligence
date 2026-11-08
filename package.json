@@ -4,7 +4,9 @@
   "scripts": {
     "server": "node server/src/index.js",
     "client": "npm --prefix client run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm --prefix client run build",
+    "test": "node server/test-section10-deliverables.js"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

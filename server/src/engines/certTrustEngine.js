@@ -289,6 +289,41 @@ export function analyzeCertificate(certData, hostname) {
     statusSummary = `SUSPICIOUS CONFIGURATION: The TLS certificate contains administrative or operational deficiencies (${signals[0] || 'Hostname mismatch or expiration'}).`;
   }
 
+  let verdict = 'TRUSTED_ENTERPRISE_CERTIFICATE';
+  if (score < 20) {
+    verdict = 'COMPROMISED_CA_OR_WEAK_CRYPTO';
+  } else if (score < 50) {
+    verdict = 'UNTRUSTED_OR_DEFICIENT_PKI';
+  } else if (score < 80) {
+    verdict = 'STANDARD_DOMAIN_VALIDATED';
+  }
+
+  // Construct Chain Hierarchy
+  const chain = [];
+  if (cert.issuerCertificate && cert.issuerCertificate !== cert) {
+    chain.push({
+      name: `Root CA: ${cert.issuerCertificate.issuer ? cert.issuerCertificate.issuer.O || cert.issuerCertificate.issuer.CN : 'Root Authority'}`,
+      valid: score > 30,
+      status: isCompromisedTrustIncident ? 'Incident Flagged' : (score > 30 ? 'Trusted Root' : 'Untrusted')
+    });
+    chain.push({
+      name: `Intermediate: ${issuerCN}`,
+      valid: score > 30,
+      status: caTrustIncidentDetails ? 'Distrusted Intermediate' : 'Active Intermediate'
+    });
+  } else {
+    chain.push({
+      name: `CA Issuer: ${issuerCN}`,
+      valid: score > 30,
+      status: isSelfSigned ? 'Self-Signed (Untrusted)' : (isCompromisedTrustIncident ? 'Distrusted CA' : 'Standard CA')
+    });
+  }
+  chain.push({
+    name: `Leaf Cert: ${subjectCN}`,
+    valid: score > 30 && !isExpired && hostnameMatch.matches,
+    status: isExpired ? 'Expired' : (!hostnameMatch.matches ? 'Hostname Mismatch' : (keySize < 2048 ? 'Deficient Key' : 'Valid'))
+  });
+
   // Formal Module 2: TLS Certificate and Web Trust Security Report
   const module2CertificateReport = {
     tlsConfigurationStatus, // 'VALID' | 'SUSPICIOUS' | 'POTENTIALLY_COMPROMISED'
@@ -337,41 +372,6 @@ export function analyzeCertificate(certData, hostname) {
       }
     }
   };
-
-  let verdict = 'TRUSTED_ENTERPRISE_CERTIFICATE';
-  if (score < 20) {
-    verdict = 'COMPROMISED_CA_OR_WEAK_CRYPTO';
-  } else if (score < 50) {
-    verdict = 'UNTRUSTED_OR_DEFICIENT_PKI';
-  } else if (score < 80) {
-    verdict = 'STANDARD_DOMAIN_VALIDATED';
-  }
-
-  // Construct Chain Hierarchy
-  const chain = [];
-  if (cert.issuerCertificate && cert.issuerCertificate !== cert) {
-    chain.push({
-      name: `Root CA: ${cert.issuerCertificate.issuer ? cert.issuerCertificate.issuer.O || cert.issuerCertificate.issuer.CN : 'Root Authority'}`,
-      valid: score > 30,
-      status: isCompromisedTrustIncident ? 'Incident Flagged' : (score > 30 ? 'Trusted Root' : 'Untrusted')
-    });
-    chain.push({
-      name: `Intermediate: ${issuerCN}`,
-      valid: score > 30,
-      status: caTrustIncidentDetails ? 'Distrusted Intermediate' : 'Active Intermediate'
-    });
-  } else {
-    chain.push({
-      name: `CA Issuer: ${issuerCN}`,
-      valid: score > 30,
-      status: isSelfSigned ? 'Self-Signed (Untrusted)' : (isCompromisedTrustIncident ? 'Distrusted CA' : 'Standard CA')
-    });
-  }
-  chain.push({
-    name: `Leaf Cert: ${subjectCN}`,
-    valid: score > 30 && !isExpired && hostnameMatch.matches,
-    status: isExpired ? 'Expired' : (!hostnameMatch.matches ? 'Hostname Mismatch' : (keySize < 2048 ? 'Deficient Key' : 'Valid'))
-  });
 
   return {
     score,

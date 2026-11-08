@@ -16,6 +16,7 @@ import WorkingMechanism from './components/WorkingMechanism.jsx';
 import ValidationLab from './components/ValidationLab.jsx';
 import ReportModal from './components/ReportModal.jsx';
 import WorkflowStepper from './components/WorkflowStepper.jsx';
+import DeliverablesHub from './components/DeliverablesHub.jsx';
 import MatrixRain from './components/MatrixRain.jsx';
 import { Download, ChevronDown, ChevronUp, Terminal } from 'lucide-react';
 
@@ -303,6 +304,14 @@ export default function App() {
         {/* TAB 2: WORKING MECHANISM */}
         {activeTab === 'mechanism' && (
           <WorkingMechanism />
+        )}
+
+        {/* TAB 2.5: EXPECTED DELIVERABLES & VERIFICATION HUB */}
+        {activeTab === 'deliverables' && (
+          <DeliverablesHub
+            onSelectScenario={triggerScenario}
+            setActiveTab={setActiveTab}
+          />
         )}
 
         {/* TAB 3: VALIDATION & BENCHMARK LAB */}
