@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # 1. Full-Stack TrustMatrix Application
+  trustmatrix-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trustmatrix-nexus
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - REDIS_URL=redis://trustmatrix-redis:6379
+      - DATABASE_URL=postgresql://trustuser:trustpass@trustmatrix-postgres:5432/trustmatrix_db
+    depends_on:
+      - trustmatrix-redis
+      - trustmatrix-postgres
+    networks:
+      - trustmatrix-net
+
+  # 2. Redis Caching Layer
+  trustmatrix-redis:
+    image: redis:7-alpine
+    container_name: trustmatrix-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - trustmatrix-net
+
+  # 3. PostgreSQL Database
+  trustmatrix-postgres:
+    image: postgres:16-alpine
+    container_name: trustmatrix-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: trustuser
+      POSTGRES_PASSWORD: trustpass
+      POSTGRES_DB: trustmatrix_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./server/src/db/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - trustmatrix-net
+
+volumes:
+  redis-data:
+  pg-data:
+
+networks:
+  trustmatrix-net:
+    driver: bridge

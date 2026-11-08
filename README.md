@@ -443,6 +443,24 @@ TrustMatrix AI enforces a strict, deterministic 5-tier classification mechanism 
 
 ---
 
+## 🛠️ 8. Technology Stack Alignment
+
+TrustMatrix AI Nexus comprehensively implements the suggested technologies across all 9 architectural domains:
+
+| Domain | Suggested Technologies (HackMatrix) | TrustMatrix Live Implementation |
+| :--- | :--- | :--- |
+| **AI** | LLMs, NLP, machine learning, anomaly detection, RAG | Gemini LLM integration, Levenshtein distance, Shannon entropy anomaly detector, Jaccard similarity, and vector-curated RAG over MITRE ATT&CK techniques (`aiRagEngine.js`). |
+| **URL Intelligence** | Google Safe Browsing, URLhaus, PhishTank, OpenPhish, VirusTotal | Unified multi-feed cross-verification engine querying Google Safe Browsing v4, URLhaus, PhishTank, OpenPhish, VirusTotal (72 engines), and Spamhaus DBL (`intelVerificationEngine.js`). |
+| **Web Security** | Python SSL libraries, OpenSSL, DNS analysis, HTTP security-header inspection | Node `dns/promises` live resolver, Python OpenSSL companion inspector (`server/scripts/ssl_inspector.py`), passive HTTP defensive header auditing (HSTS, CSP, X-Frame-Options, cookie flags in `webSecEngine.js`). |
+| **Certificate Intelligence** | Certificate Transparency logs, crt.sh, public CA trust information | Direct X.509 socket parsing, crt.sh query integration, CT log SCT validation (Google Argon / Cloudflare Nimbus), and eMudhra audit failure duplicate key modulus detection (`certTrustEngine.js`). |
+| **Blockchain** | Solidity, EVM-compatible networks, smart contracts | `TrustMatrixRegistry.sol` (Solidity ^0.8.20) deployed on Ethereum Sepolia / Polygon EVM, EAS attestation standard, 32-byte SHA-256 report commitments, IPFS CIDs, dispute tracking, and on-chain verification. |
+| **Backend** | Python, FastAPI, Node.js | Modular Node.js / Express backend with ES modules, coupled with Python SSL & cryptographic analysis scripts. |
+| **Frontend** | React, Next.js, TypeScript | Modern React + Vite frontend styled with Tailwind CSS, Lucide icons, live canvas Matrix rain animation, and responsive Sentinel Nexus dark emerald palette. |
+| **Database** | PostgreSQL, MongoDB, Redis | High-performance PostgreSQL relational schema (`schema.sql`), MongoDB Mongoose schemas for STIX 2.1 bundles (`mongoSchema.js`), and Redis caching layer (`redisCache.js`) for DNS & threat intelligence. |
+| **Infrastructure** | Docker, cloud hosting | Multi-stage production `Dockerfile` (Node.js runtime + Python tools) and `docker-compose.yml` orchestrating App, Redis, and PostgreSQL for 1-click containerized deployment. |
+
+---
+
 ## 🚀 Quickstart Guide
 ```bash
 npm run dev

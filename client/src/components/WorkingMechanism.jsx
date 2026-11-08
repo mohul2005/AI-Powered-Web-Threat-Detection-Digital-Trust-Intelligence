@@ -767,6 +767,98 @@ export default function WorkingMechanism() {
           </p>
         </div>
       </div>
+
+      {/* Section 8: Suggested Technology Stack Alignment Card */}
+      <div className="p-6 rounded-2xl bg-[#0b2020] border border-[#00f2c3]/40 shadow-card-dark space-y-5">
+        <div className="flex items-center space-x-3">
+          <div className="p-2.5 rounded-xl bg-[#00f2c3]/15 border border-[#00f2c3]/40 text-[#00f2c3]">
+            <Terminal className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <h3 className="font-bold text-white text-base">Section 8: Technology Stack Alignment</h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00f2c3]/20 text-[#00f2c3] border border-[#00f2c3]/40 font-bold">
+                9 Enterprise Domains
+              </span>
+            </div>
+            <p className="text-xs text-[#80a4a2] font-mono">Comprehensive implementation across AI, Cyber, Web3, Databases & Infrastructure</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs">
+          <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1.5">
+            <span className="text-[#00f2c3] font-bold block text-[11px]">1. AI & Machine Learning</span>
+            <span className="text-[10px] text-[#5c8280] block">LLMs • NLP • RAG • Anomaly Detection</span>
+            <p className="text-[10px] text-[#a1c4c2] leading-relaxed">
+              Gemini LLM integration, Levenshtein distance, Shannon entropy scoring, and vector RAG over MITRE ATT&CK techniques.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1.5">
+            <span className="text-[#00f2c3] font-bold block text-[11px]">2. URL Intelligence</span>
+            <span className="text-[10px] text-[#5c8280] block">Safe Browsing • URLhaus • PhishTank • VirusTotal</span>
+            <p className="text-[10px] text-[#a1c4c2] leading-relaxed">
+              Consensus engine cross-referencing Google Safe Browsing v4, URLhaus, PhishTank, OpenPhish, and VirusTotal 72-engine scans.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1.5">
+            <span className="text-[#00f2c3] font-bold block text-[11px]">3. Web Security</span>
+            <span className="text-[10px] text-[#5c8280] block">Python SSL • OpenSSL • DNS • HTTP Headers</span>
+            <p className="text-[10px] text-[#a1c4c2] leading-relaxed">
+              Live DNS A/AAAA resolver, Python OpenSSL companion script, and passive HTTP header auditing (HSTS, CSP, X-Frame-Options).
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1.5">
+            <span className="text-[#2dd4bf] font-bold block text-[11px]">4. Certificate Intelligence</span>
+            <span className="text-[10px] text-[#5c8280] block">CT Logs • crt.sh • Public CA Trust</span>
+            <p className="text-[10px] text-[#a1c4c2] leading-relaxed">
+              Raw X.509 socket parsing, crt.sh monitor, Signed Certificate Timestamp (SCT) audits, and eMudhra duplicate key modulus detection.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1.5">
+            <span className="text-[#2dd4bf] font-bold block text-[11px]">5. Blockchain Ledger</span>
+            <span className="text-[10px] text-[#5c8280] block">Solidity • EVM Networks • Smart Contracts</span>
+            <p className="text-[10px] text-[#a1c4c2] leading-relaxed">
+              <code>TrustMatrixRegistry.sol</code> on Ethereum Sepolia / Polygon EVM, SHA-256 report commitments, and dispute tracking.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1.5">
+            <span className="text-[#2dd4bf] font-bold block text-[11px]">6. Backend & APIs</span>
+            <span className="text-[10px] text-[#5c8280] block">Node.js • Express • Python Microservices</span>
+            <p className="text-[10px] text-[#a1c4c2] leading-relaxed">
+              Modular REST API backend with live socket inspection, async promise pipelines, and Python cryptographic utilities.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1.5">
+            <span className="text-[#10b981] font-bold block text-[11px]">7. Frontend Architecture</span>
+            <span className="text-[10px] text-[#5c8280] block">React • Vite • Tailwind • Canvas Rain</span>
+            <p className="text-[10px] text-[#a1c4c2] leading-relaxed">
+              Responsive Sentinel Nexus dark emerald theme with real-time multi-modal scanner and interactive threat graph visualization.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1.5">
+            <span className="text-[#10b981] font-bold block text-[11px]">8. Database Persistence</span>
+            <span className="text-[10px] text-[#5c8280] block">PostgreSQL • MongoDB • Redis</span>
+            <p className="text-[10px] text-[#a1c4c2] leading-relaxed">
+              PostgreSQL relational schema (<code>schema.sql</code>), MongoDB STIX 2.1 schemas (<code>mongoSchema.js</code>), and Redis cache.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] space-y-1.5">
+            <span className="text-[#10b981] font-bold block text-[11px]">9. Infrastructure & Cloud</span>
+            <span className="text-[10px] text-[#5c8280] block">Docker • Multi-Stage Build • Compose</span>
+            <p className="text-[10px] text-[#a1c4c2] leading-relaxed">
+              Multi-stage production <code>Dockerfile</code> and <code>docker-compose.yml</code> orchestrating App, Redis, and PostgreSQL containers.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
