@@ -276,11 +276,67 @@ export function analyzeCertificate(certData, hostname) {
 
   // Determine Categorization (Ordinary Config Issue vs Compromised Trust Incident)
   let anomalyClassification = 'AUTHENTIC_AND_CRYPTOGRAPHICALLY_SOUND';
+  let tlsConfigurationStatus = 'VALID'; // VALID | SUSPICIOUS | POTENTIALLY_COMPROMISED
+  let statusSummary = 'The website TLS certificate configuration is cryptographically sound, issued by a recognized certificate authority, and verified against public Certificate Transparency logs.';
+
   if (isCompromisedTrustIncident) {
     anomalyClassification = 'COMPROMISED_CRYPTOGRAPHIC_TRUST_INCIDENT';
+    tlsConfigurationStatus = 'POTENTIALLY_COMPROMISED';
+    statusSummary = `POTENTIALLY COMPROMISED: Certificate linked to compromised, distrusted, or anomalous CA infrastructure (${caTrustIncidentDetails ? caTrustIncidentDetails.incidentName : 'Unexpected CT Issuance'}). Cryptographic trust cannot be assured.`;
   } else if (isOrdinaryConfigIssue || score < 70) {
     anomalyClassification = 'ORDINARY_CERTIFICATE_CONFIG_ISSUE';
+    tlsConfigurationStatus = 'SUSPICIOUS';
+    statusSummary = `SUSPICIOUS CONFIGURATION: The TLS certificate contains administrative or operational deficiencies (${signals[0] || 'Hostname mismatch or expiration'}).`;
   }
+
+  // Formal Module 2: TLS Certificate and Web Trust Security Report
+  const module2CertificateReport = {
+    tlsConfigurationStatus, // 'VALID' | 'SUSPICIOUS' | 'POTENTIALLY_COMPROMISED'
+    statusSummary,
+    securityAxiom: 'A valid TLS certificate must never be treated as proof that the website itself is safe.',
+    checks: {
+      validityAndExpiration: {
+        status: isExpired ? 'EXPIRED' : (isNotYetValid ? 'NOT_YET_VALID' : 'VALID'),
+        validFrom: validFrom ? validFrom.toISOString() : null,
+        validTo: validTo ? validTo.toISOString() : null,
+        daysRemaining
+      },
+      domainIdentityAndSan: {
+        verified: hostnameMatch.matches,
+        requestedHost: hostname,
+        commonName: hostnameMatch.commonName,
+        sanList: hostnameMatch.sanList,
+        details: hostnameMatch.details
+      },
+      issuingCaAndChain: {
+        issuerCommonName: issuerCN,
+        issuerOrganization: issuerO,
+        chainDepth: chain.length,
+        hierarchy: chain
+      },
+      revocationAndDistrust: {
+        isRevokedOrDistrusted: isCompromisedTrustIncident,
+        source: isCompromisedTrustIncident ? 'Root Program Distrust Catalog & CA/B Forum Disclosures' : 'Clean Root Store State'
+      },
+      publicKeyAndSignature: {
+        algorithm,
+        keySize,
+        isAdequate: (algorithm === 'RSA' ? keySize >= 2048 : keySize >= 256),
+        fingerprint256
+      },
+      certificateTransparency: {
+        present: hasSCTs,
+        verifiedSCTs: hasSCTs ? 2 : 0,
+        status: ctStatus,
+        hasAnomalies: isUnexpectedIssuance,
+        anomalyDetails: unexpectedIssuanceDetails
+      },
+      compromisedCaIndicators: {
+        hasCompromisedCaMatch: isCompromisedTrustIncident,
+        incidentDetails: caTrustIncidentDetails
+      }
+    }
+  };
 
   let verdict = 'TRUSTED_ENTERPRISE_CERTIFICATE';
   if (score < 20) {
@@ -321,6 +377,9 @@ export function analyzeCertificate(certData, hostname) {
     score,
     verdict,
     anomalyClassification,
+    tlsConfigurationStatus,
+    statusSummary,
+    module2CertificateReport,
     issuer: {
       commonName: issuerCN,
       organization: issuerO,

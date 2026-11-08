@@ -108,11 +108,25 @@ flowchart LR
 
 ---
 
-## 🔐 Section B: Website Certificates and Digital Trust Vulnerabilities
+## 🔐 Module 2: TLS Certificate and Web Trust Analysis
 
-### The Fundamental Fallacy: Why HTTPS $\ne$ Legitimate
-HTTPS is commonly perceived as an indication that a website is trustworthy. However, **HTTPS primarily provides an encrypted connection and certificate-based authentication. It does not guarantee that a website is legitimate or free from fraud.**
-Weaknesses in TLS certificates, certificate authorities, cryptographic implementations, and trust chains can introduce significant security risks.
+When any URL is submitted, the platform conducts deep HTTPS inspection and certificate forensic evaluation across 7 distinct checks.
+
+### The 7 Core TLS Checks:
+1. **Certificate Validity & Expiration**: Audits `validFrom` and `validTo` timestamps, remaining lifespan, and detects expired or not-yet-active certificates.
+2. **Domain Identity & Subject Alternative Name (SAN) Verification**: Matches requested hostname against Common Name (`CN`) and Subject Alternative Name (`SAN`) entries.
+3. **Issuing Certificate Authority & Chain Hierarchy**: Traverses the complete X.509 certificate chain from root CA to intermediate sub-CAs down to the leaf certificate.
+4. **Certificate Revocation & Distrust Intelligence**: Checks revocation status (CRL / OCSP) and compares issuers against authoritative root store blacklists.
+5. **Public Key Strength & Signature Algorithms**: Enforces modern cryptographic standards ($\ge 2048$-bit RSA, $\ge 256$-bit ECDSA) and flags weak keys or obsolete SHA-1/MD5 digests.
+6. **Certificate Transparency (CT) Records**: Audits public CT logs (Google Argon, Cloudflare Nimbus) and Signed Certificate Timestamps (SCTs) to identify rogue issuances.
+7. **Known Compromised CA & Intermediate Indicators**: Detects certificates originating from sanctioned or compromised authorities (**eMudhra audit failure**, DigiNotar, WoSign, StartCom, TrustCor).
+
+### Certificate Security Report (3-Tier Classification):
+* 🟢 **VALID**: Cryptographically sound, verified root anchor, adequate 2048+ bit key length, and verified CT log proofs.
+* 🟡 **SUSPICIOUS**: Ordinary administrative flaws (expired validity, hostname mismatch, missing intermediate chain, or self-signed root).
+* 🔴 **POTENTIALLY COMPROMISED**: Systemic trust breach (known distrusted CA, eMudhra audit failure, duplicate key modulus, or rogue CT log anomaly).
+
+> ⚠️ **The Fundamental Security Axiom**: *A valid TLS certificate must never be treated as proof that the website itself is safe from fraud.*
 
 ### Diagnostic Categorization: Ordinary Configuration Issues vs Compromised Trust Incidents
 
