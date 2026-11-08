@@ -354,6 +354,64 @@ export default function WorkingMechanism() {
           </div>
         </div>
       </div>
+
+      {/* Module 5: Website Security Assessment Architecture */}
+      <div className="p-6 rounded-2xl bg-[#0b2020] border border-[#2dd4bf]/40 shadow-card-dark space-y-4">
+        <div className="flex items-center space-x-3">
+          <div className="p-2.5 rounded-xl bg-[#2dd4bf]/15 border border-[#2dd4bf]/40 text-[#2dd4bf]">
+            <Shield className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <h3 className="font-bold text-white text-base">Module 5: Website Security Assessment</h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#2dd4bf]/20 text-[#2dd4bf] border border-[#2dd4bf]/40 font-bold">
+                Non-Exploitative Auditing
+              </span>
+            </div>
+            <p className="text-xs text-[#80a4a2] font-mono">Passive inspection of publicly available security information and configuration weaknesses</p>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl bg-[#061414] border border-[#153a3a] text-xs text-[#a1c4c2] leading-relaxed space-y-2 font-mono">
+          <p>
+            <strong className="text-white">Publicly Accessible Security Assessment:</strong> The platform inspects publicly available configuration metadata (HTTP response headers, DNS records, cookie attributes, and TLS handshakes) to identify defensive posture gaps without attempting active exploitation.
+          </p>
+          <div className="p-3 rounded-lg bg-[#0e2727] border border-[#2dd4bf]/30 text-[11px] text-[#2dd4bf]">
+            ⚖️ <strong>Ethical Scope & Authorization Mandate:</strong> <em>"The platform should inspect publicly available security information and report configuration weaknesses without attempting exploitation. Any active testing must be restricted to explicitly authorised targets."</em>
+          </div>
+        </div>
+
+        {/* 6 Standardized Deliverables for Each Finding */}
+        <div className="space-y-2 text-xs font-mono">
+          <span className="text-white font-bold block">Standardized 6-Element Finding Architecture:</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">1. Identified Security Issue</span>
+              <span className="text-[10px] text-[#80a4a2]">Precise vulnerability classification (e.g. Missing HSTS, Permissive CSP, Leaked Server Banner).</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">2. Technical Evidence</span>
+              <span className="text-[10px] text-[#80a4a2]">Exact raw headers, cookie attributes, or DNS TXT values extracted during passive inspection.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">3. Potential Attack Impact</span>
+              <span className="text-[10px] text-[#80a4a2]">Real-world threat consequences (e.g. Man-in-the-Middle SSL-stripping, XSS injection, Clickjacking).</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">4. Severity Classification</span>
+              <span className="text-[10px] text-[#80a4a2]">NIST/OWASP-aligned severity tiers: CRITICAL, HIGH, MEDIUM, LOW, or INFORMATIONAL.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">5. Recommended Remediation</span>
+              <span className="text-[10px] text-[#80a4a2]">Production-ready configuration directives for Nginx, Apache, Express, and Cloudflare.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">6. Scope Limitations</span>
+              <span className="text-[10px] text-[#80a4a2]">Explicit acknowledgment of passive boundary constraints and non-exploitative guarantees.</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

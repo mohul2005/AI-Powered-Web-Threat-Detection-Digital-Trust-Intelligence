@@ -266,7 +266,56 @@ flowchart TD
 
 ---
 
-### 1. Run Full-Stack System
+## 🛡️ Module 5: Website Security Assessment
+
+TrustMatrix delivers non-exploitative security assessments for publicly accessible websites, analyzing publicly visible configuration metadata without attempting unauthorized intrusion.
+
+### The Standardized 6-Element Architecture for Every Finding
+Each reported security weakness rigorously produces all 6 mandated deliverables:
+1. **Identified Security Issue**: Specific configuration defect or missing security header.
+2. **Technical Evidence**: Exact raw headers, cookie flags, or DNS records extracted during passive inspection.
+3. **Potential Impact**: Attack vectors enabled if the weakness remains unaddressed (e.g. MitM SSL-stripping, XSS injection, Clickjacking, session hijacking).
+4. **Severity Classification**: Standardized risk grading (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`, or `INFORMATIONAL`).
+5. **Recommended Remediation**: Production-ready configuration directives for Nginx, Apache, Node.js Helmet, and Cloudflare.
+6. **Relevant Limitations**: Scope boundaries acknowledging passive reconnaissance constraints.
+
+```mermaid
+flowchart LR
+    Target[Publicly Accessible Website] --> PassiveScan[Passive Security Metadata Inspection]
+    
+    PassiveScan --> H1[Strict-Transport-Security HSTS]
+    PassiveScan --> H2[Content-Security-Policy CSP]
+    PassiveScan --> H3[X-Frame-Options & Framing]
+    PassiveScan --> H4[Cookie Flags: Secure, HttpOnly, SameSite]
+    PassiveScan --> H5[Server Software Banner Leakage]
+    PassiveScan --> H6[DNSSEC, SPF & DMARC Posture]
+    
+    H1 --> Finding[Standardized Finding Object]
+    H2 --> Finding
+    H3 --> Finding
+    H4 --> Finding
+    H5 --> Finding
+    H6 --> Finding
+    
+    Finding --> D1[1. Identified Issue]
+    Finding --> D2[2. Technical Evidence]
+    Finding --> D3[3. Potential Impact]
+    Finding --> D4[4. Severity Classification]
+    Finding --> D5[5. Recommended Remediation]
+    Finding --> D6[6. Scope Limitations]
+```
+
+### ⚖️ The Ethical Scope & Authorization Rule:
+> 🔒 *"The platform should inspect publicly available security information and report configuration weaknesses without attempting exploitation. Any active testing must be restricted to explicitly authorised targets."*
+>
+> **TrustMatrix Compliance**:
+> * **Zero Intrusive Payloads**: No SQL injection fuzzing, no cross-site scripting payload execution, and no denial-of-service traffic are ever transmitted.
+> * **Public Metadata Only**: Evaluation is performed strictly over standard HTTP response headers, public DNS zone records, TLS certificates, and initial cookie attributes.
+> * **Authorization Enforced**: Active vulnerability exploitation is strictly gated and restricted to explicitly authorized targets operating under formal written authorization.
+
+---
+
+## 🚀 Quickstart Guide
 ```bash
 npm run dev
 ```

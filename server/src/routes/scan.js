@@ -257,19 +257,20 @@ router.post('/scan', async (req, res) => {
       certTrust = analyzeCertificate(null, hostname);
     }
 
-    // Layer 3: Web AppSec
-    const webSec = analyzeWebSecurity(responseHeaders, cookies);
-
-    // Layer 4: Collaborative Threat Intelligence
-    const collaborativeIntel = correlateThreatIntel(hostname, null, certTrust.keyDetails.fingerprint256);
-
-    // Layer 5: Web3 Threat Vector Analysis
-    scanLogs.push(`[WEB3_SCAN] Inspecting for malicious wallet drainers and token approval exploits...`);
-    const web3Security = analyzeWeb3Threats(formattedUrl, htmlContent);
-
-    // Layer 6: DNS Characteristics & Domain Inspection (Module 1 Requirement 6)
+    // Layer 3: DNS Characteristics & Domain Inspection (Module 1 Requirement 6)
     scanLogs.push(`[DNS_ANALYSIS] Querying DNS resolution, MX/SPF records, and Fast-Flux characteristics...`);
     const dnsInfo = await inspectDnsCharacteristics(hostname);
+
+    // Layer 4: Web Application Security Posture (Module 5 Deliverable)
+    scanLogs.push(`[APPSEC_INSPECT] Executing non-exploitative website security inspection (HSTS, CSP, Cookies, Headers)...`);
+    const webSec = analyzeWebSecurity(responseHeaders, cookies, hostname, dnsInfo);
+
+    // Layer 5: Collaborative Threat Intelligence
+    const collaborativeIntel = correlateThreatIntel(hostname, dnsInfo?.primaryA_Record, certTrust.keyDetails.fingerprint256);
+
+    // Layer 6: Web3 Threat Vector Analysis
+    scanLogs.push(`[WEB3_SCAN] Inspecting for malicious wallet drainers and token approval exploits...`);
+    const web3Security = analyzeWeb3Threats(formattedUrl, htmlContent);
 
     // Dynamic Multi-Factor Trust Score Calculation
     let weightedScore = Math.round(
@@ -419,7 +420,8 @@ router.post('/scan', async (req, res) => {
         module1Analysis,
         scamForensics: urlScamAnalysis,
         module3ScamReport: urlScamAnalysis.module3ScamReport,
-        module4CorrelationReport
+        module4CorrelationReport,
+        module5AssessmentReport: webSec.module5AssessmentReport
       }
     });
   } catch (error) {
