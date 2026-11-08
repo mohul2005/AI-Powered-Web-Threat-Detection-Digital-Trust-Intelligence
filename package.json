@@ -6,11 +6,12 @@
     "client": "npm --prefix client run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm --prefix client run build",
-    "test": "node server/test-section10-deliverables.js && node server/test-section11-evaluation.js && node server/test-section12-extensions.js && node server/test-section13-scope.js",
+    "test": "node server/test-section10-deliverables.js && node server/test-section11-evaluation.js && node server/test-section12-extensions.js && node server/test-section13-scope.js && node server/test-section14-final-objective.js",
     "test:eval": "node server/test-section11-evaluation.js",
     "test:deliverables": "node server/test-section10-deliverables.js",
     "test:extensions": "node server/test-section12-extensions.js",
-    "test:scope": "node server/test-section13-scope.js"
+    "test:scope": "node server/test-section13-scope.js",
+    "test:objective": "node server/test-section14-final-objective.js"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

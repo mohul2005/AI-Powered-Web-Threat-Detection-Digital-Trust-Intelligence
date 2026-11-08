@@ -168,7 +168,7 @@ export function correlateThreatIndicators(incidentData) {
     }
 
     // (d) Reused Payment Handle (UPI / Crypto)
-    const currentHandles = (extractedEntities.paymentHandles || []).map(p => p.handle.toLowerCase());
+    const currentHandles = (extractedEntities.paymentHandles || []).map(p => (typeof p === 'string' ? p : p?.handle || '').toLowerCase());
     for (const reusedHandle of (camp.reusedPaymentHandles || [])) {
       if (currentHandles.includes(reusedHandle.toLowerCase()) || (content && content.toLowerCase().includes(reusedHandle.toLowerCase()))) {
         matchesCampaign = true;
@@ -197,7 +197,7 @@ export function correlateThreatIndicators(incidentData) {
   const messageText = content || url || '';
 
   for (const rep of allReports) {
-    const repDomain = rep.domain.toLowerCase();
+    const repDomain = (rep.domain || '').toLowerCase();
     const repUrl = (rep.targetUrl || '').toLowerCase();
     const repSummary = (rep.summary || '').toLowerCase();
     let isConnected = false;
@@ -215,7 +215,7 @@ export function correlateThreatIndicators(incidentData) {
     }
 
     // Check shared IP in IOC list
-    const repIps = rep.iocList.filter(i => i.type === 'ip').map(i => i.value);
+    const repIps = (rep.iocList || []).filter(i => i.type === 'ip').map(i => i.value);
     if (ip && repIps.includes(ip)) {
       isConnected = true;
       connectionReasons.push(`Shares host IP ${ip}`);
@@ -227,8 +227,8 @@ export function correlateThreatIndicators(incidentData) {
     }
 
     // Check shared payment handles
-    const repUpis = rep.iocList.filter(i => i.type === 'upi').map(i => i.value.toLowerCase());
-    const currentHandles = (extractedEntities.paymentHandles || []).map(p => p.handle.toLowerCase());
+    const repUpis = (rep.iocList || []).filter(i => i.type === 'upi').map(i => (i.value || '').toLowerCase());
+    const currentHandles = (extractedEntities.paymentHandles || []).map(p => (typeof p === 'string' ? p : p?.handle || '').toLowerCase());
     for (const h of currentHandles) {
       if (repUpis.includes(h)) {
         isConnected = true;

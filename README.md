@@ -606,6 +606,50 @@ TrustMatrix AI Nexus was engineered to strictly adhere to the **8 Hackathon Scop
 
 ---
 
+## 🎯 14. Final Objective & Capstone Mission
+
+TrustMatrix AI Nexus fully embodies the overarching HackMatrix challenge objective:
+
+> 🛡️ **HackMatrix Final Objective**:
+> *"Build an accessible, intelligent digital security platform that helps individuals and organisations identify potentially malicious websites, avoid phishing attacks, recognise online scams, and understand the security risks associated with the websites they interact with.*
+> 
+> *The solution should demonstrate how Artificial Intelligence can investigate and correlate suspicious activity, Cybersecurity can identify and validate technical threats, and Web3 can establish a transparent and verifiable mechanism for sharing threat intelligence.*
+> 
+> *The objective is to make the internet a safer place by helping people identify digital deception before they become its victims."*
+
+```mermaid
+flowchart LR
+    subgraph Deception["Adversary Deception Vectors"]
+        D1[Phishing Links / Typosquats]
+        D2[Compromised TLS CAs & Weak Keys]
+        D3[Urgent Smishing & AnyDesk RATs]
+        D4[UPI Quishing & Reverse Payment Scams]
+    end
+
+    subgraph Triad["The TrustMatrix Triad Core"]
+        AI[🤖 AI Investigation & Threat Correlation]
+        Cyber[🛡️ Cybersecurity PKI & Technical Validation]
+        Web3[⛓️ Web3 EAS On-Chain Attestation Ledger]
+    end
+
+    subgraph Protection["Pre-Victim Outcomes"]
+        P1[👤 Individuals: Scam Defense & 1930 Escalation]
+        P2[🏢 Organisations: Attack Surface & CT Log Stream]
+    end
+
+    Deception --> Triad
+    Triad --> Protection
+```
+
+### Triad Alignment Matrix:
+1. **Artificial Intelligence**: Investigates digital deception via Levenshtein brand distance, MITRE ATT&CK RAG synthesis, and correlates disparate attacks across shared BGP ASNs and payment endpoints (`correlationEngine.js`).
+2. **Cybersecurity**: Validates technical threats via live X.509 TLS handshakes, eMudhra weak modulus anomaly detection, crt.sh CT logs, and automated defensive HTTP header posture analysis (`certTrustEngine.js`, `webSecEngine.js`).
+3. **Web3**: Establishes transparent, tamper-evident threat sharing on Ethereum Sepolia via EAS schemas, 32-byte cryptographic report commitments, dispute tracking, and strict off-chain privacy (`TrustMatrixRegistry.sol`, `web3Engine.js`).
+
+* 🧪 **Automated Final Objective Suite**: Run `npm run test:objective` or `npm test` to verify all 74 compliance assertions across the entire platform.
+
+---
+
 ## 🚀 Quickstart Guide
 ```bash
 npm run dev

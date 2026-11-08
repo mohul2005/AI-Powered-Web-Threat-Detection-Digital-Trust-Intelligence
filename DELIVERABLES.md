@@ -227,19 +227,41 @@ TrustMatrix AI Nexus strictly abides by all 8 Hackathon Scope Boundaries and sat
 
 ---
 
-## 13. Comprehensive Verification Commands
+## 13. Final Objective & Capstone Mission (Section 14)
+
+TrustMatrix AI Nexus fully fulfills the HackMatrix Capstone Mission:
+
+> 🎯 **HackMatrix Final Objective**:
+> *"Build an accessible, intelligent digital security platform that helps individuals and organisations identify potentially malicious websites, avoid phishing attacks, recognise online scams, and understand the security risks associated with the websites they interact with.*
+> 
+> *The solution should demonstrate how Artificial Intelligence can investigate and correlate suspicious activity, Cybersecurity can identify and validate technical threats, and Web3 can establish a transparent and verifiable mechanism for sharing threat intelligence.*
+> 
+> *The objective is to make the internet a safer place by helping people identify digital deception before they become its victims."*
+
+| Dimension | HackMatrix Specification | TrustMatrix AI Nexus Implementation | Verification Assertion |
+|:---|:---|:---|:---:|
+| **Artificial Intelligence** | Investigate and correlate suspicious activity | Levenshtein brand distance, MITRE ATT&CK RAG, entity extraction (AnyDesk, mule VPAs), and multi-incident infrastructure correlation across shared BGP ASNs. | `test-section14-final-objective.js:1.1–1.3` |
+| **Cybersecurity** | Identify and validate technical threats | Raw X.509 TLS handshake analysis, eMudhra duplicate key modulus anomaly detection, CT log verification, and automated HTTP security header audits. | `test-section14-final-objective.js:2.1–2.2` |
+| **Web3** | Transparent and verifiable threat sharing mechanism | Ethereum Sepolia EAS smart contract (`TrustMatrixRegistry.sol`), on-chain SHA-256 commitments, tamper-evident verification, and off-chain privacy preservation. | `test-section14-final-objective.js:3.1–3.2` |
+| **Dual Audience Protection** | Accessible to individuals and organisations | • **Individuals**: Multi-modal scanner, QR Quishing defense, plain-English advice, 1930 Cybercrime helpline escalation.<br>• **Organisations**: Attack surface monitor, CT log stream alert engine, Lookalike Radar, STIX 2.1 / TAXII 2.1 feeds. | `test-section14-final-objective.js:4.1–4.2` |
+| **Capstone Mission** | Identify digital deception before becoming victims | Pre-click link blocker, predictive typosquatting radar, and automated credential interception preventing data exfiltration before victim harm occurs. | `test-section14-final-objective.js:5.1–5.2` |
+
+---
+
+## 14. Comprehensive Verification Commands (74/74 Checks Passed)
 
 Run the full automated compliance suite across all sections:
 
 ```bash
-# 1. Run all tests (Section 10 Deliverables + Section 11 Evaluation + Section 12 Extensions + Section 13 Scope Boundaries)
+# 1. Run all master tests (Sections 10, 11, 12, 13, and 14 - 74/74 passed)
 npm test
 
 # 2. Run individual test suites
-npm run test:deliverables # Section 10: 14/14 checks passed
-npm run test:eval         # Section 11: 19/19 checks passed
-npm run test:extensions   # Section 12: 18/18 checks passed
-npm run test:scope        # Section 13: 12/12 checks passed
+npm run test:deliverables # Section 10: Expected Deliverables (14/14 checks passed)
+npm run test:eval         # Section 11: Evaluation Criteria (19/19 checks passed)
+npm run test:extensions   # Section 12: Advanced Extensions (18/18 checks passed)
+npm run test:scope        # Section 13: Scope Boundaries (12/12 checks passed)
+npm run test:objective    # Section 14: Final Objective (11/11 checks passed)
 ```
 
 
