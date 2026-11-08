@@ -11,6 +11,7 @@ import { analyzeWeb3Threats, generateOnChainAttestation } from '../engines/web3E
 import { analyzeEmailThreat } from '../engines/emailEngine.js';
 import { analyzeMessageThreat } from '../engines/messageEngine.js';
 import { inspectDnsCharacteristics } from '../engines/dnsEngine.js';
+import { analyzeSocialEngineering } from '../engines/scamEngine.js';
 
 const router = express.Router();
 
@@ -114,7 +115,8 @@ router.post('/scan', async (req, res) => {
         web3Attestation: onChainAttestation,
         evidenceDossier: emailResult.evidence.map((ev, i) => ({ title: `Finding ${i+1}`, detail: ev })),
         actionableGuidance: emailResult.actionableGuidance,
-        scamForensics: emailResult
+        scamForensics: emailResult,
+        module3ScamReport: emailResult.module3ScamReport
       }
     });
   }
@@ -164,7 +166,8 @@ router.post('/scan', async (req, res) => {
         web3Attestation: onChainAttestation,
         evidenceDossier: messageResult.evidence.map((ev, i) => ({ title: `Indicator ${i+1}`, detail: ev })),
         actionableGuidance: messageResult.actionableGuidance,
-        scamForensics: messageResult
+        scamForensics: messageResult,
+        module3ScamReport: messageResult.module3ScamReport
       }
     });
   }
@@ -358,6 +361,8 @@ router.post('/scan', async (req, res) => {
       }
     };
 
+    const urlScamAnalysis = analyzeSocialEngineering(formattedUrl);
+
     scanLogs.push(`[COMPLETE] Unified Trust Assessment: ${trustScore}/100 [Level: ${threatLevel}]. Attested on-chain.`);
 
     res.json({
@@ -379,7 +384,9 @@ router.post('/scan', async (req, res) => {
         web3Attestation,
         evidenceDossier,
         actionableGuidance,
-        module1Analysis
+        module1Analysis,
+        scamForensics: urlScamAnalysis,
+        module3ScamReport: urlScamAnalysis.module3ScamReport
       }
     });
   } catch (error) {

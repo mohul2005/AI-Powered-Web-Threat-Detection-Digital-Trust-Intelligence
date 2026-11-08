@@ -182,6 +182,49 @@ TrustMatrix inspects communication text against 5 key indicators:
 
 ---
 
+## 🧠 Module 3: AI-Powered Scam and Message Analysis
+
+TrustMatrix enables users to paste suspicious messages, emails, notifications, or other digital communications, providing deep contextual forensics with an uncompromising focus on scientific precision and false-positive reduction.
+
+### The 7 Core Capabilities of Module 3:
+1. **Identify Common Social Engineering Patterns**: Uncovers psychological manipulation tactics across urgency, fear, authority intimidation, scarcity lures, and social proof.
+2. **Detect Urgency-Based Manipulation & Suspicious Payment Requests**: Flags artificial countdown deadlines ("within 24 hours", "immediately") alongside irregular payment solicitations (advance processing fees, personal UPI transfers, gift cards, USDT deposits, and bogus "enter your UPI PIN to receive money" traps).
+3. **Recognise Impersonation Attempts**: Detects unauthorized mimicry of official banks (SBI, HDFC), government entities (Income Tax, Parivahan), exams (NTA), e-commerce (Amazon), and tech support (Microsoft Defender).
+4. **Extract URLs, Email Addresses, Phone Numbers & Identifiers**: High-precision regex engines extract embedded hyperlinks (including shorteners), sender/recipient email addresses, toll-free and personal mobile helpline numbers, UPI handles, and cryptocurrency wallet addresses.
+5. **Correlate Extracted Indicators with Threat Intelligence**: Automatically cross-references extracted URLs against the phishing engine, checks free-webmail usage against claimed corporate identities, and matches phone numbers against known rogue call-center syndicates.
+6. **Explain Potential Risks in Understandable Language**: Generates plain-English assessments that empower non-technical users and enterprise security analysts alike to understand the nature of the deception.
+7. **Recommend Appropriate Safety Measures**: Prescribes immediate actionable countermeasures (e.g. Do not share OTPs, uninstall remote desktop apps, verify via official portals, and report to the National Cyber Crime Portal at 1930 / `cybercrime.gov.in`).
+
+### ⚖️ The Crucial AI Boundary Rule (Distinguishing Suspicious Language from Verified Fraud):
+
+```mermaid
+flowchart TD
+    Msg[Ingested Message / Email / Notification] --> AI[AI Natural Language & Pattern Engine]
+    
+    AI --> UrgencyCheck{Contains Urgent or Persuasive Language?}
+    AI --> HardEvidenceCheck{Verified Technical Evidence of Fraud Present?}
+    
+    HardEvidenceCheck -->|Check 1| MaliciousLink[Confirmed Malicious / Shortened Links]
+    HardEvidenceCheck -->|Check 2| SecretHarv[OTP / PIN / Password Solicitation]
+    HardEvidenceCheck -->|Check 3| RemoteApp[AnyDesk / TeamViewer Coercion]
+    HardEvidenceCheck -->|Check 4| RoguePay[Advance Fee / Personal UPI Demands]
+    HardEvidenceCheck -->|Check 5| SpoofDiscrepancy[From vs Reply-To / Webmail Mismatch]
+    
+    UrgencyCheck -->|YES| Eval{Boundary Rule Evaluation}
+    HardEvidenceCheck -->|YES| Eval
+    
+    Eval -->|Verified Fraud Confirmed| FraudVerdict[Status: VERIFIED_EVIDENCE_OF_FRAUD<br/>Score: <= 25 | Threat: CRITICAL]
+    Eval -->|Urgent Language ONLY - Zero Fraud Evidence| BenignUrgent[Status: SUSPICIOUS_URGENT_LANGUAGE_NO_FRAUD_EVIDENCE<br/>Score: 75-85 | Threat: MODERATE / CAUTION<br/>NOT LABELLED FRAUDULENT]
+    Eval -->|Neither Urgent nor Malicious| SafeVerdict[Status: BENIGN_COMMUNICATION<br/>Score: 95-100 | Threat: SAFE]
+```
+
+> 🛡️ **The Essential AI Boundary Axiom**:
+> *"The AI should distinguish between suspicious language and verified evidence of fraud. A message should not be labelled fraudulent solely because it contains urgent or persuasive language."*
+>
+> **Why this matters**: Legitimate communications often use urgent language. Flight boarding gate closures, authentic Google security alerts, and utility maintenance advisories all demand immediate attention. If an AI platform flags every message containing the word "URGENT" as a fraud, users experience alert fatigue and ignore genuine security warnings. TrustMatrix strictly requires verified technical evidence of fraud before assigning a fraudulent classification.
+
+---
+
 ## 🚀 Quickstart Guide
 
 ### 1. Run Full-Stack System

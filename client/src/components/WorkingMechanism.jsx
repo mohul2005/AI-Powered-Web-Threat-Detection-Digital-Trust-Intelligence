@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Lock, Cpu, Globe, Users, KeyRound, Layers, Blocks, Terminal, AlertTriangle, AlertOctagon, CheckCircle2, Info } from 'lucide-react';
+import { Shield, Lock, Cpu, Globe, Users, KeyRound, Layers, Blocks, Terminal, AlertTriangle, AlertOctagon, CheckCircle2, Info, Scale } from 'lucide-react';
 
 export default function WorkingMechanism() {
   return (
@@ -222,6 +222,31 @@ export default function WorkingMechanism() {
             <div><strong>3. Payments:</strong> Flags advance fees, personal UPIs, and crypto demands.</div>
             <div><strong>4. Links:</strong> Unpacks bit.ly/tinyurl redirect obfuscations.</div>
             <div><strong>5. Secrets:</strong> Protects OTPs, PINs, and blocks remote access tools.</div>
+          </div>
+        </div>
+
+        {/* Module 3: AI-Powered Scam and Message Analysis & Crucial Boundary Rule */}
+        <div className="p-4 rounded-xl bg-[#0e2727] border border-[#00f2c3]/40 space-y-3 text-xs font-mono">
+          <div className="flex items-center space-x-2 text-[#00f2c3] font-bold">
+            <Scale className="w-4 h-4 shrink-0" />
+            <span>Module 3: AI-Powered Scam and Message Analysis & The Crucial AI Boundary Rule</span>
+          </div>
+
+          <p className="text-[#a1c4c2] text-[11px] leading-relaxed">
+            Module 3 ingests suspicious messages, emails, and notifications, extracting indicators (URLs, emails, helplines, payment handles) and correlating them against threat intelligence.
+          </p>
+
+          <div className="p-3.5 rounded-lg bg-[#061414] border border-[#f59e0b]/40 text-[11px] space-y-2">
+            <div className="flex items-center space-x-2 text-[#f59e0b] font-bold uppercase tracking-wider text-[10px]">
+              <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+              <span>Crucial AI Boundary Rule</span>
+            </div>
+            <p className="text-white italic">
+              "The AI should distinguish between suspicious language and verified evidence of fraud. A message should not be labelled fraudulent solely because it contains urgent or persuasive language."
+            </p>
+            <p className="text-[#a1c4c2] leading-relaxed">
+              Legitimate notifications (e.g. flight boarding gate calls, authentic Google security alerts, or electricity outage warnings) frequently use urgent or deadline-oriented words. TrustMatrix requires verified technical evidence of fraud (malicious URLs, credential harvesting, AnyDesk remote control, or rogue payment demands) before assigning a fraudulent classification.
+            </p>
           </div>
         </div>
       </div>

@@ -2,24 +2,27 @@ import { analyzePhishing } from './phishingEngine.js';
 import { analyzeSocialEngineering } from './scamEngine.js';
 
 // AI-Powered Email Threat & Phishing Investigation Engine
-// Implements Section C: Online Scams, CEO Fraud, Invoice Phish, and Deceptive Emails
+// Implements Module 3: AI-Powered Scam and Message Analysis & Section C Requirements
 
 export function analyzeEmailThreat(emailContent) {
   if (!emailContent || emailContent.trim().length === 0) {
     return {
       score: 50,
+      trustScore: 50,
       verdict: 'EMPTY_INPUT',
       riskLevel: 'UNKNOWN',
       evidence: ['No email content provided'],
-      actionableGuidance: ['Please paste the suspicious email body or headers to scan.']
+      actionableGuidance: ['Please paste the suspicious email body or headers to scan.'],
+      module3ScamReport: null
     };
   }
 
-  // 1. Run Core Social Engineering Forensic Engine
+  // 1. Run Core Social Engineering Forensic Engine (Module 3)
   const scamAnalysis = analyzeSocialEngineering(emailContent);
 
   const evidence = [...scamAnalysis.evidenceFindings];
   let headerPenalty = 0;
+  let hasHeaderSpoof = false;
 
   // 2. Sender Domain & Header Spoofing Checks (From vs Reply-To)
   const fromMatch = emailContent.match(/From:\s*([^<\n\r]+<)?([^>\n\r]+)>?/i);
@@ -32,12 +35,13 @@ export function analyzeEmailThreat(emailContent) {
     const replyToDomain = replyToAddress.split('@')[1];
 
     if (fromDomain && replyToDomain && fromDomain !== replyToDomain) {
+      hasHeaderSpoof = true;
       evidence.unshift(`Header Discrepancy (CEO/Sender Spoof): Sender From header '${fromDomain}' does not match Reply-To header '${replyToDomain}'`);
-      headerPenalty += 40;
+      headerPenalty += 45;
     }
   }
 
-  // 3. Extract Embedded Links
+  // 3. Extract Embedded Links and Correlate Threat Intelligence
   const urlRegex = /(https?:\/\/[^\s"'<>]+)/gi;
   const extractedUrls = emailContent.match(urlRegex) || [];
   let highestUrlRisk = null;
@@ -54,12 +58,20 @@ export function analyzeEmailThreat(emailContent) {
     }
   }
 
-  const finalScore = Math.max(5, Math.min(100, scamAnalysis.scamScore - headerPenalty));
+  // Calculate final score with Module 3 boundary integrity
+  let finalScore = scamAnalysis.scamScore;
+  let threatLevel = scamAnalysis.threatLevel;
 
-  let threatLevel = 'SAFE';
-  if (finalScore < 25) threatLevel = 'CRITICAL';
-  else if (finalScore < 55) threatLevel = 'HIGH';
-  else if (finalScore < 75) threatLevel = 'MODERATE';
+  if (hasHeaderSpoof || highestUrlRisk) {
+    // Confirmed verified evidence of fraud
+    finalScore = Math.max(5, Math.min(25, scamAnalysis.scamScore - headerPenalty));
+    threatLevel = 'CRITICAL';
+    if (scamAnalysis.module3ScamReport) {
+      scamAnalysis.module3ScamReport.status = 'VERIFIED_EVIDENCE_OF_FRAUD';
+      scamAnalysis.module3ScamReport.boundaryRule.verifiedFraudEvidenceDetected = true;
+      scamAnalysis.module3ScamReport.boundaryRule.assessmentRationale = 'Verified evidence of active fraud confirmed through sender header spoofing or malicious link payload.';
+    }
+  }
 
   const actionableGuidance = [...scamAnalysis.actionableGuidance];
   if (threatLevel === 'CRITICAL' || threatLevel === 'HIGH') {
@@ -74,6 +86,8 @@ export function analyzeEmailThreat(emailContent) {
     primaryCategory: scamAnalysis.primaryCategory,
     detectedCategories: scamAnalysis.detectedCategories,
     indicators: scamAnalysis.indicators,
+    extractedEntities: scamAnalysis.extractedEntities,
+    module3ScamReport: scamAnalysis.module3ScamReport,
     plainEnglishAssessment: scamAnalysis.plainEnglishAssessment,
     evidence,
     actionableGuidance,

@@ -764,5 +764,95 @@ export const PRECONFIGURED_SCENARIOS = [
         'Ensure you keep 2-Factor Authentication (2FA) active on your account.'
       ]
     }
+  },
+  {
+    id: 'urgent-alert-benign-boundary',
+    title: 'Module 3 Benchmark: Urgent Legitimate Alert (AI Boundary Rule Enforced)',
+    category: 'Module 3: AI Boundary Verification',
+    type: 'message',
+    targetUrl: 'URGENT: Flight AI-102 boarding gates close in 15 minutes. All passengers must proceed immediately to Gate 14 with their boarding pass. Mandatory security check before departure.',
+    description: 'Demonstrates the Module 3 Boundary Rule: The notification contains urgent and deadline-oriented language ("URGENT", "close in 15 minutes", "proceed immediately"), but contains zero verified evidence of fraud. Under Module 3 rules, it is not labelled fraudulent.',
+    severity: 'SAFE',
+    expectedVerdict: 'SUSPICIOUS_URGENT_LANGUAGE_NO_FRAUD_EVIDENCE',
+    mockData: {
+      type: 'MESSAGE',
+      url: 'URGENT: Flight AI-102 boarding gates close in 15 minutes...',
+      domain: 'Air India Flight Operations',
+      trustScore: 82,
+      threatLevel: 'MODERATE',
+      aiPhishing: {
+        score: 85,
+        verdict: 'URGENT_LANGUAGE_NO_FRAUD_EVIDENCE',
+        impersonatedBrand: null,
+        signals: ['Contains urgent deadline phrasing: "URGENT", "close in 15 minutes", "proceed immediately"'],
+        entropy: 3.1,
+        punycodeDetected: false,
+        formFields: []
+      },
+      certTrust: { score: 100, verdict: 'N/A_SMS', issuer: { commonName: 'Airline SMS Gateway' }, keyDetails: { algorithm: 'N/A', keySize: 0 }, ctLogs: { present: true, status: 'N/A' }, chain: [] },
+      webSec: { score: 100, grade: 'A', headers: { hsts: { status: 'PRESENT' } }, cookies: [] },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'SAFE', drainerDetected: false, findings: [] },
+      collaborativeIntel: { reputationScore: 88, communityVotes: { malicious: 0, benign: 420 }, matchingThreatClusters: [], iocs: [] },
+      web3Attestation: {
+        contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
+        network: 'Ethereum Sepolia / Polygon POS',
+        targetHash: '0xabc1928374918273948172938471293847192837491827394817293847129384',
+        txHash: '0xdef8192837491827394817293847129384719283749182739481729384712938',
+        ipfsCid: 'bafybeihabc82734981729384712938471928374918273948172938471quvyku',
+        blockNumber: 21094910,
+        attestationStandard: 'EAS-THREAT-INTEL-EIP712',
+        status: 'ATTESTED_ON_CHAIN'
+      },
+      evidenceDossier: [
+        { title: 'AI Boundary Rule Enforced', detail: 'Message contains urgent operational deadlines, but zero verified technical evidence of fraud was detected.' },
+        { title: 'Zero Malicious Payloads', detail: 'No deceptive hyperlinks, no credential harvesting, no AnyDesk remote access, and no fake payment demands.' }
+      ],
+      actionableGuidance: [
+        'Proceed with normal airport boarding protocol.',
+        'No malicious cyber threat indicators identified.'
+      ],
+      scamForensics: {
+        scamScore: 82,
+        trustScore: 82,
+        threatLevel: 'MODERATE',
+        primaryCategory: null,
+        detectedCategories: [],
+        indicators: {
+          suspiciousLanguage: { detected: true, findings: ['Contains coercive phrase "immediately"', 'Contains strict countdown deadline "within 15 minutes"'] },
+          impersonation: { detected: false, entity: null, findings: [] },
+          unusualPayments: { detected: false, findings: [] },
+          misleadingLinks: { detected: false, links: [], findings: [] },
+          sensitiveInfoHarvest: { detected: false, findings: [] },
+          remoteAccessTools: { detected: false, findings: [] }
+        },
+        extractedEntities: { urls: [], emails: [], phoneNumbers: [], paymentHandles: [] },
+        module3ScamReport: {
+          module: 'Module 3: AI-Powered Scam and Message Analysis',
+          status: 'SUSPICIOUS_URGENT_LANGUAGE_NO_FRAUD_EVIDENCE',
+          boundaryRule: {
+            axiom: 'A message should not be labelled fraudulent solely because it contains urgent or persuasive language.',
+            urgentLanguageDetected: true,
+            verifiedFraudEvidenceDetected: false,
+            assessmentRationale: 'AI Boundary Rule Enforced: The communication exhibits urgent or persuasive phrasing ("URGENT", "close in 15 minutes", "proceed immediately"), but contains NO verified technical evidence of fraud. Under Module 3 rules, it is NOT labelled fraudulent.'
+          },
+          socialEngineeringPatterns: {
+            urgencyManipulation: { detected: true, count: 2, findings: ['Urgent deadline phrasing detected'] },
+            impersonationAttempts: { detected: false, findings: [] },
+            paymentDemands: { detected: false, findings: [] },
+            credentialHarvesting: { detected: false, findings: [] },
+            remoteAccessExploitation: { detected: false, findings: [] }
+          },
+          extractedEntities: { urls: [], emails: [], phoneNumbers: [], paymentHandles: [] },
+          threatIntelligenceCorrelation: { totalEntitiesExtracted: 0, suspiciousLinksCount: 0, reputationSummary: 'No hostile indicators correlated with active threat feeds.' },
+          plainEnglishAssessment: 'CAUTIONARY COMMUNICATION (NOT FRAUDULENT): This message contains urgent operational language ("URGENT", "proceed immediately"). However, rigorous inspection revealed ZERO technical evidence of fraud (no credential harvesting, no malware links, no AnyDesk remote access, and no fake payment requests). Under Module 3 rules, it is not classified as fraudulent.',
+          recommendedSafetyMeasures: [
+            'Urgent language was detected, but no fraudulent links, OTP demands, or payment requests were found.',
+            'Verify the communication directly through the official provider if unsure.',
+            'No cyber security threat identified.'
+          ]
+        },
+        plainEnglishAssessment: 'CAUTIONARY COMMUNICATION (NOT FRAUDULENT): This message contains urgent operational language ("URGENT", "proceed immediately"). However, rigorous inspection revealed ZERO technical evidence of fraud.'
+      }
+    }
   }
 ];
