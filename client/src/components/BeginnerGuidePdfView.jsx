@@ -22,10 +22,11 @@ import {
   HeartHandshake,
   PhoneCall,
   ExternalLink,
-  FileCheck
+  FileCheck,
+  Database
 } from 'lucide-react';
 
-export default function BeginnerGuidePdfView({ onBackToScanner, onSwitchToVerification }) {
+export default function BeginnerGuidePdfView({ onBackToScanner, onSwitchToVerification, onSwitchToDatabaseDocs }) {
   const [paperTheme, setPaperTheme] = useState('dark'); // 'dark' | 'whitepaper'
 
   const handlePrint = () => {
@@ -62,12 +63,24 @@ export default function BeginnerGuidePdfView({ onBackToScanner, onSwitchToVerifi
               title="Switch to the Official Verification Details PDF Dossier"
             >
               <FileCheck className="w-3.5 h-3.5 text-[#00f2c3]" />
-              <span className="hidden sm:inline">Switch to</span>
-              <span>Verification PDF</span>
+              <span className="hidden sm:inline">Verification</span>
+              <span>PDF</span>
             </button>
           )}
 
-          <span className="text-[#00f2c3] font-bold hidden md:inline pl-2 border-l border-[#174242]">
+          {onSwitchToDatabaseDocs && (
+            <button
+              onClick={onSwitchToDatabaseDocs}
+              className="px-3 py-1.5 rounded-lg bg-[#0b2525] border border-[#184444] text-[#80a4a2] hover:text-white flex items-center space-x-1.5 transition-colors"
+              title="Switch to Database Architecture & Persistence Documentation (PDF View)"
+            >
+              <Database className="w-3.5 h-3.5 text-[#00f2c3]" />
+              <span className="hidden sm:inline">Database</span>
+              <span>Docs</span>
+            </button>
+          )}
+
+          <span className="text-[#00f2c3] font-bold hidden lg:inline pl-2 border-l border-[#174242]">
             📄 Beginner Architecture Guide (PDF)
           </span>
         </div>

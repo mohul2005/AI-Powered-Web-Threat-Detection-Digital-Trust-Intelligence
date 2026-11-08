@@ -21,6 +21,7 @@ import AdvancedExtensionsHub from './components/AdvancedExtensionsHub.jsx';
 import OrganisationDashboard from './components/OrganisationDashboard.jsx';
 import BeginnerGuidePdfView from './components/BeginnerGuidePdfView.jsx';
 import VerificationPdfView from './components/VerificationPdfView.jsx';
+import DatabaseDocsPdfView from './components/DatabaseDocsPdfView.jsx';
 import MatrixRain from './components/MatrixRain.jsx';
 import { Download, ChevronDown, ChevronUp, Terminal, ArrowRight, Sparkles } from 'lucide-react';
 
@@ -410,6 +411,7 @@ export default function App() {
           <BeginnerGuidePdfView 
             onBackToScanner={() => setActiveTab('scanner')} 
             onSwitchToVerification={() => setActiveTab('verification-pdf')}
+            onSwitchToDatabaseDocs={() => setActiveTab('database-pdf')}
           />
         )}
 
@@ -418,6 +420,16 @@ export default function App() {
           <VerificationPdfView 
             onBackToScanner={() => setActiveTab('scanner')} 
             onSwitchToBeginnerGuide={() => setActiveTab('pdf-guide')}
+            onSwitchToDatabaseDocs={() => setActiveTab('database-pdf')}
+          />
+        )}
+
+        {/* TAB 9: DATABASE ARCHITECTURE & PERSISTENCE DOCUMENTATION (PDF VIEW) */}
+        {activeTab === 'database-pdf' && (
+          <DatabaseDocsPdfView 
+            onBackToScanner={() => setActiveTab('scanner')} 
+            onSwitchToBeginnerGuide={() => setActiveTab('pdf-guide')}
+            onSwitchToVerification={() => setActiveTab('verification-pdf')}
           />
         )}
       </main>

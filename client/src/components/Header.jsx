@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2, Binary, Award, Building2, QrCode, Printer, FileCheck } from 'lucide-react';
+import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2, Binary, Award, Building2, QrCode, Printer, FileCheck, Database } from 'lucide-react';
 
 export default function Header({
   onOpenReportModal,
@@ -153,6 +153,19 @@ export default function Header({
           >
             <FileCheck className="w-3.5 h-3.5" />
             <span>Verification PDF</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('database-pdf')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
+              activeTab === 'database-pdf'
+                ? 'bg-[#00f2c3] text-[#051715] shadow-neon-sm font-bold'
+                : 'text-[#85a8a6] hover:text-white'
+            }`}
+            title="Open Database Architecture & Persistence Documentation (PDF View)"
+          >
+            <Database className="w-3.5 h-3.5" />
+            <span>Database PDF</span>
           </button>
         </nav>
 

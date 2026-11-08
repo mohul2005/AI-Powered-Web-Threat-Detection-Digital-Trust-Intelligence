@@ -15,10 +15,11 @@ import {
   BookOpen,
   ZoomIn,
   ZoomOut,
-  RotateCcw
+  RotateCcw,
+  Database
 } from 'lucide-react';
 
-export default function VerificationPdfView({ onBackToScanner, onSwitchToBeginnerGuide }) {
+export default function VerificationPdfView({ onBackToScanner, onSwitchToBeginnerGuide, onSwitchToDatabaseDocs }) {
   const [paperTheme, setPaperTheme] = useState('dark'); // 'dark' | 'whitepaper'
   const [zoomScale, setZoomScale] = useState(1); // 0.9 | 1 | 1.1
 
@@ -59,12 +60,24 @@ export default function VerificationPdfView({ onBackToScanner, onSwitchToBeginne
               title="Switch to the 14-Section Beginner Architecture Guide"
             >
               <BookOpen className="w-3.5 h-3.5 text-[#00f2c3]" />
-              <span className="hidden sm:inline">Switch to</span>
-              <span>Beginner Guide</span>
+              <span className="hidden sm:inline">Beginner</span>
+              <span>Guide</span>
             </button>
           )}
 
-          <div className="hidden md:flex items-center space-x-1 text-[#00f2c3] font-bold pl-2 border-l border-[#174242]">
+          {onSwitchToDatabaseDocs && (
+            <button
+              onClick={onSwitchToDatabaseDocs}
+              className="px-3 py-1.5 rounded-lg bg-[#0b2525] border border-[#184444] text-[#80a4a2] hover:text-white flex items-center space-x-1.5 transition-colors"
+              title="Switch to Database Architecture & Persistence Documentation (PDF View)"
+            >
+              <Database className="w-3.5 h-3.5 text-[#00f2c3]" />
+              <span className="hidden sm:inline">Database</span>
+              <span>Docs</span>
+            </button>
+          )}
+
+          <div className="hidden lg:flex items-center space-x-1 text-[#00f2c3] font-bold pl-2 border-l border-[#174242]">
             <FileCheck className="w-4 h-4" />
             <span>Verification Dossier (PDF View)</span>
           </div>

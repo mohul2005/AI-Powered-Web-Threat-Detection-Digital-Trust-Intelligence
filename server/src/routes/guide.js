@@ -740,4 +740,480 @@ npm run build
   res.send(verificationHtml);
 });
 
+router.get('/download-db-docs-html', (req, res) => {
+  const dbDocsHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustMatrix AI Nexus - Database Architecture & Technical Documentation</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #0f172a;
+      background: #ffffff;
+      line-height: 1.55;
+      margin: 0;
+      padding: 24px;
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .header-box {
+      border: 2px solid #0284c7;
+      background: #f0f9ff;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .stamp {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border: 2px dashed #0284c7;
+      color: #0369a1;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transform: rotate(-3deg);
+      background: rgba(255,255,255,0.9);
+    }
+    h1 {
+      color: #0c4a6e;
+      font-size: 26px;
+      margin: 0 0 6px 0;
+    }
+    .subtitle {
+      color: #0284c7;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid #bae6fd;
+      font-size: 12px;
+    }
+    .meta-item strong {
+      display: block;
+      color: #0369a1;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .meta-item span {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 20px;
+      background: #ffffff;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .badge {
+      display: inline-block;
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    h2 {
+      color: #0f172a;
+      font-size: 18px;
+      margin: 0 0 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      margin: 12px 0;
+    }
+    th, td {
+      border: 1px solid #e2e8f0;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #334155;
+    }
+    .code-box {
+      background: #0f172a;
+      color: #38bdf8;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 11.5px;
+      overflow-x: auto;
+      margin: 10px 0;
+      line-height: 1.45;
+    }
+    .print-btn-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    @media print {
+      .print-btn-bar {
+        display: none !important;
+      }
+      body {
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="print-btn-bar">
+      <button onclick="window.print()" style="padding: 8px 16px; background: #0284c7; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+        🖨️ Print as PDF
+      </button>
+    </div>
+
+    <!-- HEADER / STAMP -->
+    <div class="header-box">
+      <div class="stamp">DATABASE BLUEPRINT</div>
+      <h1>TrustMatrix AI Nexus</h1>
+      <div class="subtitle">Complete Database Architecture & Data Layer Technical Documentation</div>
+      <p style="margin: 0; font-size: 13px; color: #334155;">
+        Comprehensive Technical Specification for Section 8 Database Stack: PostgreSQL Relational Schema, MongoDB NoSQL STIX 2.1 Bundles, Redis High-Performance Cache, Threat Knowledge Graph, and Web3 EVM Attestation Registry.
+      </p>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <strong>Relational DB</strong>
+          <span>PostgreSQL 16</span>
+        </div>
+        <div class="meta-item">
+          <strong>Document Store</strong>
+          <span>MongoDB STIX 2.1</span>
+        </div>
+        <div class="meta-item">
+          <strong>Cache Engine</strong>
+          <span>Redis 7 (TTL 300s)</span>
+        </div>
+        <div class="meta-item">
+          <strong>Web3 Ledger</strong>
+          <span>Ethereum Sepolia EAS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAPTER 1: ARCHITECTURE OVERVIEW -->
+    <div class="card">
+      <span class="badge">Architecture Strategy</span>
+      <h2>1. The 5-Tier Hybrid Persistence Model</h2>
+      <p style="font-size: 13px; color: #475569;">
+        TrustMatrix AI Nexus implements a hybrid polyglot persistence architecture designed to solve distinct challenges in enterprise web security:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Persistence Tier</th>
+            <th>Technology</th>
+            <th>Primary Function & Stored Objects</th>
+            <th>Backend File Reference</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. High-Speed Cache</strong></td>
+            <td>Redis 7 & Memory Store</td>
+            <td>Sub-millisecond DNS resolutions, TLS handshake results, and rate limits</td>
+            <td><code>server/src/db/redisCache.js</code></td>
+          </tr>
+          <tr>
+            <td><strong>2. Relational Database</strong></td>
+            <td>PostgreSQL 16</td>
+            <td>Structured reports, foreign key attestations, and campaign clusters</td>
+            <td><code>server/src/db/schema.sql</code></td>
+          </tr>
+          <tr>
+            <td><strong>3. Document Database</strong></td>
+            <td>MongoDB / Mongoose</td>
+            <td>Polymorphic OASIS STIX 2.1 Threat Intel bundles & verifiable audit logs</td>
+            <td><code>server/src/db/mongoSchema.js</code></td>
+          </tr>
+          <tr>
+            <td><strong>4. In-Memory Graph</strong></td>
+            <td>Graph Repository</td>
+            <td>Active community reports, BGP ASN edges, IP colocation, and mule VPAs</td>
+            <td><code>server/src/data/threatStore.js</code></td>
+          </tr>
+          <tr>
+            <td><strong>5. Public Blockchain</strong></td>
+            <td>Ethereum Sepolia EAS</td>
+            <td>Tamper-evident SHA-256 cryptographic commitments & dispute logs</td>
+            <td><code>server/src/contracts/TrustMatrixRegistry.sol</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CHAPTER 2: POSTGRESQL SCHEMA -->
+    <div class="card">
+      <span class="badge">Relational Core</span>
+      <h2>2. PostgreSQL Relational Schema (server/src/db/schema.sql)</h2>
+      <p style="font-size: 13px; color: #475569;">
+        Production-ready ANSI SQL schema implementing Section 8 database requirements with foreign keys, checks, and B-tree/GIN indexes:
+      </p>
+      <div class="code-box">
+-- 1. Threat Reports Table
+CREATE TABLE IF NOT EXISTS threat_reports (
+    id VARCHAR(64) PRIMARY KEY,
+    target_url TEXT NOT NULL,
+    sanitized_domain VARCHAR(255) NOT NULL,
+    threat_category VARCHAR(100) NOT NULL,
+    target_entity VARCHAR(255) NOT NULL,
+    reporter_handle VARCHAR(100) NOT NULL,
+    summary TEXT,
+    evidence_reference TEXT,
+    trust_score SMALLINT NOT NULL CHECK (trust_score >= 0 AND trust_score <= 100),
+    threat_level VARCHAR(32) NOT NULL,
+    validation_status VARCHAR(64) NOT NULL DEFAULT 'PENDING_REVIEW',
+    upvotes INT DEFAULT 0,
+    downvotes INT DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. On-Chain Attestations Table
+CREATE TABLE IF NOT EXISTS onchain_attestations (
+    id SERIAL PRIMARY KEY,
+    report_id VARCHAR(64) REFERENCES threat_reports(id) ON DELETE CASCADE,
+    target_hash VARCHAR(66) NOT NULL,
+    commitment_hash VARCHAR(66) NOT NULL,
+    evidence_ipfs_cid VARCHAR(128) NOT NULL,
+    contract_address VARCHAR(42) NOT NULL,
+    reporter_address VARCHAR(42) NOT NULL,
+    tx_hash VARCHAR(66) NOT NULL,
+    block_number BIGINT NOT NULL,
+    revision_count INT DEFAULT 0,
+    dispute_count INT DEFAULT 0,
+    attested_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Campaign Threat Clusters Table
+CREATE TABLE IF NOT EXISTS campaign_clusters (
+    cluster_id VARCHAR(64) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    threat_category VARCHAR(100) NOT NULL,
+    shared_asn VARCHAR(64),
+    shared_ip INET,
+    active_threat_level VARCHAR(32) DEFAULT 'CRITICAL',
+    first_seen TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    last_seen TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- High-Performance Indexes
+CREATE INDEX IF NOT EXISTS idx_threat_reports_domain ON threat_reports(sanitized_domain);
+CREATE INDEX IF NOT EXISTS idx_threat_reports_status ON threat_reports(validation_status);
+CREATE INDEX IF NOT EXISTS idx_attestations_commitment ON onchain_attestations(commitment_hash);
+      </div>
+    </div>
+
+    <!-- CHAPTER 3: MONGODB SCHEMAS -->
+    <div class="card">
+      <span class="badge">Document Model</span>
+      <h2>3. MongoDB Mongoose Schemas (server/src/db/mongoSchema.js)</h2>
+      <p style="font-size: 13px; color: #475569;">
+        Document database schema for unstructured, polymorphic STIX 2.1 cyber threat objects and attestation audit trails:
+      </p>
+      <div class="code-box">
+// Threat Report Schema Definition for STIX 2.1 & Community Reports
+export const ThreatReportSchemaDefinition = {
+  reportId: { type: String, required: true, unique: true, index: true },
+  targetUrl: { type: String, required: true },
+  domain: { type: String, required: true, index: true },
+  threatCategory: { type: String, required: true },
+  targetEntity: { type: String, required: true },
+  reporterHandle: { type: String, required: true },
+  trustScore: { type: Number, min: 0, max: 100, required: true },
+  threatLevel: { type: String, enum: ['SAFE', 'LOW', 'MODERATE', 'HIGH', 'CRITICAL'], required: true },
+  status: { type: String, default: 'PENDING_REVIEW', index: true },
+  tags: [{ type: String }],
+  stixBundle: { type: Object, default: {} }, // OASIS STIX 2.1 Package
+  onChainAttestation: {
+    targetHash: { type: String, required: true },
+    reportCommitmentHash: { type: String, required: true },
+    evidenceIpfsCid: { type: String, required: true },
+    contractAddress: { type: String },
+    txHash: { type: String },
+    blockNumber: { type: Number },
+    verifiableHistory: [{
+      event: String,
+      blockNumber: Number,
+      timestamp: Date,
+      commitmentHash: String,
+      actor: String
+    }]
+  },
+  votes: { upvotes: { type: Number, default: 0 }, downvotes: { type: Number, default: 0 } },
+  createdAt: { type: Date, default: Date.now, index: true }
+};
+      </div>
+    </div>
+
+    <!-- CHAPTER 4: REDIS CACHING ENGINE -->
+    <div class="card">
+      <span class="badge">Performance & Cache</span>
+      <h2>4. Redis Cache & Memory Fallback (server/src/db/redisCache.js)</h2>
+      <p style="font-size: 13px; color: #475569;">
+        High-throughput caching layer with automatic memory fallback:
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Cache Namespace</th>
+            <th>Key Pattern</th>
+            <th>TTL</th>
+            <th>Integration Point</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DNS Resolutions</strong></td>
+            <td><code>dns:{hostname}</code></td>
+            <td>300s (5 min)</td>
+            <td><code>server/src/engines/dnsEngine.js</code></td>
+          </tr>
+          <tr>
+            <td><strong>TLS Handshakes</strong></td>
+            <td><code>tls:{domain}:{port}</code></td>
+            <td>600s (10 min)</td>
+            <td><code>server/src/engines/certTrustEngine.js</code></td>
+          </tr>
+          <tr>
+            <td><strong>Threat Intel Feeds</strong></td>
+            <td><code>intel:{domain}</code></td>
+            <td>180s (3 min)</td>
+            <td><code>server/src/engines/intelEngine.js</code></td>
+          </tr>
+          <tr>
+            <td><strong>Rate Limiting</strong></td>
+            <td><code>rate:{ip}</code></td>
+            <td>60s (1 min)</td>
+            <td>Express Rate Limiting Middleware</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CHAPTER 5: IN-MEMORY GRAPH & ACTIVE STORE -->
+    <div class="card">
+      <span class="badge">Knowledge Graph</span>
+      <h2>5. In-Memory Graph & Threat Repository (threatStore.js)</h2>
+      <p style="font-size: 13px; color: #475569;">
+        The real-time threat graph links disparate user reports across shared autonomous systems (ASNs), server IPs, and weaponized payment endpoints:
+      </p>
+      <div class="code-box">
+// Core Graph Nodes Traversed in server/src/engines/correlationEngine.js:
+- Domain Node:      Target phishing or typosquatted website (e.g. sbi-yono-pan-kyc-update.top)
+- Autonomous Sys:   BGP AS20473 (Choopa / Vultr Bulletproof Transit)
+- Server Host IP:   149.28.18.232 (Colocated with 4 active banking phish kits)
+- Payment Node:     sbi-kyc-verify@oksbi (Mule UPI Virtual Payment Address)
+- RAT Tool Node:    AnyDesk Remote Desktop / TeamViewer QuickSupport APK
+
+// Active API Endpoints Connected to the Store:
+- GET  /api/community/reports  -> Retrieves verified incident reports with EAS proofs
+- POST /api/report             -> Ingests report, runs multi-source verification & anchors EAS hash
+- POST /api/community/vote     -> Updates consensus upvotes and downvotes
+- POST /api/dispute            -> Records dispute and updates verification status
+      </div>
+    </div>
+
+    <!-- CHAPTER 6: DOCKER COMPOSE PERSISTENCE -->
+    <div class="card">
+      <span class="badge">Infrastructure</span>
+      <h2>6. Production Docker Compose Topology (docker-compose.yml)</h2>
+      <p style="font-size: 13px; color: #475569;">
+        Fully isolated production container stack with persistent volume mounts:
+      </p>
+      <div class="code-box">
+services:
+  # 1. Full-Stack TrustMatrix Application
+  trustmatrix-app:
+    build: { context: ., dockerfile: Dockerfile }
+    ports: ["5000:5000"]
+    environment:
+      - DATABASE_URL=postgresql://trustuser:trustpass@trustmatrix-postgres:5432/trustmatrix_db
+      - REDIS_URL=redis://trustmatrix-redis:6379
+    depends_on: [trustmatrix-redis, trustmatrix-postgres]
+
+  # 2. Redis Caching Service
+  trustmatrix-redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    volumes: [redis-data:/data]
+
+  # 3. PostgreSQL Relational Database Service
+  trustmatrix-postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: trustuser
+      POSTGRES_PASSWORD: trustpass
+      POSTGRES_DB: trustmatrix_db
+    ports: ["5432:5432"]
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./server/src/db/schema.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  redis-data:
+  pg-data:
+      </div>
+    </div>
+
+    <!-- CHAPTER 7: SECTION 9 PRIVACY ENFORCEMENT -->
+    <div class="card">
+      <span class="badge">Privacy Axiom</span>
+      <h2>7. Section 9 Privacy & Zero On-Chain PII Guarantee</h2>
+      <p style="font-size: 13px; color: #475569;">
+        Under Section 9 of the HackMatrix specification, <em>"The security platform must not become a security risk itself"</em>:
+      </p>
+      <ul style="font-size: 13px; color: #334155;">
+        <li><strong>No Passwords or OTPs:</strong> The database models strictly disallow storing raw passwords, OTP codes, banking credentials, or seed phrases.</li>
+        <li><strong>Cryptographic Commitments Only:</strong> The public blockchain receives only irreversible SHA-256 hashes (<code>reportCommitmentHash</code>) to guarantee victim privacy.</li>
+        <li><strong>PII Scrubbing:</strong> Any incidental user phone numbers or emails extracted during phishing analysis are sanitized before database storage.</li>
+      </ul>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #64748b;">
+      TrustMatrix AI Nexus • Certified Database Architecture & Data Layer Technical Documentation
+    </div>
+  </div>
+</body>
+</html>`;
+
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Content-Disposition', 'inline; filename="TrustMatrix-Database-Architecture-Docs.html"');
+  res.send(dbDocsHtml);
+});
+
 export default router;
