@@ -315,6 +315,74 @@ flowchart LR
 
 ---
 
+## ⛓️ Module 6: Decentralized Threat Intelligence
+
+Web3 provides a decentralized mechanism for transparent, tamper-evident sharing and verification of security intelligence across organizations without reliance on a single centralized threat authority.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Analyst as Security Analyst / User
+    participant Client as TrustMatrix Client UI
+    participant PrivateStore as Off-Chain Storage (Private / IPFS)
+    participant Solidity as TrustMatrixRegistry.sol (Ethereum / Sepolia)
+    actor Auditor as Third-Party Auditor / Peer SOC
+
+    Analyst->>Client: Submit Threat Report (URL, Evidence, Incident Summary)
+    Note over Client,PrivateStore: Privacy Rule: Raw URLs & PII remain strictly OFF-CHAIN
+    Client->>PrivateStore: Store Raw Incident Data & Evidence
+    PrivateStore-->>Client: Returns IPFS CID (bafy...)
+    
+    Client->>Client: Compute Cryptographic Commitment Hash (SHA-256)
+    Client->>Solidity: recordAttestation(targetDomain, commitmentHash, ipfsCid, PENDING_REVIEW)
+    Solidity-->>Client: Emits AttestationRecorded(txHash, blockHeight, verifiableHistory)
+
+    Note over Auditor,Solidity: Independent Verification & Provenance Check
+    Auditor->>Solidity: getAttestation(targetHash)
+    Solidity-->>Auditor: Returns onChainCommitmentHash & History
+    Auditor->>PrivateStore: Fetch Stored Report by IPFS CID
+    Auditor->>Auditor: Compute local SHA-256(fetchedReport)
+    Auditor->>Auditor: Compare: localHash === onChainCommitmentHash (Tamper Check)
+    
+    opt Report Contested or Revoked
+        Auditor->>Solidity: disputeReport(targetHash, reason)
+        Solidity-->>Solidity: Update status to DISPUTED (History Appended, Provenance Intact)
+    end
+```
+
+### 1. User Threat Report Submission Components
+When submitting threat intelligence, reports incorporate 5 standardized components:
+* 🌐 **Suspicious URL or Domain Indicators**: Canonicalized, sanitized domain strings (preventing token or credential leakage).
+* 🎯 **Reported Phishing Campaigns**: Campaign attribution (e.g. *SBI YONO Credential Phish*, *Parivahan Traffic Fine Fraud*).
+* 📝 **Security Incident Summaries**: Forensic synopsis detailing observed behavior, money mule accounts, and harvested fields.
+* 🔐 **Cryptographic Fingerprints of Reports**: Pre-computed SHA-256 hash commitments anchoring evidence integrity.
+* 📎 **Supporting Evidence References**: Cross-verifiable pointers including URLhaus incident IDs, CT Log SCT proofs, or IPFS CIDs.
+
+### 2. Blockchain Integration & Smart Contract Capabilities (`TrustMatrixRegistry.sol`)
+* **Recording Cryptographic Commitments**: Stores fixed 32-byte `reportCommitmentHash` values on-chain. Any subsequent modification to the off-chain report causes an immediate hash mismatch.
+* **Maintaining a Verifiable Reporting History**: Implements an immutable, append-only history tracking:
+  - Initial Attestation (`INITIAL_REGISTRATION`)
+  - Author Revisions (`REPORT_REVISION`)
+  - Peer Challenges (`REPORT_DISPUTED`)
+  - Governance Resolutions (`STATUS_UPDATE`)
+* **Independently Checking Report Integrity**: Any client or third-party auditor can query `verifyReportIntegrity(reportData, onChainAttestation)` to independently calculate the cryptographic hash and confirm whether data is intact or tampered.
+* **Tracking Revisions, Disputes, and Validation Status**: State machine tracking `PENDING_REVIEW` $\to$ `VERIFIED_MULTI_SOURCE` $\to$ `DISPUTED` $\to$ `RESOLVED_REVOKED`. Disputes never delete earlier provenance; they append verifiable audit trails.
+* **Establishing Transparent Provenance**: Binds reports to reporter wallet addresses (`0x...`), block numbers, and Ethereum network timestamps.
+
+### ⚖️ The Two Fundamental Module 6 Axioms
+
+> 🔒 **The Privacy Boundary Rule**:
+> *"Raw URLs, personal information, email content, passwords, and sensitive user data must remain off-chain."*
+>
+> Public blockchains are permanently visible and immutable. Storing raw target URLs (which frequently contain victim email parameters, reset tokens, or session IDs) or message text on-chain constitutes a catastrophic data privacy violation. TrustMatrix enforces a strict boundary: raw data stays in off-chain private storage or encrypted IPFS; only sanitized domain identifiers, cryptographic commitment hashes, and IPFS CIDs are anchored to the blockchain.
+
+> ⚖️ **The Epistemological Integrity Axiom**:
+> *"A blockchain record establishes the integrity and history of a report, not the truth of the report itself."*
+>
+> A transaction on Ethereum or Polygon guarantees that a specific piece of data existed at a precise block time and was not altered since. It does *not* prove that the reporter told the truth. To solve the "Garbage In, Immutable Garbage Out" oracle problem, TrustMatrix pairs on-chain provenance with off-chain multi-source feed consensus (PhishTank, URLhaus, Spamhaus) and decentralized community review.
+
+---
+
 ## 🚀 Quickstart Guide
 ```bash
 npm run dev

@@ -1,6 +1,7 @@
 import express from 'express';
 import { threatStore } from '../data/threatStore.js';
 import { KNOWN_THREAT_CAMPAIGNS } from '../engines/correlationEngine.js';
+import { generateOnChainAttestation, verifyReportIntegrity, recordReportDispute } from '../engines/web3Engine.js';
 
 const router = express.Router();
 
@@ -10,6 +11,35 @@ router.get('/campaigns', (req, res) => {
     success: true,
     count: KNOWN_THREAT_CAMPAIGNS.length,
     campaigns: KNOWN_THREAT_CAMPAIGNS
+  });
+});
+
+// Module 6: Verify Report Integrity independently against on-chain cryptographic commitment
+router.post('/verify-integrity', (req, res) => {
+  const { reportData, onChainAttestation } = req.body;
+  if (!onChainAttestation) {
+    return res.status(400).json({ success: false, error: 'onChainAttestation is required for independent verification' });
+  }
+
+  const verificationResult = verifyReportIntegrity(reportData || {}, onChainAttestation);
+  res.json({
+    success: true,
+    ...verificationResult
+  });
+});
+
+// Module 6: Submit a Dispute against an existing threat attestation
+router.post('/dispute', (req, res) => {
+  const { targetHash, disputeReason, disputantAddress } = req.body;
+  if (!targetHash || !disputeReason) {
+    return res.status(400).json({ success: false, error: 'targetHash and disputeReason are required' });
+  }
+
+  const disputeResult = recordReportDispute(targetHash, disputeReason, disputantAddress);
+  res.json({
+    success: true,
+    message: 'Dispute recorded on-chain in verifiable reporting history.',
+    dispute: disputeResult
   });
 });
 

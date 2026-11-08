@@ -412,6 +412,121 @@ export default function WorkingMechanism() {
           </div>
         </div>
       </div>
+
+      {/* Module 6: Decentralized Threat Intelligence Architecture */}
+      <div className="p-6 rounded-2xl bg-[#0b2020] border border-[#00f2c3]/40 shadow-card-dark space-y-4">
+        <div className="flex items-center space-x-3">
+          <div className="p-2.5 rounded-xl bg-[#00f2c3]/15 border border-[#00f2c3]/40 text-[#00f2c3]">
+            <Blocks className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <h3 className="font-bold text-white text-base">Module 6: Decentralized Threat Intelligence</h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00f2c3]/20 text-[#00f2c3] border border-[#00f2c3]/40 font-bold">
+                Web3 Provenance & Ledger
+              </span>
+            </div>
+            <p className="text-xs text-[#80a4a2] font-mono">Transparent, tamper-evident sharing, independent integrity checking, and dispute tracking</p>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl bg-[#061414] border border-[#153a3a] text-xs text-[#a1c4c2] leading-relaxed space-y-2 font-mono">
+          <p>
+            <strong className="text-white">Tamper-Evident Security Intelligence:</strong> Web3 provides an immutable, transparent mechanism for sharing and independently verifying threat intelligence across distributed organizations and security researchers without single points of censorship or failure.
+          </p>
+        </div>
+
+        {/* The Two Mandatory Module 6 Boundaries */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono">
+          <div className="p-3.5 rounded-xl bg-[#0e2727] border border-[#00f2c3]/40 space-y-1.5">
+            <div className="flex items-center space-x-2 text-[#00f2c3] font-bold text-[11px]">
+              <Lock className="w-4 h-4 shrink-0" />
+              <span>Off-Chain Privacy Boundary Rule</span>
+            </div>
+            <p className="text-white italic text-[11px]">
+              "Raw URLs, personal information, email content, passwords, and sensitive user data must remain off-chain."
+            </p>
+            <p className="text-[#a1c4c2] text-[10px] leading-relaxed">
+              Full URLs with sensitive tokens, private credentials, and PII are never pushed to public ledgers. Only cryptographic commitments (SHA-256 hashes), sanitized domains, and IPFS evidence CIDs are recorded on-chain.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-[#0e2727] border border-[#f59e0b]/40 space-y-1.5">
+            <div className="flex items-center space-x-2 text-[#f59e0b] font-bold text-[11px]">
+              <Scale className="w-4 h-4 shrink-0" />
+              <span>Epistemological Integrity Axiom</span>
+            </div>
+            <p className="text-white italic text-[11px]">
+              "A blockchain record establishes the integrity and history of a report, not the truth of the report itself."
+            </p>
+            <p className="text-[#a1c4c2] text-[10px] leading-relaxed">
+              The on-chain ledger proves that a specific report existed at a specific block height without alteration. Truthfulness and validation status are derived through multi-source consensus, community review, and dispute resolution.
+            </p>
+          </div>
+        </div>
+
+        {/* 5 User Submission Components */}
+        <div className="space-y-2 text-xs font-mono">
+          <span className="text-white font-bold block">1. User Threat Report Components:</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">Suspicious URL / Domain</span>
+              <span className="text-[10px] text-[#80a4a2]">Sanitized domain indicator (e.g. sbi-yono-kyc.top) protected from leaking query secrets.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">Reported Campaign</span>
+              <span className="text-[10px] text-[#80a4a2]">Attributed fraud syndicate or modus operandi (e.g. YONO Phishing Kit V4).</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">Incident Summary</span>
+              <span className="text-[10px] text-[#80a4a2]">Observed attack mechanics, form harvesting, money mule handles, or malware drop.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">Cryptographic Fingerprint</span>
+              <span className="text-[10px] text-[#80a4a2]">SHA-256 report commitment hash guaranteeing evidence cannot be silently modified.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">Supporting Evidence</span>
+              <span className="text-[10px] text-[#80a4a2]">External citations: URLhaus ID, CT Log SCT proofs, VirusTotal hashes, or IPFS CIDs.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#00f2c3] font-bold block mb-0.5">Attestation Signature</span>
+              <span className="text-[10px] text-[#80a4a2]">Analyst wallet public key signing the record for transparent provenance.</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 5 Blockchain Integration Capabilities */}
+        <div className="space-y-2 text-xs font-mono">
+          <span className="text-white font-bold block">2. Smart Contract Capabilities (TrustMatrixRegistry.sol):</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#2dd4bf] font-bold block mb-0.5">1. Cryptographic Commitments</span>
+              <span className="text-[10px] text-[#80a4a2]">Stores keccak256/SHA-256 report commitments directly in smart contract state.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#2dd4bf] font-bold block mb-0.5">2. Verifiable Reporting History</span>
+              <span className="text-[10px] text-[#80a4a2]">Maintains an append-only timeline of initial registrations, revisions, and status updates.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#2dd4bf] font-bold block mb-0.5">3. Independent Integrity Check</span>
+              <span className="text-[10px] text-[#80a4a2]">Any client can re-hash local report data and verify exact equality against the on-chain hash.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#2dd4bf] font-bold block mb-0.5">4. Revisions & Dispute Tracking</span>
+              <span className="text-[10px] text-[#80a4a2]">Enables authorized updates and transparent dispute logging without erasing prior provenance.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#2dd4bf] font-bold block mb-0.5">5. Transparent Provenance</span>
+              <span className="text-[10px] text-[#80a4a2]">Cryptographically links reports to submitter addresses, block heights, and transaction hashes.</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+              <span className="text-[#2dd4bf] font-bold block mb-0.5">6. Validation Status Lifecycle</span>
+              <span className="text-[10px] text-[#80a4a2]">Tracks lifecycle: PENDING_REVIEW &rarr; VERIFIED_MULTI_SOURCE &rarr; DISPUTED &rarr; RESOLVED.</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

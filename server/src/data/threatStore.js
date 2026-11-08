@@ -1,5 +1,6 @@
 // Collaborative Threat Intelligence Repository & In-Memory Store
 import { verifyThreatMultiSource } from '../engines/intelVerificationEngine.js';
+import { generateOnChainAttestation } from '../engines/web3Engine.js';
 
 export const INITIAL_COMMUNITY_REPORTS = [
   {
@@ -214,7 +215,16 @@ export const INITIAL_COMMUNITY_REPORTS = [
 
 class ThreatStore {
   constructor() {
-    this.reports = [...INITIAL_COMMUNITY_REPORTS];
+    this.reports = INITIAL_COMMUNITY_REPORTS.map(r => ({
+      ...r,
+      onChainAttestation: r.onChainAttestation || generateOnChainAttestation(
+        r.domain,
+        r.status.includes('MALICIOUS') ? 15 : 50,
+        r.threatCategory,
+        [r.targetUrl, r.summary],
+        { targetEntity: r.targetEntity, summary: r.summary }
+      )
+    }));
   }
 
   getAllReports() {
@@ -250,7 +260,14 @@ class ThreatStore {
       iocList: [
         { type: 'url', value: reportData.targetUrl },
         { type: 'verification_proof', value: multiVerification.cryptographicProofHash }
-      ]
+      ],
+      onChainAttestation: generateOnChainAttestation(
+        domain,
+        multiVerification.verified ? 10 : 45,
+        reportData.threatCategory || 'Phishing',
+        [reportData.targetUrl, reportData.summary],
+        { targetEntity: reportData.targetEntity, summary: reportData.summary }
+      )
     };
     this.reports.unshift(newReport);
     return newReport;
