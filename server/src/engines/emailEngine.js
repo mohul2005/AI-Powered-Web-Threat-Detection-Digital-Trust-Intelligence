@@ -1,12 +1,8 @@
 import { analyzePhishing } from './phishingEngine.js';
+import { analyzeSocialEngineering } from './scamEngine.js';
 
 // AI-Powered Email Threat & Phishing Investigation Engine
-
-const URGENCY_TRIGGERS = [
-  'account suspended', 'immediate action required', 'wire transfer', 'payroll update',
-  'invoice overdue', 'password expired', 'unauthorized login detected', 'tax refund',
-  'verify identity within 24 hours', 'kyc pending', 'final notice', 'fund transfer'
-];
+// Implements Section C: Online Scams, CEO Fraud, Invoice Phish, and Deceptive Emails
 
 export function analyzeEmailThreat(emailContent) {
   if (!emailContent || emailContent.trim().length === 0) {
@@ -19,30 +15,11 @@ export function analyzeEmailThreat(emailContent) {
     };
   }
 
-  const text = emailContent.toLowerCase();
-  const evidence = [];
-  let riskPenalty = 0;
-  let impersonatedBrand = null;
+  // 1. Run Core Social Engineering Forensic Engine
+  const scamAnalysis = analyzeSocialEngineering(emailContent);
 
-  // 1. Extract embedded links from email text
-  const urlRegex = /(https?:\/\/[^\s"'<>]+)/gi;
-  const extractedUrls = emailContent.match(urlRegex) || [];
-
-  let highestUrlRisk = null;
-  if (extractedUrls.length > 0) {
-    evidence.push(`Embedded Links Found: Identified ${extractedUrls.length} external URL(s) inside message body`);
-    for (const link of extractedUrls.slice(0, 3)) {
-      const urlAnalysis = analyzePhishing(link);
-      if (urlAnalysis.score < 40) {
-        highestUrlRisk = { url: link, ...urlAnalysis };
-        evidence.push(`Malicious Hyperlink Detected: Embedded link '${link}' was identified as deceptive (${urlAnalysis.verdict})`);
-        riskPenalty += 45;
-        break;
-      }
-    }
-  } else {
-    evidence.push('Hyperlink Inspection: No external URLs detected in email body');
-  }
+  const evidence = [...scamAnalysis.evidenceFindings];
+  let headerPenalty = 0;
 
   // 2. Sender Domain & Header Spoofing Checks (From vs Reply-To)
   const fromMatch = emailContent.match(/From:\s*([^<\n\r]+<)?([^>\n\r]+)>?/i);
@@ -55,56 +32,52 @@ export function analyzeEmailThreat(emailContent) {
     const replyToDomain = replyToAddress.split('@')[1];
 
     if (fromDomain && replyToDomain && fromDomain !== replyToDomain) {
-      evidence.push(`Header Discrepancy (CEO/Phish Spoof): Sender From header '${fromDomain}' does not match Reply-To header '${replyToDomain}'`);
-      riskPenalty += 40;
+      evidence.unshift(`Header Discrepancy (CEO/Sender Spoof): Sender From header '${fromDomain}' does not match Reply-To header '${replyToDomain}'`);
+      headerPenalty += 40;
     }
   }
 
-  // 3. Social Engineering & Urgency Cues
-  const matchedUrgency = URGENCY_TRIGGERS.filter(trigger => text.includes(trigger));
-  if (matchedUrgency.length > 0) {
-    evidence.push(`Psychological Urgency Lures: Detected coercion tactics [${matchedUrgency.slice(0, 3).join(', ')}] designed to induce panic`);
-    riskPenalty += Math.min(30, matchedUrgency.length * 10);
+  // 3. Extract Embedded Links
+  const urlRegex = /(https?:\/\/[^\s"'<>]+)/gi;
+  const extractedUrls = emailContent.match(urlRegex) || [];
+  let highestUrlRisk = null;
+
+  if (extractedUrls.length > 0) {
+    for (const link of extractedUrls.slice(0, 3)) {
+      const urlAnalysis = analyzePhishing(link);
+      if (urlAnalysis.score < 40) {
+        highestUrlRisk = { url: link, ...urlAnalysis };
+        evidence.unshift(`Malicious Hyperlink Detected: Embedded link '${link}' was identified as deceptive (${urlAnalysis.verdict})`);
+        headerPenalty += 40;
+        break;
+      }
+    }
   }
 
-  // 4. Impersonated Organization Detection
-  if (text.includes('paypal')) impersonatedBrand = 'PayPal';
-  else if (text.includes('state bank') || text.includes('sbi')) impersonatedBrand = 'State Bank of India';
-  else if (text.includes('microsoft') || text.includes('office 365')) impersonatedBrand = 'Microsoft 365';
-  else if (text.includes('netflix')) impersonatedBrand = 'Netflix';
-  else if (text.includes('income tax')) impersonatedBrand = 'Income Tax Department';
-
-  if (impersonatedBrand && riskPenalty > 20) {
-    evidence.push(`Brand Impersonation: Content mimics official communications from '${impersonatedBrand}'`);
-  }
-
-  const score = Math.max(5, Math.min(100, 100 - riskPenalty));
+  const finalScore = Math.max(5, Math.min(100, scamAnalysis.scamScore - headerPenalty));
 
   let threatLevel = 'SAFE';
-  if (score < 30) threatLevel = 'CRITICAL';
-  else if (score < 60) threatLevel = 'HIGH';
-  else if (score < 80) threatLevel = 'MODERATE';
+  if (finalScore < 25) threatLevel = 'CRITICAL';
+  else if (finalScore < 55) threatLevel = 'HIGH';
+  else if (finalScore < 75) threatLevel = 'MODERATE';
 
-  // Plain-English Actionable Guidance
-  const actionableGuidance = [];
+  const actionableGuidance = [...scamAnalysis.actionableGuidance];
   if (threatLevel === 'CRITICAL' || threatLevel === 'HIGH') {
-    actionableGuidance.push('DO NOT click any links, open attachments, or reply to this email.');
-    actionableGuidance.push('Verify the sender directly by visiting the official website through a fresh browser tab.');
-    actionableGuidance.push('Forward this email as an attachment to your security operations team or abuse@cert-in.org.in.');
-  } else if (threatLevel === 'MODERATE') {
-    actionableGuidance.push('Exercise caution. Verify the sender address and inspect any requested actions before replying.');
-  } else {
-    actionableGuidance.push('No obvious social engineering triggers or deceptive links were identified.');
+    actionableGuidance.unshift('DO NOT click any links, download attachments, or reply to this email.');
+    actionableGuidance.unshift('Inspect the sender address carefully in your email client header view.');
   }
 
   return {
     type: 'EMAIL',
-    trustScore: score,
+    trustScore: finalScore,
     threatLevel,
-    impersonatedBrand,
-    extractedUrls,
-    highestUrlRisk,
+    primaryCategory: scamAnalysis.primaryCategory,
+    detectedCategories: scamAnalysis.detectedCategories,
+    indicators: scamAnalysis.indicators,
+    plainEnglishAssessment: scamAnalysis.plainEnglishAssessment,
     evidence,
-    actionableGuidance
+    actionableGuidance,
+    extractedUrls,
+    highestUrlRisk
   };
 }

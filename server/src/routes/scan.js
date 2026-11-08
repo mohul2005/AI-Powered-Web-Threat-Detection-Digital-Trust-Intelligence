@@ -112,7 +112,8 @@ router.post('/scan', async (req, res) => {
         collaborativeIntel: { reputationScore: emailResult.trustScore, communityVotes: { malicious: emailResult.trustScore < 50 ? 84 : 1, benign: 0 }, matchingThreatClusters: [], iocs: emailResult.extractedUrls },
         web3Attestation: onChainAttestation,
         evidenceDossier: emailResult.evidence.map((ev, i) => ({ title: `Finding ${i+1}`, detail: ev })),
-        actionableGuidance: emailResult.actionableGuidance
+        actionableGuidance: emailResult.actionableGuidance,
+        scamForensics: emailResult
       }
     });
   }
@@ -161,7 +162,8 @@ router.post('/scan', async (req, res) => {
         collaborativeIntel: { reputationScore: messageResult.trustScore, communityVotes: { malicious: messageResult.trustScore < 50 ? 120 : 0, benign: 0 }, matchingThreatClusters: [], iocs: messageResult.extractedUrls },
         web3Attestation: onChainAttestation,
         evidenceDossier: messageResult.evidence.map((ev, i) => ({ title: `Indicator ${i+1}`, detail: ev })),
-        actionableGuidance: messageResult.actionableGuidance
+        actionableGuidance: messageResult.actionableGuidance,
+        scamForensics: messageResult
       }
     });
   }

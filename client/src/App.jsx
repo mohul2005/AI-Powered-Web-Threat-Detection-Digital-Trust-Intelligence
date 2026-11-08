@@ -9,6 +9,7 @@ import PhishingCard from './components/PhishingCard.jsx';
 import CertTrustCard from './components/CertTrustCard.jsx';
 import WebSecCard from './components/WebSecCard.jsx';
 import ThreatGraphCard from './components/ThreatGraphCard.jsx';
+import ScamForensicsCard from './components/ScamForensicsCard.jsx';
 import CollaborativeHub from './components/CollaborativeHub.jsx';
 import WorkingMechanism from './components/WorkingMechanism.jsx';
 import ValidationLab from './components/ValidationLab.jsx';
@@ -168,6 +169,26 @@ export default function App() {
             {/* Overall Digital Trust Gauge */}
             {scanResult && (
               <TrustGauge result={scanResult} scenarioMeta={scenarioMeta} />
+            )}
+
+            {/* Section C: Online Scams & Social Engineering Forensics (For Messages, Emails & Scams) */}
+            {scanResult && (scanResult.scamForensics || scanMode === 'message' || scanMode === 'email' || scanResult.type === 'MESSAGE' || scanResult.type === 'EMAIL') && (
+              <ScamForensicsCard
+                scamForensics={scanResult.scamForensics || {
+                  scamScore: scanResult.trustScore,
+                  threatLevel: scanResult.threatLevel,
+                  plainEnglishAssessment: scanResult.evidenceDossier ? scanResult.evidenceDossier[0]?.detail : null,
+                  indicators: {
+                    suspiciousLanguage: { detected: true, findings: scanResult.aiPhishing?.signals || [] },
+                    impersonation: { detected: !!scanResult.aiPhishing?.impersonatedBrand, entity: scanResult.aiPhishing?.impersonatedBrand, findings: [] },
+                    unusualPayments: { detected: false, findings: [] },
+                    misleadingLinks: { detected: false, findings: [] },
+                    sensitiveInfoHarvest: { detected: false, findings: [] },
+                    remoteAccessTools: { detected: scanResult.url?.toLowerCase().includes('anydesk'), findings: ['AnyDesk remote control tool requested'] }
+                  }
+                }}
+                type={scanMode}
+              />
             )}
 
             {/* Evidence-Based Findings & Actionable User Guidance */}

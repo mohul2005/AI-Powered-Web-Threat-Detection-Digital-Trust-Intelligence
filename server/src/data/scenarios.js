@@ -483,6 +483,219 @@ export const PRECONFIGURED_SCENARIOS = [
     }
   },
   {
+    id: 'tech-support-anydesk-scam',
+    title: 'Tech Support Scam: Windows Defender Alert & AnyDesk Remote Access',
+    category: 'Tech Support & Remote Access',
+    type: 'message',
+    targetUrl: 'CRITICAL ALERT from Microsoft Windows Defender: Trojan:Win32/Zeus virus detected on your PC. System security compromised. Call Toll-Free Helpline: 1800-419-0122 immediately or install AnyDesk for certified technician support.',
+    description: 'Simulates a technical support deception tricking users into believing their computer is infected with a Trojan, coercing them into calling a rogue call center and installing AnyDesk remote-access software.',
+    severity: 'CRITICAL',
+    expectedVerdict: 'CONFIRMED_TECH_SUPPORT_SCAM',
+    mockData: {
+      type: 'MESSAGE',
+      url: 'CRITICAL ALERT from Microsoft Windows Defender: Trojan:Win32/Zeus...',
+      domain: 'Tech Support Fraud',
+      trustScore: 6,
+      threatLevel: 'CRITICAL',
+      aiPhishing: {
+        score: 5,
+        verdict: 'CONFIRMED_TECH_SUPPORT_SCAM',
+        impersonatedBrand: 'Microsoft Windows Defender',
+        officialBrandDomain: 'microsoft.com',
+        identityMismatch: true,
+        signals: [
+          'High-threat coercion: False virus infection alert claiming "Trojan:Win32/Zeus"',
+          'Remote desktop exploitation: Directs victim to install AnyDesk remote control software',
+          'Rogue call center: Demands immediate call to fake toll-free helpline 1800-419-0122'
+        ],
+        entropy: 3.82,
+        punycodeDetected: false,
+        formFields: [],
+        embeddedRedirects: [],
+        preClickRecommendation: '🛑 DO NOT CALL / DO NOT INSTALL: High-risk tech support scam seeking remote control of your computer.'
+      },
+      certTrust: { score: 100, verdict: 'N/A_SMS', issuer: { commonName: 'Direct Communication' }, keyDetails: { algorithm: 'N/A', keySize: 0 }, ctLogs: { present: true, status: 'N/A' }, chain: [] },
+      webSec: { score: 100, grade: 'A', headers: { hsts: { status: 'PRESENT' } }, cookies: [] },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: [] },
+      collaborativeIntel: {
+        reputationScore: 4,
+        communityVotes: { malicious: 680, benign: 0 },
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-TECH-SUPPORT-SYNDICATE-09', type: 'AnyDesk Remote Hijacking Syndicate', domainsCount: 140, sharedAsn: 'N/A' }],
+        iocs: ['HELPLINE: 1800-419-0122', 'TOOL: AnyDesk Remote Access']
+      },
+      web3Attestation: {
+        contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
+        network: 'Ethereum Sepolia / Polygon POS',
+        targetHash: '0x9991928374918273948172938471293847192837491827394817293847129384',
+        txHash: '0xaaa8192837491827394817293847129384719283749182739481729384712938',
+        ipfsCid: 'bafybeih99982734981729384712938471928374918273948172938471quvyku',
+        blockNumber: 21094901,
+        attestationStandard: 'EAS-THREAT-INTEL-EIP712',
+        status: 'ATTESTED_ON_CHAIN'
+      },
+      evidenceDossier: [
+        { title: 'Remote Access Threat', detail: 'Instructs victim to install AnyDesk, granting scammers unrestricted remote keyboard and file control.' },
+        { title: 'Microsoft Support Impersonation', detail: 'Microsoft never sends text popups demanding phone calls or third-party remote software installation.' }
+      ],
+      actionableGuidance: [
+        'DO NOT call the number or install AnyDesk / TeamViewer.',
+        'If already installed, disconnect from Wi-Fi immediately and uninstall the remote desktop application.',
+        'Report the rogue helpline to 1930 / cybercrime.gov.in.'
+      ],
+      scamForensics: {
+        scamScore: 6,
+        threatLevel: 'CRITICAL',
+        primaryCategory: { id: 'TECH_SUPPORT_REMOTE_ACCESS', title: 'Fake Tech Support & Remote-Access Scam' },
+        indicators: {
+          suspiciousLanguage: { detected: true, findings: ['False virus infection alert claiming "Trojan:Win32/Zeus" to induce severe panic.'] },
+          impersonation: { detected: true, entity: 'Microsoft Windows Defender', findings: ['Impersonates official Microsoft Windows security alerts.'] },
+          unusualPayments: { detected: false, findings: [] },
+          misleadingLinks: { detected: false, findings: [] },
+          sensitiveInfoHarvest: { detected: false, findings: [] },
+          remoteAccessTools: { detected: true, findings: ['Instructs victim to install AnyDesk remote access software to hijack screen and files.'] }
+        },
+        plainEnglishAssessment: 'CRITICAL REMOTE ACCESS SCAM: The alert is entirely fraudulent. Scammers use scareware to convince you that your PC is infected, directing you to install AnyDesk so they can remotely compromise your device.'
+      }
+    }
+  },
+  {
+    id: 'kbc-lottery-prize-scam',
+    title: 'Prize & Giveaway Fraud: KBC Lucky Draw ₹25 Lakh WhatsApp Lottery',
+    category: 'Giveaway & Prize Fraud',
+    type: 'message',
+    targetUrl: 'Dear Customer, Congratulations! Your mobile number has won ₹25,00,000 cash prize in KBC All India Lucky Draw 2026. Deposit refundable tax fee of ₹12,500 via UPI to Manager Rajesh Sharma to release funds: http://bit.ly/kbc-prize-claim-2026',
+    description: 'Impersonates Kaun Banega Crorepati (KBC) lottery. Informs victims their phone number won a ₹25 lakh cash award, demanding an upfront "refundable registration tax" via UPI.',
+    severity: 'CRITICAL',
+    expectedVerdict: 'CONFIRMED_ADVANCE_FEE_FRAUD',
+    mockData: {
+      type: 'MESSAGE',
+      url: 'Dear Customer, Congratulations! Your mobile number has won ₹25,00,000...',
+      domain: 'KBC Lottery Syndicate',
+      trustScore: 7,
+      threatLevel: 'CRITICAL',
+      aiPhishing: {
+        score: 6,
+        verdict: 'CONFIRMED_ADVANCE_FEE_FRAUD',
+        impersonatedBrand: 'KBC All India Lucky Draw',
+        officialBrandDomain: 'sonyliv.com',
+        identityMismatch: true,
+        signals: [
+          'Advance Fee Fraud: Mandates upfront ₹12,500 "refundable tax fee" to release nonexistent prize',
+          'Fake lottery notification: Unsolicited prize claiming ₹25,00,000 lottery win',
+          'Shortened tracking link: Obfuscates destination using bit.ly/kbc-prize-claim-2026'
+        ],
+        entropy: 3.91,
+        punycodeDetected: false,
+        formFields: [],
+        embeddedRedirects: [],
+        preClickRecommendation: '🛑 DO NOT OPEN / DO NOT PAY: Advance fee fraud stealing upfront registration deposits.'
+      },
+      certTrust: { score: 100, verdict: 'N/A_SMS', issuer: { commonName: 'Telecom SMS' }, keyDetails: { algorithm: 'N/A', keySize: 0 }, ctLogs: { present: true, status: 'N/A' }, chain: [] },
+      webSec: { score: 100, grade: 'A', headers: { hsts: { status: 'PRESENT' } }, cookies: [] },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: [] },
+      collaborativeIntel: {
+        reputationScore: 5,
+        communityVotes: { malicious: 890, benign: 0 },
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-KBC-LOTTERY-FRAUD-55', type: 'KBC Advance Fee Syndicate', domainsCount: 220, sharedAsn: 'N/A' }],
+        iocs: ['SHORTLINK: bit.ly/kbc-prize-claim-2026', 'UPI: kbcmanager-tax@apl']
+      },
+      web3Attestation: {
+        contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
+        network: 'Ethereum Sepolia / Polygon POS',
+        targetHash: '0xbbb1928374918273948172938471293847192837491827394817293847129384',
+        txHash: '0xccc8192837491827394817293847129384719283749182739481729384712938',
+        ipfsCid: 'bafybeihbbb82734981729384712938471928374918273948172938471quvyku',
+        blockNumber: 21094902,
+        attestationStandard: 'EAS-THREAT-INTEL-EIP712',
+        status: 'ATTESTED_ON_CHAIN'
+      },
+      evidenceDossier: [
+        { title: 'Advance Fee Fraud', detail: 'Demands ₹12,500 advance deposit via personal UPI ID to release fictitious lottery winnings.' },
+        { title: 'Unsolicited Prize Lure', detail: 'You cannot win a lottery you never purchased a ticket for.' }
+      ],
+      actionableGuidance: [
+        'NEVER pay money to claim a prize or lottery. Legitimate contests deduct applicable tax at source (TDS).',
+        'Delete and block the message immediately.',
+        'Forward the sender number to the Department of Telecommunications Chakshu portal (sancharsaathi.gov.in).'
+      ],
+      scamForensics: {
+        scamScore: 7,
+        threatLevel: 'CRITICAL',
+        primaryCategory: { id: 'FAKE_GIVEAWAY_PRIZE', title: 'Fake Giveaway & Prize Notification' },
+        indicators: {
+          suspiciousLanguage: { detected: true, findings: ['Unsolicited prize claiming ₹25,00,000 lottery win without entering a contest.'] },
+          impersonation: { detected: true, entity: 'KBC All India Lucky Draw', findings: ['Impersonates Kaun Banega Crorepati TV franchise.'] },
+          unusualPayments: { detected: true, findings: ['Demands ₹12,500 advance "refundable tax deposit" via personal UPI ID.'] },
+          misleadingLinks: { detected: true, findings: ['Shortened link bit.ly/kbc-prize-claim-2026 hides actual destination.'] },
+          sensitiveInfoHarvest: { detected: false, findings: [] },
+          remoteAccessTools: { detected: false, findings: [] }
+        },
+        plainEnglishAssessment: 'CRITICAL ADVANCE-FEE LOTTERY SCAM: You cannot win a lottery you never bought a ticket for. Fraudsters demand upfront processing taxes to steal your money.'
+      }
+    }
+  },
+  {
+    id: 'crypto-investment-roi-scam',
+    title: 'Investment Scam: Guaranteed 500% Weekly Crypto ROI & Cloud Mining Fraud',
+    category: 'Investment & Cryptocurrency Scams',
+    type: 'url',
+    targetUrl: 'https://vip-binance-crypto-roi.top/deposit',
+    description: 'Promotes an exclusive VIP cryptocurrency investment portal promising 100% guaranteed 500% weekly ROI with zero risk, routing USDT deposits directly into scammer wallets.',
+    severity: 'CRITICAL',
+    expectedVerdict: 'CONFIRMED_CRYPTO_INVESTMENT_SCAM',
+    mockData: {
+      url: 'https://vip-binance-crypto-roi.top/deposit',
+      domain: 'vip-binance-crypto-roi.top',
+      trustScore: 8,
+      threatLevel: 'CRITICAL',
+      aiPhishing: {
+        score: 6,
+        verdict: 'CONFIRMED_CRYPTO_INVESTMENT_SCAM',
+        impersonatedBrand: 'Binance',
+        officialBrandDomain: 'binance.com',
+        identityMismatch: true,
+        signals: [
+          'Unrealistic financial return: Promises "guaranteed 500% weekly ROI" with "zero risk"',
+          'Brand typosquatting: Incorporates Binance trademark on untrusted .top TLD',
+          'Cryptocurrency deposit trap: Directs USDT TRC-20 transfers to unverified non-custodial address'
+        ],
+        entropy: 4.18,
+        punycodeDetected: false,
+        formFields: ['usdt_deposit_address', 'wallet_seed_phrase'],
+        embeddedRedirects: [],
+        preClickRecommendation: '🛑 DO NOT OPEN / DO NOT DEPOSIT: High-yield investment fraud (Ponzi/Pig-Butchering scam).'
+      },
+      certTrust: { score: 30, verdict: 'CHEAP_DV', issuer: { commonName: 'Let\'s Encrypt' }, keyDetails: { algorithm: 'RSA', keySize: 2048 }, ctLogs: { present: true, status: 'LOGGED' }, chain: [] },
+      webSec: { score: 15, grade: 'F', headers: { hsts: { status: 'MISSING' } }, cookies: [] },
+      web3Security: { isWeb3Target: true, score: 0, riskLevel: 'CRITICAL', drainerDetected: true, findings: ['Direct solicitation of 12-word wallet seed phrase in deposit modal.'] },
+      collaborativeIntel: {
+        reputationScore: 5,
+        communityVotes: { malicious: 490, benign: 0 },
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-CRYPTO-PONZI-88', type: 'VIP Crypto Signal Syndicate', domainsCount: 82, sharedAsn: 'AS57523' }],
+        iocs: ['DOMAIN: vip-binance-crypto-roi.top', 'USDT_TRC20: TJx7923487192384719238471923']
+      },
+      web3Attestation: {
+        contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
+        network: 'Ethereum Sepolia / Polygon POS',
+        targetHash: '0xddd1928374918273948172938471293847192837491827394817293847129384',
+        txHash: '0xeee8192837491827394817293847129384719283749182739481729384712938',
+        ipfsCid: 'bafybeihddd82734981729384712938471928374918273948172938471quvyku',
+        blockNumber: 21094903,
+        attestationStandard: 'EAS-THREAT-INTEL-EIP712',
+        status: 'ATTESTED_ON_CHAIN'
+      },
+      evidenceDossier: [
+        { title: 'Ponzi Investment Scheme', detail: 'Any scheme promising guaranteed 500% returns in days is mathematically fraudulent.' },
+        { title: 'Seed Phrase Harvester', detail: 'The deposit modal prompts users to enter their 12-word recovery phrase to "verify wallet".' }
+      ],
+      actionableGuidance: [
+        'NEVER share your 12-word crypto seed phrase with any website. No legitimate entity ever requests it.',
+        'Do not transfer USDT or crypto to investment links found on Telegram or WhatsApp.',
+        'File an immediate report at cybercrime.gov.in.'
+      ]
+    }
+  },
+  {
     id: 'github-enterprise-legitimate-baseline',
     title: 'Enterprise Baseline: Legitimate Verified Platform (GitHub)',
     category: 'Verified Digital Trust',

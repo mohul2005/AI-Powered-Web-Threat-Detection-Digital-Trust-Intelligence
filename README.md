@@ -109,6 +109,31 @@ flowchart TD
 
 ---
 
+## 🎭 Section C: Online Scams and Social Engineering Forensics
+
+Many fraudulent activities do not require a technically sophisticated website. Attackers frequently exploit human behavior, panic, and greed through deceptive communication across SMS, WhatsApp, Telegram, and Email.
+
+### 9 Explicit Threat Categories Covered
+1. **Fake Job and Internship Offers**: Remote task fraud, Telegram video-liking schemes, and upfront registration/interview fee demands.
+2. **Investment and Cryptocurrency Scams**: Fake VIP trading signals, guaranteed 500% weekly ROI, Ponzi doubling algorithms, and non-custodial wallet drainers.
+3. **Fake Giveaways and Prize Notifications**: Unsolicited KBC/Amazon lucky draw winnings requiring advance fee deposits to claim prizes.
+4. **Fraudulent Refund and Cashback Messages**: Fake income tax/electricity bill refunds coercing victims into entering UPI PINs to "receive" money.
+5. **Impersonation of Banks, Universities & Corporations**: Mimicking State Bank of India, HDFC, National Testing Agency, Google, and Amazon.
+6. **Fake Customer Support Communications**: Rogue customer care phone numbers and fake helpdesks for flight cancellations and parcel inquiries.
+7. **Requests for OTPs, Passwords & Credentials**: Urgent coercion to share 6-digit OTPs, ATM PINs, netbanking passwords, or card CVVs.
+8. **Fraudulent KYC & Account Verification Notifications**: Threatening immediate bank account suspension or SIM deactivation unless PAN/Aadhaar is submitted.
+9. **Fake Technical Support & Remote-Access Scams**: Scareware Trojan alerts instructing victims to call toll-free numbers and install **AnyDesk, TeamViewer, or QuickSupport**.
+
+### 5-Pillar Multi-Modal Detection Engine
+TrustMatrix inspects communication text against 5 key indicators:
+* **Suspicious Language**: Detects artificial urgency, fear-based coercion, and unrealistic financial claims.
+* **Impersonation Indicators**: Flags spoofed sender identities and institutional brand mimicry.
+* **Unusual Payment Requests**: Detects demands for advance fees, personal UPI IDs (`@apl`, `@ibl`), gift cards, and cryptocurrency transfers.
+* **Misleading Links**: Unpacks shortened URLs (`bit.ly`, `tinyurl`, `t.me`, `wa.me`) and open redirect chains.
+* **Attempts to Obtain Sensitive Secrets**: Detects OTP/PIN solicitation and prevents installation of remote desktop software.
+
+---
+
 ## 🚀 Quickstart Guide
 
 ### 1. Run Full-Stack System

@@ -150,6 +150,82 @@ export default function WorkingMechanism() {
         </div>
       </div>
 
+      {/* Section C: Online Scams & Social Engineering Forensics */}
+      <div className="p-6 rounded-2xl bg-[#0b2020] border border-[#2dd4bf]/40 shadow-card-dark space-y-4">
+        <div className="flex items-center space-x-3">
+          <div className="p-2.5 rounded-xl bg-[#2dd4bf]/15 border border-[#2dd4bf]/40 text-[#2dd4bf]">
+            <Terminal className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <h3 className="font-bold text-white text-base">Section C: Online Scams and Social Engineering Forensics</h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#2dd4bf]/20 text-[#2dd4bf] border border-[#2dd4bf]/40 font-bold">
+                Human Exploit Defense
+              </span>
+            </div>
+            <p className="text-xs text-[#80a4a2] font-mono">Deceptive messages, fake tech support, OTP harvesting & psychological manipulation</p>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl bg-[#061414] border border-[#153a3a] text-xs text-[#a1c4c2] leading-relaxed">
+          <p>
+            <strong className="text-white">Exploiting Human Behavior:</strong> Many fraudulent activities do not require a technically sophisticated website. Attackers often exploit human psychology through deceptive messages and direct communication across SMS, WhatsApp, Telegram, and Email.
+          </p>
+        </div>
+
+        {/* 9 Explicit Section C Threat Categories */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 text-xs font-mono">
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">1. Fake Job & Internship</span>
+            <span className="text-[10px] text-[#80a4a2]">Telegram task fraud, advance registration deposits, and fake HR offers.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">2. Investment & Crypto Scams</span>
+            <span className="text-[10px] text-[#80a4a2]">Unrealistic 500% ROI, Ponzi trading bots, and seed phrase harvesting.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">3. Giveaways & Prizes</span>
+            <span className="text-[10px] text-[#80a4a2]">Unsolicited KBC/Amazon lotteries demanding upfront tax fees.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">4. Refund & Cashback Scams</span>
+            <span className="text-[10px] text-[#80a4a2]">Income tax/electricity refunds tricking victims into entering UPI PINs.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">5. Entity Impersonation</span>
+            <span className="text-[10px] text-[#80a4a2]">Mimicking banks (SBI, HDFC), universities (NTA), and government portals.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">6. Fake Customer Support</span>
+            <span className="text-[10px] text-[#80a4a2]">Rogue call centers and fake helpline numbers for flight/parcel issues.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">7. OTP & Credential Theft</span>
+            <span className="text-[10px] text-[#80a4a2]">Urgent coercion to share 6-digit OTPs, netbanking passwords, or CVVs.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">8. Fraudulent KYC Verification</span>
+            <span className="text-[10px] text-[#80a4a2]">Threats of SIM card or YONO deactivation to steal PAN and biometric PII.</span>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#061414] border border-[#153a3a]">
+            <span className="text-[#00f2c3] font-bold block mb-0.5">9. Tech Support & Remote Access</span>
+            <span className="text-[10px] text-[#80a4a2]">Scareware virus alerts instructing users to install AnyDesk or TeamViewer.</span>
+          </div>
+        </div>
+
+        {/* The 5 Forensic Detection Pillars */}
+        <div className="p-3.5 rounded-xl bg-[#061414] border border-[#153a3a] text-xs font-mono space-y-1.5">
+          <span className="text-[#2dd4bf] font-bold block">TrustMatrix 5-Pillar Social Engineering Inspector:</span>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-2 text-[11px] text-[#a1c4c2]">
+            <div><strong>1. Language:</strong> Scans for urgency, fear, and artificial deadlines.</div>
+            <div><strong>2. Identity:</strong> Detects unauthorized institutional mimicry.</div>
+            <div><strong>3. Payments:</strong> Flags advance fees, personal UPIs, and crypto demands.</div>
+            <div><strong>4. Links:</strong> Unpacks bit.ly/tinyurl redirect obfuscations.</div>
+            <div><strong>5. Secrets:</strong> Protects OTPs, PINs, and blocks remote access tools.</div>
+          </div>
+        </div>
+      </div>
+
       {/* 3 Additional Operational Deep-Dives */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Module 1: AI Heuristics */}

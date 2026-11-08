@@ -28,6 +28,9 @@ export default function ScanBar({
     if (scenario.id.includes('job') || scenario.id.includes('internship')) return { name: 'Google Careers Job Scam', badge: 'Recruitment', color: 'rose' };
     if (scenario.id.includes('instagram') || scenario.id.includes('recovery')) return { name: 'Instagram Copyright Phish', badge: 'Account Theft', color: 'rose' };
     if (scenario.id.includes('shortened') || scenario.id.includes('redirect')) return { name: 'Nested Open Redirect Chain', badge: 'Redirect Chain', color: 'rose' };
+    if (scenario.id.includes('tech-support') || scenario.id.includes('anydesk')) return { name: 'Windows AnyDesk Scam', badge: 'Remote Access', color: 'rose' };
+    if (scenario.id.includes('lottery') || scenario.id.includes('kbc')) return { name: 'KBC Lottery ₹25L Scam', badge: 'Prize Fraud', color: 'rose' };
+    if (scenario.id.includes('crypto-investment') || scenario.id.includes('roi')) return { name: 'VIP Crypto 500% ROI Scam', badge: 'Crypto Scam', color: 'rose' };
     if (scenario.id.includes('sbi-bank')) return { name: 'Fake SBI Netbanking', badge: 'Phishing', color: 'rose' };
     if (scenario.id.includes('smishing') || scenario.type === 'message') return { name: 'SBI YONO KYC Smishing', badge: 'SMS Scam', color: 'amber' };
     return { name: 'Legitimate Site (GitHub)', badge: 'Safe Baseline', color: 'emerald' };
