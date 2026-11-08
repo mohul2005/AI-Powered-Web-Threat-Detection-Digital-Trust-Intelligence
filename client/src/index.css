@@ -44,3 +44,27 @@
   border: 1px solid rgba(0, 242, 195, 0.3);
   color: #00f2c3;
 }
+
+/* Print / PDF generation styles */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  }
+  header, footer, nav, .no-print, canvas {
+    display: none !important;
+  }
+  .print-page-break {
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+  .print-avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  a {
+    text-decoration: underline !important;
+    color: #1d4ed8 !important;
+  }
+}

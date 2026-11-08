@@ -19,6 +19,7 @@ import WorkflowStepper from './components/WorkflowStepper.jsx';
 import DeliverablesHub from './components/DeliverablesHub.jsx';
 import AdvancedExtensionsHub from './components/AdvancedExtensionsHub.jsx';
 import OrganisationDashboard from './components/OrganisationDashboard.jsx';
+import BeginnerGuidePdfView from './components/BeginnerGuidePdfView.jsx';
 import MatrixRain from './components/MatrixRain.jsx';
 import { Download, ChevronDown, ChevronUp, Terminal, ArrowRight, Sparkles } from 'lucide-react';
 
@@ -401,6 +402,11 @@ export default function App() {
         {/* TAB 6: ORGANISATION-LEVEL WEBSITE SECURITY MONITORING DASHBOARD */}
         {activeTab === 'org-dashboard' && (
           <OrganisationDashboard />
+        )}
+
+        {/* TAB 7: COMPLETE BEGINNER'S ARCHITECTURE GUIDE (PDF PRINTABLE) */}
+        {activeTab === 'pdf-guide' && (
+          <BeginnerGuidePdfView onBackToScanner={() => setActiveTab('scanner')} />
         )}
       </main>
 

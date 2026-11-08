@@ -3,6 +3,7 @@ import cors from 'cors';
 import scanRouter from './routes/scan.js';
 import intelRouter from './routes/intel.js';
 import extensionsRouter from './routes/extensions.js';
+import guideRouter from './routes/guide.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,6 +38,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api', scanRouter);
 app.use('/api/intel', intelRouter);
 app.use('/api/extensions', extensionsRouter);
+app.use('/api/guide', guideRouter);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
