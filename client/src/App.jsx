@@ -3,6 +3,7 @@ import Header from './components/Header.jsx';
 import HeroMetricCards from './components/HeroMetricCards.jsx';
 import ScanBar from './components/ScanBar.jsx';
 import TrustGauge from './components/TrustGauge.jsx';
+import EvidenceActionCard from './components/EvidenceActionCard.jsx';
 import ScanLogs from './components/ScanLogs.jsx';
 import PhishingCard from './components/PhishingCard.jsx';
 import CertTrustCard from './components/CertTrustCard.jsx';
@@ -18,6 +19,7 @@ import { Download, ChevronDown, ChevronUp, Terminal } from 'lucide-react';
 export default function App() {
   const [activeTab, setActiveTab] = useState('scanner');
   const [urlInput, setUrlInput] = useState('');
+  const [scanMode, setScanMode] = useState('url'); // 'url' | 'email' | 'message'
   const [isLoading, setIsLoading] = useState(false);
   const [scenarios, setScenarios] = useState([]);
   const [activeScenarioId, setActiveScenarioId] = useState('emudhra-weak-key-incident');
@@ -26,7 +28,7 @@ export default function App() {
   const [scenarioMeta, setScenarioMeta] = useState(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [showAdvancedForensics, setShowAdvancedForensics] = useState(false);
-  const [matrixMode, setMatrixMode] = useState('subtle'); // 'subtle' | 'cinema' | 'off'
+  const [matrixMode, setMatrixMode] = useState('subtle');
 
   useEffect(() => {
     fetchScenarios();
@@ -45,17 +47,21 @@ export default function App() {
     }
   };
 
-  const triggerScan = async (url) => {
+  const triggerScan = async (input, mode = scanMode) => {
     setIsLoading(true);
     setActiveScenarioId(null);
     setScenarioMeta(null);
-    setScanLogs([`[INIT] Scanning target: ${url}...`]);
+    setScanLogs([`[INIT] Initiating multi-layer AI + Cyber + Web3 investigation for [${mode.toUpperCase()}] input...`]);
 
     try {
       const res = await fetch('http://localhost:5000/api/scan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url })
+        body: JSON.stringify({
+          type: mode,
+          url: input,
+          content: input
+        })
       });
       const data = await res.json();
       if (data.success) {
@@ -74,7 +80,7 @@ export default function App() {
   const triggerScenario = async (scenarioId) => {
     setIsLoading(true);
     setActiveScenarioId(scenarioId);
-    setScanLogs([`[INIT] Running pre-configured scenario: ${scenarioId}...`]);
+    setScanLogs([`[INIT] Loading pre-configured incident scenario: ${scenarioId}...`]);
 
     try {
       const res = await fetch('http://localhost:5000/api/scan', {
@@ -88,6 +94,9 @@ export default function App() {
         setScanLogs(data.scanLogs);
         setScenarioMeta(data.scenarioMeta);
         setUrlInput(data.result.url);
+        if (data.scenarioMeta && data.scenarioMeta.type) {
+          setScanMode(data.scenarioMeta.type);
+        }
         setActiveTab('scanner');
       }
     } catch (err) {
@@ -102,7 +111,7 @@ export default function App() {
     const jsonStr = JSON.stringify(
       {
         timestamp: new Date().toISOString(),
-        engine: 'TrustMatrix AI v2.0 Enterprise',
+        engine: 'TrustMatrix AI Nexus (AI + Cybersecurity + Web3)',
         dossier: scanResult
       },
       null,
@@ -112,7 +121,7 @@ export default function App() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `trustmatrix-${scanResult.domain}.json`;
+    link.download = `trustmatrix-${scanResult.domain || 'scan'}.json`;
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -126,7 +135,7 @@ export default function App() {
         <MatrixRain opacity={matrixOpacity} intensity={matrixMode} />
       )}
 
-      {/* Header in Sentinel aesthetic */}
+      {/* Header */}
       <Header
         onOpenReportModal={() => setIsReportModalOpen(true)}
         activeTab={activeTab}
@@ -135,7 +144,7 @@ export default function App() {
         setMatrixMode={setMatrixMode}
       />
 
-      {/* Main Workspace with z-10 for perfect contrast and interaction */}
+      {/* Main Workspace */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6 relative z-10">
         {/* Top 4 Hero Metric Cards from Sentinel Nexus Design */}
         <HeroMetricCards />
@@ -143,6 +152,7 @@ export default function App() {
         {/* TAB 1: THREAT SCANNER */}
         {activeTab === 'scanner' && (
           <div className="space-y-6">
+            {/* Multi-Modal Input (URL | Email | SMS Message) */}
             <ScanBar
               urlInput={urlInput}
               setUrlInput={setUrlInput}
@@ -151,12 +161,26 @@ export default function App() {
               scenarios={scenarios}
               onSelectScenario={triggerScenario}
               activeScenarioId={activeScenarioId}
+              scanMode={scanMode}
+              setScanMode={setScanMode}
             />
 
+            {/* Overall Digital Trust Gauge */}
             {scanResult && (
               <TrustGauge result={scanResult} scenarioMeta={scenarioMeta} />
             )}
 
+            {/* Evidence-Based Findings & Actionable User Guidance */}
+            {scanResult && (
+              <EvidenceActionCard
+                evidenceDossier={scanResult.evidenceDossier}
+                actionableGuidance={scanResult.actionableGuidance}
+                web3Attestation={scanResult.web3Attestation}
+                web3Security={scanResult.web3Security}
+              />
+            )}
+
+            {/* Collapsible Forensic Details */}
             {scanResult && (
               <div className="pt-1">
                 <button
@@ -220,11 +244,11 @@ export default function App() {
         )}
       </main>
 
-      {/* Footer in Deep Emerald theme */}
+      {/* Footer */}
       <footer className="border-t border-[#133535] bg-[#040e0e]/90 backdrop-blur-md py-4 mt-auto relative z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#5c8280] gap-2">
-          <span>TrustMatrix AI Nexus • Enterprise SOC Threat Intelligence Platform</span>
-          <span className="text-[#00f2c3]/90 font-mono">Matrix Rain Canvas Active • NIST SP 800-30 Validated</span>
+          <span>TrustMatrix AI Nexus • Powered by Artificial Intelligence, Cybersecurity & Web3</span>
+          <span className="text-[#00f2c3]/90 font-mono">Evidence-Based Assessments • EAS On-Chain Registry</span>
         </div>
       </footer>
 
