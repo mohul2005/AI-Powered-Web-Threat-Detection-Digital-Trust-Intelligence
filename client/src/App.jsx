@@ -20,6 +20,7 @@ import DeliverablesHub from './components/DeliverablesHub.jsx';
 import AdvancedExtensionsHub from './components/AdvancedExtensionsHub.jsx';
 import OrganisationDashboard from './components/OrganisationDashboard.jsx';
 import BeginnerGuidePdfView from './components/BeginnerGuidePdfView.jsx';
+import VerificationPdfView from './components/VerificationPdfView.jsx';
 import MatrixRain from './components/MatrixRain.jsx';
 import { Download, ChevronDown, ChevronUp, Terminal, ArrowRight, Sparkles } from 'lucide-react';
 
@@ -406,7 +407,18 @@ export default function App() {
 
         {/* TAB 7: COMPLETE BEGINNER'S ARCHITECTURE GUIDE (PDF PRINTABLE) */}
         {activeTab === 'pdf-guide' && (
-          <BeginnerGuidePdfView onBackToScanner={() => setActiveTab('scanner')} />
+          <BeginnerGuidePdfView 
+            onBackToScanner={() => setActiveTab('scanner')} 
+            onSwitchToVerification={() => setActiveTab('verification-pdf')}
+          />
+        )}
+
+        {/* TAB 8: OFFICIAL VERIFICATION DOSSIER & COMPLIANCE AUDIT (PDF VIEW) */}
+        {activeTab === 'verification-pdf' && (
+          <VerificationPdfView 
+            onBackToScanner={() => setActiveTab('scanner')} 
+            onSwitchToBeginnerGuide={() => setActiveTab('pdf-guide')}
+          />
         )}
       </main>
 

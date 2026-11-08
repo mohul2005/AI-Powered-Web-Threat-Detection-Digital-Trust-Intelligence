@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2, Binary, Award, Building2, QrCode, Printer } from 'lucide-react';
+import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2, Binary, Award, Building2, QrCode, Printer, FileCheck } from 'lucide-react';
 
 export default function Header({
   onOpenReportModal,
@@ -131,14 +131,28 @@ export default function Header({
 
           <button
             onClick={() => setActiveTab('pdf-guide')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
               activeTab === 'pdf-guide'
                 ? 'bg-[#00f2c3] text-[#051715] shadow-neon-sm font-bold'
                 : 'text-[#85a8a6] hover:text-white'
             }`}
+            title="Open printable Beginner Architecture Guide (PDF View)"
           >
             <Printer className="w-3.5 h-3.5" />
-            <span>PDF Guide</span>
+            <span>Beginner PDF</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('verification-pdf')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
+              activeTab === 'verification-pdf'
+                ? 'bg-[#00f2c3] text-[#051715] shadow-neon-sm font-bold'
+                : 'text-[#85a8a6] hover:text-white'
+            }`}
+            title="Open official Verification Dossier & Compliance Audit Report (PDF View)"
+          >
+            <FileCheck className="w-3.5 h-3.5" />
+            <span>Verification PDF</span>
           </button>
         </nav>
 

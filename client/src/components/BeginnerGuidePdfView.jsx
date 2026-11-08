@@ -21,10 +21,11 @@ import {
   BookOpen, 
   HeartHandshake,
   PhoneCall,
-  ExternalLink
+  ExternalLink,
+  FileCheck
 } from 'lucide-react';
 
-export default function BeginnerGuidePdfView({ onBackToScanner }) {
+export default function BeginnerGuidePdfView({ onBackToScanner, onSwitchToVerification }) {
   const [paperTheme, setPaperTheme] = useState('dark'); // 'dark' | 'whitepaper'
 
   const handlePrint = () => {
@@ -50,11 +51,24 @@ export default function BeginnerGuidePdfView({ onBackToScanner }) {
               className="px-3 py-1.5 rounded-lg bg-[#061414] border border-[#174242] text-[#80a4a2] hover:text-white flex items-center space-x-1.5 transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Back to Scanner</span>
+              <span>Scanner</span>
             </button>
           )}
-          <span className="text-[#00f2c3] font-bold hidden sm:inline">
-            📄 Complete Beginner's Security Architecture Guide (PDF Printable)
+
+          {onSwitchToVerification && (
+            <button
+              onClick={onSwitchToVerification}
+              className="px-3 py-1.5 rounded-lg bg-[#0b2525] border border-[#184444] text-[#80a4a2] hover:text-white flex items-center space-x-1.5 transition-colors"
+              title="Switch to the Official Verification Details PDF Dossier"
+            >
+              <FileCheck className="w-3.5 h-3.5 text-[#00f2c3]" />
+              <span className="hidden sm:inline">Switch to</span>
+              <span>Verification PDF</span>
+            </button>
+          )}
+
+          <span className="text-[#00f2c3] font-bold hidden md:inline pl-2 border-l border-[#174242]">
+            📄 Beginner Architecture Guide (PDF)
           </span>
         </div>
 
