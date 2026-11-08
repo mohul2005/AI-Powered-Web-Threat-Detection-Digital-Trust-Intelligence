@@ -6,7 +6,9 @@ export default function Header({
   activeTab,
   setActiveTab,
   matrixMode,
-  setMatrixMode
+  setMatrixMode,
+  viewMode,
+  setViewMode
 }) {
   const handleExportStix = () => {
     window.open('http://localhost:5000/api/intel/export/stix', '_blank');
@@ -130,6 +132,21 @@ export default function Header({
 
         {/* Quick Actions with Cyber Matrix Rain Toggle */}
         <div className="flex items-center space-x-2">
+          {/* Simple vs Expert Mode Switch */}
+          {setViewMode && (
+            <button
+              onClick={() => setViewMode(viewMode === 'simple' ? 'expert' : 'simple')}
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border text-xs font-mono transition-all ${
+                viewMode === 'simple'
+                  ? 'bg-[#00f2c3]/20 border-[#00f2c3] text-[#00f2c3] shadow-neon-sm font-bold'
+                  : 'bg-[#061414] border-[#184242] text-[#80a4a2] hover:text-white'
+              }`}
+              title="Toggle between Simple Beginner Mode and Expert SOC Mode"
+            >
+              <span>{viewMode === 'simple' ? '💡 Simple Mode' : '🔬 Expert Mode'}</span>
+            </button>
+          )}
+
           {/* Matrix Rain Mode Switch */}
           <button
             onClick={toggleMatrix}

@@ -20,7 +20,7 @@ import DeliverablesHub from './components/DeliverablesHub.jsx';
 import AdvancedExtensionsHub from './components/AdvancedExtensionsHub.jsx';
 import OrganisationDashboard from './components/OrganisationDashboard.jsx';
 import MatrixRain from './components/MatrixRain.jsx';
-import { Download, ChevronDown, ChevronUp, Terminal } from 'lucide-react';
+import { Download, ChevronDown, ChevronUp, Terminal, ArrowRight, Sparkles } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('scanner');
@@ -35,6 +35,7 @@ export default function App() {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [showAdvancedForensics, setShowAdvancedForensics] = useState(false);
   const [matrixMode, setMatrixMode] = useState('subtle');
+  const [viewMode, setViewMode] = useState('simple'); // 'simple' | 'expert'
 
   useEffect(() => {
     fetchScenarios();
@@ -148,6 +149,8 @@ export default function App() {
         setActiveTab={setActiveTab}
         matrixMode={matrixMode}
         setMatrixMode={setMatrixMode}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
       />
 
       {/* Main Workspace */}
@@ -164,6 +167,67 @@ export default function App() {
               scanResult={scanResult}
               onOpenReportModal={() => setIsReportModalOpen(true)}
             />
+
+            {/* Beginner Quick Guide & 1-Click Tests Banner (Simple Mode) */}
+            {viewMode === 'simple' && (
+              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#061e1e] via-[#0b2828] to-[#061e1e] border border-[#00f2c3]/30 shadow-card-dark space-y-3 animate-fade-in text-xs font-mono">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#143a3a] pb-3">
+                  <div className="flex items-center space-x-2.5">
+                    <span className="p-1.5 rounded-lg bg-[#00f2c3]/20 text-[#00f2c3] text-sm font-bold">💡</span>
+                    <div>
+                      <span className="text-white font-bold text-sm block">
+                        New to TrustMatrix? Start Here (Beginner Mode)
+                      </span>
+                      <p className="text-[#80a4a2] text-[11px] leading-relaxed">
+                        Wondering if a website or message is a scam? Paste it below to see an instant safety check with plain-English advice.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2 shrink-0">
+                    <button
+                      onClick={() => setActiveTab('mechanism')}
+                      className="px-3 py-1.5 rounded-lg bg-[#00f2c3] text-[#051715] font-bold hover:bg-[#00f2c3]/90 transition-all shadow-neon-sm flex items-center space-x-1"
+                    >
+                      <span>14-Section Plain Guide</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* 1-Click Example Test Buttons */}
+                <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                  <span className="text-[11px] text-[#5c807e] font-semibold">Try a real example:</span>
+                  <button
+                    onClick={() => triggerScenario('scenario-1')}
+                    className="px-2.5 py-1 rounded-lg bg-[#140a0e] border border-[#f43f5e]/40 text-[#f43f5e] hover:bg-[#f43f5e]/15 transition-all text-[11px]"
+                    title="Test a fake State Bank of India YONO login page"
+                  >
+                    🔴 Fake SBI Bank Phish
+                  </button>
+                  <button
+                    onClick={() => triggerScenario('scenario-4')}
+                    className="px-2.5 py-1 rounded-lg bg-[#1a1208] border border-[#f59e0b]/40 text-[#f59e0b] hover:bg-[#f59e0b]/15 transition-all text-[11px]"
+                    title="Test an urgent electricity power disconnection SMS scam"
+                  >
+                    📱 Electricity SMS Scam
+                  </button>
+                  <button
+                    onClick={() => triggerScenario('emudhra-weak-key-incident')}
+                    className="px-2.5 py-1 rounded-lg bg-[#0a1518] border border-[#38bdf8]/40 text-[#38bdf8] hover:bg-[#38bdf8]/15 transition-all text-[11px]"
+                    title="Test a rogue digital padlock with duplicate key modulus"
+                  >
+                    🔒 Weak Padlock Key
+                  </button>
+                  <button
+                    onClick={() => triggerScenario('legitimate-site-github')}
+                    className="px-2.5 py-1 rounded-lg bg-[#071917] border border-[#00f2c3]/40 text-[#00f2c3] hover:bg-[#00f2c3]/15 transition-all text-[11px]"
+                    title="Test an authentic, clean site (GitHub)"
+                  >
+                    🟢 Safe Site (GitHub)
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Multi-Modal Input (URL | Email | SMS Message) */}
             <ScanBar
@@ -303,9 +367,12 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 2: WORKING MECHANISM */}
+        {/* TAB 2: WORKING MECHANISM & 14-SECTION GUIDE */}
         {activeTab === 'mechanism' && (
-          <WorkingMechanism />
+          <WorkingMechanism
+            onSelectScenario={triggerScenario}
+            setActiveTab={setActiveTab}
+          />
         )}
 
         {/* TAB 2.5: EXPECTED DELIVERABLES & VERIFICATION HUB */}

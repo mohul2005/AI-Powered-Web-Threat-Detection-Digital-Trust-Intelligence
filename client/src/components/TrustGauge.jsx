@@ -111,6 +111,35 @@ export default function TrustGauge({ result, scenarioMeta }) {
                 </span>
               </div>
             )}
+
+            {/* Beginner's Plain-English Bottom Line */}
+            <div className={`mt-3 p-3 rounded-xl border flex items-start space-x-2.5 text-xs ${
+              trustScore <= 50 
+                ? 'bg-[#1e0a10] border-[#f43f5e]/40 text-[#fecdd3]' 
+                : trustScore <= 70 
+                ? 'bg-[#1c1407] border-[#f59e0b]/40 text-[#fef3c7]' 
+                : 'bg-[#061d19] border-[#00f2c3]/40 text-[#ccfbf1]'
+            }`}>
+              <span className="text-base shrink-0">
+                {trustScore <= 50 ? '🛑' : trustScore <= 70 ? '⚠️' : '✅'}
+              </span>
+              <div>
+                <span className="font-bold block font-sans text-sm mb-0.5">
+                  {trustScore <= 50 
+                    ? 'Beginner Bottom Line: DANGEROUS SCAM / PHISHING' 
+                    : trustScore <= 70 
+                    ? 'Beginner Bottom Line: SUSPICIOUS — PROCEED WITH CAUTION' 
+                    : 'Beginner Bottom Line: CLEAN & SAFE TO VISIT'}
+                </span>
+                <p className="font-sans leading-relaxed text-xs">
+                  {trustScore <= 50 
+                    ? 'Close this website immediately. Do NOT enter your password, PIN, or OTP, and never install any files or apps it recommends.' 
+                    : trustScore <= 70 
+                    ? 'Be careful. Verify this website or sender independently through an official helpline before typing confidential details.' 
+                    : 'This site passed standard threat checks and has healthy encryption. Maintain normal online hygiene and never share your passwords.'}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 

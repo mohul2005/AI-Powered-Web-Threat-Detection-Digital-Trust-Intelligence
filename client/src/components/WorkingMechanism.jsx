@@ -1,9 +1,63 @@
-import React from 'react';
-import { Shield, Lock, Cpu, Globe, Users, KeyRound, Layers, Blocks, Terminal, AlertTriangle, AlertOctagon, CheckCircle2, Info, Scale, Send, ShieldAlert, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import SectionMechanismGuide from './SectionMechanismGuide.jsx';
+import { Shield, Lock, Cpu, Globe, Users, KeyRound, Layers, Blocks, Terminal, AlertTriangle, AlertOctagon, CheckCircle2, Info, Scale, Send, ShieldAlert, ArrowRight, BookOpen } from 'lucide-react';
 
-export default function WorkingMechanism() {
+export default function WorkingMechanism({ onSelectScenario, setActiveTab }) {
+  const [activeGuideView, setActiveGuideView] = useState('beginner-guide');
+
   return (
-    <div className="space-y-8 max-w-5xl mx-auto py-2">
+    <div className="space-y-6 max-w-5xl mx-auto py-2">
+      {/* View Switcher: Beginner Guide vs Deep Architecture */}
+      <div className="p-3 rounded-2xl bg-[#081d1d] border border-[#174242] flex flex-col sm:flex-row items-center justify-between gap-3 shadow-card-dark">
+        <div className="flex items-center space-x-2.5">
+          <div className="p-2 rounded-xl bg-[#00f2c3]/15 text-[#00f2c3]">
+            <BookOpen className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-white font-bold text-xs sm:text-sm block">
+              Choose Explanation Depth:
+            </span>
+            <span className="text-[#80a4a2] text-[11px]">
+              Switch between simple beginner analogies or deep technical PKI/smart-contract architecture.
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-1.5 p-1 rounded-xl bg-[#041010] border border-[#143838] font-mono text-xs w-full sm:w-auto">
+          <button
+            onClick={() => setActiveGuideView('beginner-guide')}
+            className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center justify-center space-x-1.5 ${
+              activeGuideView === 'beginner-guide'
+                ? 'bg-[#00f2c3] text-[#051715] shadow-neon-sm'
+                : 'text-[#80a4a2] hover:text-white'
+            }`}
+          >
+            <span>💡 14-Section Plain-English Guide</span>
+          </button>
+          <button
+            onClick={() => setActiveGuideView('deep-architecture')}
+            className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center justify-center space-x-1.5 ${
+              activeGuideView === 'deep-architecture'
+                ? 'bg-[#00f2c3] text-[#051715] shadow-neon-sm'
+                : 'text-[#80a4a2] hover:text-white'
+            }`}
+          >
+            <span>🔬 Deep PKI & Triad Architecture</span>
+          </button>
+        </div>
+      </div>
+
+      {/* VIEW 1: BEGINNER SECTION-BY-SECTION GUIDE */}
+      {activeGuideView === 'beginner-guide' && (
+        <SectionMechanismGuide
+          onSelectScenario={onSelectScenario}
+          setActiveTab={setActiveTab}
+        />
+      )}
+
+      {/* VIEW 2: DEEP ARCHITECTURE (Original comprehensive architecture) */}
+      {activeGuideView === 'deep-architecture' && (
+        <div className="space-y-8 animate-fade-in">
       {/* Title */}
       <div className="text-center space-y-3">
         <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#00f2c3]/10 border border-[#00f2c3]/30 text-[#00f2c3] text-xs font-mono font-semibold">
@@ -950,6 +1004,8 @@ export default function WorkingMechanism() {
           </div>
         </div>
       </div>
+        </div>
+      )}
     </div>
   );
 }
