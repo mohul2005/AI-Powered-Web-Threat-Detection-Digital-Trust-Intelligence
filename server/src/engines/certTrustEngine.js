@@ -161,10 +161,24 @@ export function verifyHostnameMatch(hostname, cert) {
 // Analyze raw or simulated certificate for Section B: Website Certificates & Digital Trust
 export function analyzeCertificate(certData, hostname) {
   if (!certData || Object.keys(certData).length === 0) {
+    const module2CertificateReport = {
+      tlsConfigurationStatus: 'SUSPICIOUS',
+      statusSummary: 'NO ENCRYPTION: No TLS certificate found on endpoint. Plaintext HTTP in use.',
+      securityAxiom: 'A valid TLS certificate must never be treated as proof that the website itself is safe.',
+      checks: {
+        validityAndExpiration: { status: 'NO_CERTIFICATE', daysRemaining: 0, validFrom: null, validTo: null },
+        domainIdentityAndSan: { verified: false, requestedHost: hostname, commonName: 'None', sanList: [], details: 'No TLS active on endpoint.' },
+        issuingCaAndChain: { issuerCommonName: 'None', issuerOrganization: 'Unencrypted HTTP', chainDepth: 0, hierarchy: [] },
+        revocationAndDistrust: { isRevokedOrDistrusted: false, source: 'None' },
+        publicKeyAndSignature: { algorithm: 'None', keySize: 0, fingerprint256: null },
+        certificateTransparency: { verified: false, sctCount: 0, status: 'NO_ENCRYPTION' }
+      }
+    };
     return {
       score: 0,
       verdict: 'NO_TLS_CERTIFICATE_FOUND',
       anomalyClassification: 'ORDINARY_CERTIFICATE_CONFIG_ISSUE',
+      module2CertificateReport,
       issuer: { commonName: 'None', organization: 'Unencrypted HTTP' },
       subject: { commonName: hostname },
       keyDetails: { algorithm: 'None', keySize: 0, fingerprint256: null, entropyRating: 'UNPROTECTED' },

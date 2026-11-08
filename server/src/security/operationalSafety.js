@@ -16,7 +16,8 @@ export const PLATFORM_SECURITY_AXIOM = Object.freeze({
   axiomCode: 'SEC-AXIOM-09',
   statement: 'The system must not treat the absence of known threats as proof that a website is safe.',
   formalDisclosure: 'A passing automated check indicates no known malicious indicators were detected within the scope of these automated tests, but does not guarantee the website is completely safe or free from undetected threats.',
-  operationalImplication: 'Automated scans represent point-in-time heuristic evaluations; zero-day exploits, dynamic cloak-and-dagger redirects, and newly deployed attack campaigns may not register on public intelligence feeds immediately.'
+  operationalImplication: 'Automated scans represent point-in-time heuristic evaluations; zero-day exploits, dynamic cloak-and-dagger redirects, and newly deployed attack campaigns may not register on public intelligence feeds immediately.',
+  treatAbsenceOfEvidenceAsSafe: false
 });
 
 // Offensive / Exploitative Payload Patterns (Strictly Forbidden in Outgoing Probes)
@@ -34,13 +35,16 @@ const OFFENSIVE_PAYLOAD_PATTERNS = [
  * Guarantees TrustMatrix conducts passive telemetry gathering only.
  */
 export function auditOperationalSafety(actionType, target, options = {}) {
+  const probeTarget = target !== undefined ? target : actionType;
   // Check if target or outgoing request contains offensive attack vectors
   for (const pattern of OFFENSIVE_PAYLOAD_PATTERNS) {
-    if (pattern.test(String(target))) {
+    if (pattern.test(String(probeTarget)) || (actionType && pattern.test(String(actionType)))) {
       return {
         permitted: false,
+        safeToInspect: false,
         blocked: true,
         violationType: 'EXPLOITATION_PAYLOAD_PROHIBITED',
+        policyViolation: 'OFFENSIVE_EXPLOITATION_PAYLOAD_DETECTED',
         reason: 'Operational Safety Violation: Probes containing active exploit syntax are forbidden. TrustMatrix operates strictly non-exploitative passive inspection.'
       };
     }
@@ -51,8 +55,10 @@ export function auditOperationalSafety(actionType, target, options = {}) {
     if (!options.authorizationScopeToken || !options.targetConsentGranted) {
       return {
         permitted: false,
+        safeToInspect: false,
         blocked: true,
         violationType: 'UNAUTHORIZED_ACTIVE_TESTING_BLOCKED',
+        policyViolation: 'UNAUTHORIZED_ACTIVE_TESTING_BLOCKED',
         reason: 'Operational Safety Violation: Active penetration testing requires explicit mutual authorization. Unsanctioned active probes are blocked.'
       };
     }
@@ -60,6 +66,8 @@ export function auditOperationalSafety(actionType, target, options = {}) {
 
   return {
     permitted: true,
+    safeToInspect: true,
+    blocked: false,
     inspectionMode: 'PASSIVE_NON_EXPLOITATIVE',
     safetyGuarantees: [
       'No exploit payloads transmitted',

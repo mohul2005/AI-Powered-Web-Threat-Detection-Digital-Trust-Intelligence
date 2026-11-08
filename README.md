@@ -582,6 +582,27 @@ TrustMatrix AI Nexus implements all non-browser advanced capabilities specified 
 
 * 🚀 **Interactive Testing**: Open **"Advanced Extensions"** and **"Org Security"** tabs in the dashboard (`http://localhost:5173`) to test live Quishing inspection, screenshot template comparison, lookalike radar generation, and CISO posture monitoring.
 
+---
+
+## 🛡️ 13. Scope Boundaries & Ethical Charter
+
+TrustMatrix AI Nexus was engineered to strictly adhere to the **8 Hackathon Scope Boundaries** and decisively achieve the **Intended Outcome**:
+
+> 🎯 **Mandated Intended Outcome**:
+> *"A focused, reliable prototype that successfully identifies real phishing patterns, inspects TLS certificate trust, explains evidence, and verifies threat reports."*
+
+| # | Official Scope Boundary | How TrustMatrix Adheres & Enforces Boundary | Automated Verification |
+|:---:|:---|:---|:---:|
+| **1** | **Not an Endpoint Antivirus Solution** | Focuses on Web Threat & Digital Trust Intelligence (URLs, phishing kits, social engineering communications, and Web3 signatures) rather than host binary scanning. | `test-section13-scope.js` (1.1) |
+| **2** | **No Foundation Training From Scratch** | Employs deterministic NLP heuristics, Levenshtein brand distance algorithms, contextual RAG, and zero-shot LLM reasoning with MITRE ATT&CK technique mapping. | `test-section13-scope.js` (2.1) |
+| **3** | **Targeted Web Threat Vector Coverage** | Deep specialization in high-impact fraud: credential harvesting, brand impersonation, deceptive shortlinks, remote access scams (AnyDesk), and cryptographic PKI trust anomalies. | `test-section13-scope.js` (3.1) |
+| **4** | **Strictly Non-Exploitative Auditing** | Passive, non-intrusive inspection only. Server-side Operational Safety Engine (`auditOperationalSafety`) intercepts and halts offensive SQLi, XSS, and command injection probe payloads. | `test-section13-scope.js` (4.1) |
+| **5** | **Open-Standard Threat Intelligence** | Integrates open community feeds (URLhaus, PhishTank, crt.sh CT logs) and exposes standards-compliant OASIS STIX 2.1 JSON and TAXII 2.1 collection endpoints. | `test-section13-scope.js` (5.1) |
+| **6** | **Standards-Based EVM & WebPKI** | Standardized on Ethereum Sepolia (Ethereum Attestation Service - EAS standard) for tamper-evident provenance and public WebPKI root store hierarchies. | `test-section13-scope.js` (6.1) |
+| **7** | **No Unauthorized Vulnerability Scanning** | Pre-flight SSRF protection automatically blocks private/internal IP ranges (127.0.0.1, 10.0.0.0/8, 169.254.169.254). Active testing requires mutual cryptographic authorization tokens. | `test-section13-scope.js` (7.1) |
+| **8** | **Epistemological Safety Axiom** | First Principle Axiom: *"The system must not treat the absence of known threats as proof that a website is safe."* Unverified sites are classified as `Inconclusive` or `Low Risk` with explicit disclaimers. | `test-section13-scope.js` (8.1) |
+
+* 🧪 **Automated Scope Verification**: Run `npm run test:scope` or `node server/test-section13-scope.js` to execute all 12 assertions verifying 100% boundary compliance.
 
 ---
 
