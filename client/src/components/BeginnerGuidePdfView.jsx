@@ -25,6 +25,7 @@ import {
   FileCheck,
   Database
 } from 'lucide-react';
+import { API_BASE } from '../config/api.js';
 
 export default function BeginnerGuidePdfView({ onBackToScanner, onSwitchToVerification, onSwitchToDatabaseDocs }) {
   const [paperTheme, setPaperTheme] = useState('dark'); // 'dark' | 'whitepaper'
@@ -34,7 +35,7 @@ export default function BeginnerGuidePdfView({ onBackToScanner, onSwitchToVerifi
   };
 
   const handleDownloadOfflineHtml = () => {
-    window.open('http://localhost:5000/api/guide/download-html', '_blank');
+    window.open(`${API_BASE}/api/guide/download-html`, '_blank');
   };
 
   return (

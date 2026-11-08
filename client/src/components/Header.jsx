@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2, Binary, Award, Building2, QrCode, Printer, FileCheck, Database } from 'lucide-react';
+import { API_BASE } from '../config/api.js';
 
 export default function Header({
   onOpenReportModal,
@@ -11,7 +12,7 @@ export default function Header({
   setViewMode
 }) {
   const handleExportStix = () => {
-    window.open('http://localhost:5000/api/intel/export/stix', '_blank');
+    window.open(`${API_BASE}/api/intel/export/stix`, '_blank');
   };
 
   const toggleMatrix = () => {

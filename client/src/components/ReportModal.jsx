@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, PlusCircle, CheckCircle, Loader2, Lock, Scale, ShieldCheck, Key, Blocks } from 'lucide-react';
+import { API_BASE } from '../config/api.js';
 
 export default function ReportModal({ isOpen, onClose, onReportSubmitted }) {
   const [targetUrl, setTargetUrl] = useState('');
@@ -38,7 +39,7 @@ export default function ReportModal({ isOpen, onClose, onReportSubmitted }) {
 
     setSubmitting(true);
     try {
-      const res = await fetch('http://localhost:5000/api/intel/reports', {
+      const res = await fetch(`${API_BASE}/api/intel/reports`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

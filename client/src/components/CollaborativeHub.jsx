@@ -17,6 +17,7 @@ import {
   Lock,
   FileCheck
 } from 'lucide-react';
+import { API_BASE } from '../config/api.js';
 
 export default function CollaborativeHub({ onOpenReportModal }) {
   const [reports, setReports] = useState([]);
@@ -30,7 +31,7 @@ export default function CollaborativeHub({ onOpenReportModal }) {
 
   const fetchReports = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/intel/reports');
+      const res = await fetch(`${API_BASE}/api/intel/reports`);
       const data = await res.json();
       if (data.success) {
         setReports(data.reports);
@@ -48,7 +49,7 @@ export default function CollaborativeHub({ onOpenReportModal }) {
 
   const handleVote = async (reportId, type) => {
     try {
-      const res = await fetch('http://localhost:5000/api/intel/vote', {
+      const res = await fetch(`${API_BASE}/api/intel/vote`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reportId, type })
@@ -66,7 +67,7 @@ export default function CollaborativeHub({ onOpenReportModal }) {
 
   const handleVerifyIntegrity = async (report) => {
     try {
-      const res = await fetch('http://localhost:5000/api/intel/verify-integrity', {
+      const res = await fetch(`${API_BASE}/api/intel/verify-integrity`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -102,7 +103,7 @@ export default function CollaborativeHub({ onOpenReportModal }) {
     if (!disputeModal || !disputeReason.trim()) return;
 
     try {
-      const res = await fetch('http://localhost:5000/api/intel/dispute', {
+      const res = await fetch(`${API_BASE}/api/intel/dispute`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -49,9 +49,13 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`=======================================================`);
-  console.log(`🛡️  TrustMatrix AI Security Engine running on http://localhost:${PORT}`);
-  console.log(`⚡  Real-time TLS & Threat Intelligence endpoints active`);
-  console.log(`=======================================================`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`=======================================================`);
+    console.log(`🛡️  TrustMatrix AI Security Engine running on http://localhost:${PORT}`);
+    console.log(`⚡  Real-time TLS & Threat Intelligence endpoints active`);
+    console.log(`=======================================================`);
+  });
+}
+
+export default app;

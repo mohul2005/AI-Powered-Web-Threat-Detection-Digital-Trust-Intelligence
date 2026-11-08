@@ -18,6 +18,7 @@ import {
   Lock,
   ArrowRight
 } from 'lucide-react';
+import { API_BASE } from '../config/api.js';
 
 export default function AdvancedExtensionsHub() {
   const [activeTab, setActiveTab] = useState('qr'); // 'qr' | 'visual' | 'lookalike' | 'compromised-cas' | 'taxii-apis'
@@ -45,19 +46,19 @@ export default function AdvancedExtensionsHub() {
   // Fetch scenarios and directories on mount
   useEffect(() => {
     // QR Scenarios
-    fetch('http://localhost:5000/api/extensions/qr/scenarios')
+    fetch(`${API_BASE}/api/extensions/qr/scenarios`)
       .then(r => r.json())
       .then(d => { if (d.success) setQrScenarios(d.scenarios); })
       .catch(console.error);
 
     // Visual Scenarios
-    fetch('http://localhost:5000/api/extensions/visual/scenarios')
+    fetch(`${API_BASE}/api/extensions/visual/scenarios`)
       .then(r => r.json())
       .then(d => { if (d.success) setVisualScenarios(d.scenarios); })
       .catch(console.error);
 
     // Compromised CAs
-    fetch('http://localhost:5000/api/extensions/compromised-cas')
+    fetch(`${API_BASE}/api/extensions/compromised-cas`)
       .then(r => r.json())
       .then(d => { if (d.success) setCompromisedCAs(d.compromisedCAs); })
       .catch(console.error);
@@ -71,7 +72,7 @@ export default function AdvancedExtensionsHub() {
     if (!payload.trim()) return;
     setIsQrLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/extensions/qr/analyze', {
+      const res = await fetch(`${API_BASE}/api/extensions/qr/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ qrPayload: payload })
@@ -97,7 +98,7 @@ export default function AdvancedExtensionsHub() {
     };
 
     try {
-      const res = await fetch('http://localhost:5000/api/extensions/visual/analyze', {
+      const res = await fetch(`${API_BASE}/api/extensions/visual/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -118,7 +119,7 @@ export default function AdvancedExtensionsHub() {
     if (!domain.trim()) return;
     setIsLookalikeLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/extensions/lookalike/generate', {
+      const res = await fetch(`${API_BASE}/api/extensions/lookalike/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ domain })
@@ -516,7 +517,7 @@ export default function AdvancedExtensionsHub() {
                 </code>
               </div>
               <a
-                href="http://localhost:5000/api/intel/taxii"
+                href={`${API_BASE}/api/intel/taxii`}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-3 py-1.5 px-3 rounded-lg bg-[#00f2c3]/15 text-[#00f2c3] border border-[#00f2c3]/30 hover:bg-[#00f2c3]/25 font-bold flex items-center justify-center space-x-1 transition-all text-xs"
@@ -537,7 +538,7 @@ export default function AdvancedExtensionsHub() {
                 </code>
               </div>
               <a
-                href="http://localhost:5000/api/intel/export/stix"
+                href={`${API_BASE}/api/intel/export/stix`}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-3 py-1.5 px-3 rounded-lg bg-[#00f2c3]/15 text-[#00f2c3] border border-[#00f2c3]/30 hover:bg-[#00f2c3]/25 font-bold flex items-center justify-center space-x-1 transition-all text-xs"
@@ -558,7 +559,7 @@ export default function AdvancedExtensionsHub() {
                 </code>
               </div>
               <a
-                href="http://localhost:5000/api/intel/export/iocs"
+                href={`${API_BASE}/api/intel/export/iocs`}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-3 py-1.5 px-3 rounded-lg bg-[#00f2c3]/15 text-[#00f2c3] border border-[#00f2c3]/30 hover:bg-[#00f2c3]/25 font-bold flex items-center justify-center space-x-1 transition-all text-xs"

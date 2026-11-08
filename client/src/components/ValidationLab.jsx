@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle2, Play, BarChart3, Database, Layers, RefreshCw } from 'lucide-react';
+import { API_BASE } from '../config/api.js';
 
 export default function ValidationLab() {
   const [benchmarkData, setBenchmarkData] = useState(null);
@@ -12,7 +13,7 @@ export default function ValidationLab() {
 
   const fetchBenchmark = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/validation/benchmark');
+      const res = await fetch(`${API_BASE}/api/validation/benchmark`);
       const data = await res.json();
       if (data.success) {
         setBenchmarkData(data);

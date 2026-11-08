@@ -20,6 +20,7 @@ import {
   Network,
   CheckCircle2
 } from 'lucide-react';
+import { API_BASE } from '../config/api.js';
 
 export default function DatabaseDocsPdfView({ 
   onBackToScanner, 
@@ -34,7 +35,7 @@ export default function DatabaseDocsPdfView({
   };
 
   const handleDownloadOfflineHtml = () => {
-    window.open('http://localhost:5000/api/guide/download-db-docs-html', '_blank');
+    window.open(`${API_BASE}/api/guide/download-db-docs-html`, '_blank');
   };
 
   return (

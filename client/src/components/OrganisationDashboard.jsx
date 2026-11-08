@@ -15,6 +15,7 @@ import {
   TrendingUp,
   FileText
 } from 'lucide-react';
+import { API_BASE } from '../config/api.js';
 
 export default function OrganisationDashboard() {
   const [selectedDomain, setSelectedDomain] = useState('sbi.co.in');
@@ -32,7 +33,7 @@ export default function OrganisationDashboard() {
   const fetchDashboard = async (domainToFetch) => {
     setIsLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/extensions/org-dashboard/${domainToFetch}`);
+      const res = await fetch(`${API_BASE}/api/extensions/org-dashboard/${domainToFetch}`);
       const data = await res.json();
       if (data.success) {
         setDashboardData(data);

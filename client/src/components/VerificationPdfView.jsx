@@ -18,6 +18,7 @@ import {
   RotateCcw,
   Database
 } from 'lucide-react';
+import { API_BASE } from '../config/api.js';
 
 export default function VerificationPdfView({ onBackToScanner, onSwitchToBeginnerGuide, onSwitchToDatabaseDocs }) {
   const [paperTheme, setPaperTheme] = useState('dark'); // 'dark' | 'whitepaper'
@@ -28,7 +29,7 @@ export default function VerificationPdfView({ onBackToScanner, onSwitchToBeginne
   };
 
   const handleDownloadOfflineHtml = () => {
-    window.open('http://localhost:5000/api/guide/download-verification-html', '_blank');
+    window.open(`${API_BASE}/api/guide/download-verification-html`, '_blank');
   };
 
   return (

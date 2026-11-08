@@ -1,6 +1,7 @@
 {
   "name": "hackmatrix-trustmatrix",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "server": "node server/src/index.js",
     "client": "npm --prefix client run dev",
@@ -12,6 +13,12 @@
     "test:extensions": "node server/test-section12-extensions.js",
     "test:scope": "node server/test-section13-scope.js",
     "test:objective": "node server/test-section14-final-objective.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "cors": "^2.8.5",
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

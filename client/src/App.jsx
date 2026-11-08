@@ -24,6 +24,7 @@ import VerificationPdfView from './components/VerificationPdfView.jsx';
 import DatabaseDocsPdfView from './components/DatabaseDocsPdfView.jsx';
 import MatrixRain from './components/MatrixRain.jsx';
 import { Download, ChevronDown, ChevronUp, Terminal, ArrowRight, Sparkles } from 'lucide-react';
+import { API_BASE } from './config/api.js';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('scanner');
@@ -46,7 +47,7 @@ export default function App() {
 
   const fetchScenarios = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/scenarios');
+      const res = await fetch(`${API_BASE}/api/scenarios`);
       const data = await res.json();
       if (data.success) {
         setScenarios(data.scenarios);
@@ -64,7 +65,7 @@ export default function App() {
     setScanLogs([`[INIT] Initiating multi-layer AI + Cyber + Web3 investigation for [${mode.toUpperCase()}] input...`]);
 
     try {
-      const res = await fetch('http://localhost:5000/api/scan', {
+      const res = await fetch(`${API_BASE}/api/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -93,7 +94,7 @@ export default function App() {
     setScanLogs([`[INIT] Loading pre-configured incident scenario: ${scenarioId}...`]);
 
     try {
-      const res = await fetch('http://localhost:5000/api/scan', {
+      const res = await fetch(`${API_BASE}/api/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ scenarioId })
