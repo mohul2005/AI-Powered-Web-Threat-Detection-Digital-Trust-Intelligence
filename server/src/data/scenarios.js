@@ -1,4 +1,6 @@
-// Pre-configured High-Impact Security Intelligence Scenarios (Cybersecurity + AI + Web3)
+// Pre-configured High-Impact Scenarios Aligned with Problem Statement Section A:
+// 1. Fake banking/payment 2. University/Exam 3. Government/Tax 4. Parcel delivery 5. Job portal 6. Social media recovery 7. Open redirect chain 8. PKI eMudhra 9. Web3 Drainer
+
 export const PRECONFIGURED_SCENARIOS = [
   {
     id: 'emudhra-weak-key-incident',
@@ -6,7 +8,7 @@ export const PRECONFIGURED_SCENARIOS = [
     category: 'PKI & Trust Infrastructure',
     type: 'url',
     targetUrl: 'https://secure-login.gov-verify.in',
-    description: 'Simulates the critical real-world eMudhra CA incident: An untrusted/weak intermediate CA generated flawed RSA keys with deficient entropy (duplicate modulus fingerprint) without verified Certificate Transparency (CT) proofs, attempting to impersonate a government portal.',
+    description: 'Simulates the eMudhra CA incident: An untrusted/weak intermediate CA generated flawed RSA keys with deficient entropy (duplicate modulus fingerprint) without verified Certificate Transparency (CT) proofs.',
     severity: 'CRITICAL',
     expectedVerdict: 'MALICIOUS_PKI_SUBVERSION',
     mockData: {
@@ -18,45 +20,27 @@ export const PRECONFIGURED_SCENARIOS = [
         score: 28,
         verdict: 'SUSPICIOUS_GOV_IMPERSONATION',
         impersonatedBrand: 'Government of India (Digital Services)',
+        officialBrandDomain: 'india.gov.in',
+        identityMismatch: true,
         signals: [
           'Domain mimics official gov.in namespace using hyphenated lookalike (gov-verify.in)',
-          'High urgency text detected: "Aadhaar e-Sign Certificate expired - Immediate re-verification required"',
+          'High urgency text: "Aadhaar e-Sign Certificate expired - Immediate re-verification required"',
           'Presence of rogue KYC verification input harvesting citizen biometric tokens'
         ],
         entropy: 3.84,
         punycodeDetected: false,
-        formFields: ['aadhaar_no', 'otp', 'pki_token_pin']
+        formFields: ['aadhaar_no', 'otp', 'pki_token_pin'],
+        embeddedRedirects: [],
+        preClickRecommendation: '🛑 DO NOT OPEN: Cryptographic PKI subversion and government identity mismatch.'
       },
       certTrust: {
         score: 5,
         verdict: 'COMPROMISED_CA_OR_WEAK_CRYPTO',
-        issuer: {
-          commonName: 'eMudhra Sub-CA Global Issuance 2024 (Untrusted / Flagged)',
-          organization: 'eMudhra Technologies Ltd',
-          country: 'IN'
-        },
-        subject: {
-          commonName: 'secure-login.gov-verify.in',
-          organization: 'National Digital Identity Gateway (Unverified)'
-        },
-        keyDetails: {
-          algorithm: 'RSA',
-          keySize: 1024,
-          fingerprint256: 'E3:5B:C9:22:91:FA:B1:00:19:D8:74:AC:4F:99:31:02:44:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66',
-          entropyRating: 'DEFICIENT_ENTROPY_DUPLICATE_MODULUS'
-        },
-        validity: {
-          validFrom: '2026-11-01T00:00:00.000Z',
-          validTo: '2026-12-01T00:00:00.000Z',
-          daysRemaining: 24,
-          isSelfSigned: false,
-          isExpired: false
-        },
-        ctLogs: {
-          present: false,
-          verifiedSCTs: 0,
-          status: 'UNLOGGED_IN_PUBLIC_CT_LOGS'
-        },
+        issuer: { commonName: 'eMudhra Sub-CA Global Issuance 2024 (Untrusted / Flagged)', organization: 'eMudhra Technologies Ltd', country: 'IN' },
+        subject: { commonName: 'secure-login.gov-verify.in', organization: 'National Digital Identity Gateway (Unverified)' },
+        keyDetails: { algorithm: 'RSA', keySize: 1024, fingerprint256: 'E3:5B:C9:22:91:FA:B1:00:19:D8:74:AC:4F:99:31:02:44:88:99:AA', entropyRating: 'DEFICIENT_ENTROPY_DUPLICATE_MODULUS' },
+        validity: { validFrom: '2026-11-01T00:00:00.000Z', validTo: '2026-12-01T00:00:00.000Z', daysRemaining: 24, isSelfSigned: false, isExpired: false },
+        ctLogs: { present: false, verifiedSCTs: 0, status: 'UNLOGGED_IN_PUBLIC_CT_LOGS' },
         caTrustIncidentDetails: {
           incidentName: 'eMudhra CA Duplicate Key & Broken Entropy Audit Failure',
           cveOrAlert: 'CAB-FORUM-2024-ALERT-09',
@@ -72,35 +56,22 @@ export const PRECONFIGURED_SCENARIOS = [
       webSec: {
         score: 22,
         grade: 'F',
-        headers: {
-          hsts: { status: 'MISSING', risk: 'HIGH', note: 'No HTTP Strict Transport Security header' },
-          csp: { status: 'MISSING', risk: 'HIGH', note: 'Allows arbitrary script injection' },
-          xFrameOptions: { status: 'MISSING', risk: 'MEDIUM', note: 'Clickjacking vulnerability' },
-          xContentTypeOptions: { status: 'MISSING', risk: 'LOW' }
-        },
+        headers: { hsts: { status: 'MISSING', risk: 'HIGH', note: 'No HSTS' }, csp: { status: 'MISSING', risk: 'HIGH' } },
         serverFingerprint: 'Apache/2.4.29 (Vulnerable legacy version exposed)',
-        cookies: [{ name: 'AUTH_SESSION', secure: false, httpOnly: false, sameSite: 'None' }]
+        cookies: []
       },
-      web3Security: {
-        isWeb3Target: false,
-        score: 100,
-        riskLevel: 'LOW',
-        drainerDetected: false,
-        findings: ['Standard web infrastructure — zero crypto wallet interaction']
-      },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: [] },
       collaborativeIntel: {
         reputationScore: 8,
         communityVotes: { malicious: 184, benign: 2 },
-        matchingThreatClusters: [
-          { clusterId: 'CLUSTER-EMUDHRA-ROGUE-01', type: 'Rogue PKI Infrastructure', domainsCount: 14, sharedAsn: 'AS13335' }
-        ],
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-EMUDHRA-ROGUE-01', type: 'Rogue PKI Infrastructure', domainsCount: 14, sharedAsn: 'AS13335' }],
         iocs: ['SHA256: e35bc92291fab10019d874ac4f993102448899aabbccddeeff00112233445566', 'IP: 198.51.100.42']
       },
       web3Attestation: {
         contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
         network: 'Ethereum Sepolia / Polygon POS',
         targetHash: '0x3f98a12e84c98129038471209384719283749182374918273948172938471293',
-        txHash: '0x9e4f1a2384719283749182739481729384712938471928374918273948172938',
+        txHash: '0x9e4f1a2384719283749182739481729384719283749182739481729384712938',
         ipfsCid: 'bafybeihdwdcefgh4dqkjv67uzcmw7ojee6xedzdetojuzjevtenxquvyku',
         blockNumber: 21094821,
         attestationStandard: 'EAS-THREAT-INTEL-EIP712',
@@ -109,7 +80,7 @@ export const PRECONFIGURED_SCENARIOS = [
       evidenceDossier: [
         { title: 'Cryptographic Flaw', detail: 'Deficient 1024-bit RSA key length with verified duplicate modulus collision.' },
         { title: 'Certificate Transparency', detail: 'Zero public CT log receipts found in Google Argon or Cloudflare Nimbus.' },
-        { title: 'Government Spoofing', detail: 'Deceptive domain suffix mimicking the official Indian National Portal.' }
+        { title: 'Identity Mismatch', detail: 'Claims identity of official Indian Government portal but hosted on rogue domain.' }
       ],
       actionableGuidance: [
         'DO NOT download digital certificates or sign any document through this gateway.',
@@ -119,8 +90,268 @@ export const PRECONFIGURED_SCENARIOS = [
     }
   },
   {
+    id: 'parcel-delivery-customs-scam',
+    title: 'Parcel Delivery Scam: India Post / FedEx Redelivery Phish',
+    category: 'Parcel Delivery & Logistics',
+    type: 'url',
+    targetUrl: 'https://indiapost-speedpost-customs-pay.xyz/track?redirect=https://payment-card-vault.top',
+    description: 'Simulates fake package delivery link claiming a parcel is held at the sorting hub due to missing address or unpaid customs fee, embedding an external redirect to exfiltrate credit card data.',
+    severity: 'CRITICAL',
+    expectedVerdict: 'CONFIRMED_PARCEL_DELIVERY_SCAM',
+    mockData: {
+      url: 'https://indiapost-speedpost-customs-pay.xyz/track?redirect=https://payment-card-vault.top',
+      domain: 'indiapost-speedpost-customs-pay.xyz',
+      trustScore: 8,
+      threatLevel: 'CRITICAL',
+      aiPhishing: {
+        score: 6,
+        verdict: 'CONFIRMED_PARCEL_DELIVERY_SCAM',
+        impersonatedBrand: 'India Post',
+        officialBrandDomain: 'indiapost.gov.in',
+        identityMismatch: true,
+        signals: [
+          'Identity Mismatch: Claims to be India Post (official: indiapost.gov.in) on untrusted .xyz domain',
+          'Embedded Redirect Parameter: Contains query parameter ?redirect= targeting external unverified domain',
+          'Delivery lure: "Package #IN-88912 detained due to unpaid customs fee of ₹25"'
+        ],
+        entropy: 3.92,
+        punycodeDetected: false,
+        formFields: ['recipient_name', 'card_number', 'expiry', 'cvv', 'card_pin'],
+        embeddedRedirects: [{ param: 'redirect', destination: 'https://payment-card-vault.top', isExternal: true }],
+        preClickRecommendation: '🛑 DO NOT OPEN: Dangerous parcel fee skimmer harvesting payment cards.'
+      },
+      certTrust: {
+        score: 30,
+        verdict: 'ANONYMOUS_DV_CERT',
+        issuer: { commonName: "Let's Encrypt Authority", organization: 'ISRG', country: 'US' },
+        subject: { commonName: 'indiapost-speedpost-customs-pay.xyz' },
+        keyDetails: { algorithm: 'RSA', keySize: 2048, fingerprint256: '11:22:33:44:55:66:77:88:99:00:AA:BB:CC:DD:EE:FF' },
+        validity: { validFrom: '2026-11-05T00:00:00.000Z', validTo: '2027-02-05T00:00:00.000Z', daysRemaining: 88, isSelfSigned: false, isExpired: false },
+        ctLogs: { present: true, verifiedSCTs: 2, status: 'LOGGED' },
+        chain: [{ name: 'Let\'s Encrypt Intermediate', valid: true, status: 'Active' }, { name: 'Leaf: indiapost-speedpost-customs-pay.xyz', valid: false, status: 'Recent Domain < 48h' }]
+      },
+      webSec: {
+        score: 15,
+        grade: 'F',
+        headers: { hsts: { status: 'MISSING', risk: 'HIGH', note: 'No HSTS' }, csp: { status: 'MISSING', risk: 'HIGH' } },
+        serverFingerprint: 'LiteSpeed / Nginx',
+        cookies: []
+      },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: [] },
+      collaborativeIntel: {
+        reputationScore: 5,
+        communityVotes: { malicious: 382, benign: 0 },
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-PARCEL-GANG-44', type: 'SpeedPost Card Skimmer Gang', domainsCount: 52, sharedAsn: 'AS46603' }],
+        iocs: ['DOMAIN: indiapost-speedpost-customs-pay.xyz', 'REDIRECT: payment-card-vault.top']
+      },
+      web3Attestation: {
+        contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
+        network: 'Ethereum Sepolia / Polygon POS',
+        targetHash: '0x4481928374918273948172938471293847192837491827394817293847129384',
+        txHash: '0x6628192837491827394817293847129384719283749182739481729384712938',
+        ipfsCid: 'bafybeih88182734981729384712938471928374918273948172938471quvyku',
+        blockNumber: 21094892,
+        attestationStandard: 'EAS-THREAT-INTEL-EIP712',
+        status: 'ATTESTED_ON_CHAIN'
+      },
+      evidenceDossier: [
+        { title: 'Identity Spoofing', detail: 'Claims India Post identity (official: indiapost.gov.in) but hosted on disposable .xyz TLD.' },
+        { title: 'Embedded Open Redirect', detail: 'Redirects payment card submission to third-party vault domain payment-card-vault.top.' },
+        { title: 'Payment Skimmer Form', detail: 'Harvests full credit card number, CVV, and ATM PIN.' }
+      ],
+      actionableGuidance: [
+        'DO NOT enter debit or credit card details on this link.',
+        'Postal services NEVER demand small ₹25 delivery fee payments via SMS/WhatsApp links.',
+        'Track parcels exclusively via the official website: https://indiapost.gov.in.'
+      ]
+    }
+  },
+  {
+    id: 'university-admission-exam-scam',
+    title: 'University / Exam Fraud: NTA NEET-JEE Admit Card Fee Phish',
+    category: 'Education & Examination Portals',
+    type: 'url',
+    targetUrl: 'https://nta-neet-admissions-hallticket.site/download',
+    description: 'Impersonates the National Testing Agency (NTA) for university admissions and exams. Coerces students into paying a "mandatory exam hall-ticket release fee".',
+    severity: 'HIGH',
+    expectedVerdict: 'CONFIRMED_EXAM_PORTAL_FRAUD',
+    mockData: {
+      url: 'https://nta-neet-admissions-hallticket.site/download',
+      domain: 'nta-neet-admissions-hallticket.site',
+      trustScore: 11,
+      threatLevel: 'CRITICAL',
+      aiPhishing: {
+        score: 10,
+        verdict: 'CONFIRMED_EXAM_PORTAL_FRAUD',
+        impersonatedBrand: 'National Testing Agency (NTA)',
+        officialBrandDomain: 'nta.ac.in',
+        identityMismatch: true,
+        signals: [
+          'Identity Mismatch: Claims NTA identity (official: nta.ac.in) on .site domain',
+          'Exam Fee Extortion: Requests payment for student admit card/hall ticket download',
+          'Harvests candidate roll numbers, date of birth, and parents mobile numbers'
+        ],
+        entropy: 3.86,
+        punycodeDetected: false,
+        formFields: ['application_number', 'dob', 'parent_phone', 'upi_pay'],
+        embeddedRedirects: [],
+        preClickRecommendation: '🛑 DO NOT OPEN: Fraudulent examination fee portal.'
+      },
+      certTrust: { score: 35, verdict: 'LOW_REPUTATION_DV', issuer: { commonName: 'cPanel Inc CA' }, keyDetails: { algorithm: 'RSA', keySize: 2048 }, ctLogs: { present: true, status: 'LOGGED' }, chain: [] },
+      webSec: { score: 20, grade: 'F', headers: { hsts: { status: 'MISSING' }, csp: { status: 'MISSING' } }, cookies: [] },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: [] },
+      collaborativeIntel: {
+        reputationScore: 8,
+        communityVotes: { malicious: 215, benign: 0 },
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-EXAM-FRAUD-26', type: 'Fake Admit Card Syndicate', domainsCount: 31, sharedAsn: 'AS20473' }],
+        iocs: ['DOMAIN: nta-neet-admissions-hallticket.site']
+      },
+      web3Attestation: {
+        contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
+        network: 'Ethereum Sepolia / Polygon POS',
+        targetHash: '0x9981928374918273948172938471293847192837491827394817293847129384',
+        txHash: '0x1128192837491827394817293847129384719283749182739481729384712938',
+        ipfsCid: 'bafybeih77182734981729384712938471928374918273948172938471quvyku',
+        blockNumber: 21094894,
+        attestationStandard: 'EAS-THREAT-INTEL-EIP712',
+        status: 'ATTESTED_ON_CHAIN'
+      },
+      evidenceDossier: [
+        { title: 'Academic Entity Spoof', detail: 'Falsely mimics official National Testing Agency examination systems.' },
+        { title: 'Admit Card Paywall', detail: 'Demands unauthorized payment to release government exam credentials.' }
+      ],
+      actionableGuidance: [
+        'Do not pay any fee on this website. Official admit cards are always released free on nta.ac.in.',
+        'Verify exam notifications only at https://nta.ac.in.',
+        'Report this URL to the NTA cyber grievance cell.'
+      ]
+    }
+  },
+  {
+    id: 'government-echallan-traffic-fine',
+    title: 'Government Service: Fake Parivahan e-Challan Traffic Fine Portal',
+    category: 'Government & Tax Portals',
+    type: 'url',
+    targetUrl: 'https://echallan-parivahan-traffic-pay.top/fine',
+    description: 'Impersonates the Ministry of Road Transport Parivahan e-Challan portal. Threatens vehicle seizure or court summons unless a fake traffic penalty is paid immediately.',
+    severity: 'CRITICAL',
+    expectedVerdict: 'CONFIRMED_GOV_CHALLAN_FRAUD',
+    mockData: {
+      url: 'https://echallan-parivahan-traffic-pay.top/fine',
+      domain: 'echallan-parivahan-traffic-pay.top',
+      trustScore: 9,
+      threatLevel: 'CRITICAL',
+      aiPhishing: {
+        score: 7,
+        verdict: 'CONFIRMED_GOV_CHALLAN_FRAUD',
+        impersonatedBrand: 'Parivahan e-Challan (Traffic Fines)',
+        officialBrandDomain: 'echallan.parivahan.gov.in',
+        identityMismatch: true,
+        signals: [
+          'Identity Mismatch: Claims Parivahan (official: echallan.parivahan.gov.in) on .top domain',
+          'Urgency threat: "Fine unpaid. Arrest warrant issued in 48 hours unless paid"',
+          'Payment Gateway routes to personal scammer UPI IDs'
+        ],
+        entropy: 3.94,
+        punycodeDetected: false,
+        formFields: ['vehicle_reg_no', 'chassis_no', 'upi_pin'],
+        embeddedRedirects: [],
+        preClickRecommendation: '🛑 DO NOT OPEN: Fake traffic fine portal routing funds to scammers.'
+      },
+      certTrust: { score: 30, verdict: 'CHEAP_DV', issuer: { commonName: 'ZeroSSL CA' }, keyDetails: { algorithm: 'ECDSA', keySize: 256 }, ctLogs: { present: true, status: 'LOGGED' }, chain: [] },
+      webSec: { score: 15, grade: 'F', headers: { hsts: { status: 'MISSING' }, csp: { status: 'MISSING' } }, cookies: [] },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: [] },
+      collaborativeIntel: {
+        reputationScore: 6,
+        communityVotes: { malicious: 260, benign: 0 },
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-CHALLAN-GANG-12', type: 'Fake Traffic Fine Syndicate', domainsCount: 44, sharedAsn: 'AS57523' }],
+        iocs: ['DOMAIN: echallan-parivahan-traffic-pay.top', 'UPI: trafficfines-morth@ibl']
+      },
+      web3Attestation: {
+        contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
+        network: 'Ethereum Sepolia / Polygon POS',
+        targetHash: '0x3381928374918273948172938471293847192837491827394817293847129384',
+        txHash: '0x5528192837491827394817293847129384719283749182739481729384712938',
+        ipfsCid: 'bafybeih55182734981729384712938471928374918273948172938471quvyku',
+        blockNumber: 21094893,
+        attestationStandard: 'EAS-THREAT-INTEL-EIP712',
+        status: 'ATTESTED_ON_CHAIN'
+      },
+      evidenceDossier: [
+        { title: 'Government Impersonation', detail: 'Falsely incorporates Ministry of Road Transport emblems and keywords.' },
+        { title: 'Fake Penalty Demand', detail: 'Threatens vehicle confiscation and directs UPI payments to private accounts.' }
+      ],
+      actionableGuidance: [
+        'DO NOT make any payment on this portal.',
+        'Check genuine challans exclusively on the official government website: https://echallan.parivahan.gov.in.',
+        'Forward this scam URL to 1930 / cybercrime.gov.in.'
+      ]
+    }
+  },
+  {
+    id: 'instagram-copyright-recovery-phish',
+    title: 'Social Media / Account Recovery: Instagram Copyright Appeal Phish',
+    category: 'Social Media & Account Recovery',
+    type: 'url',
+    targetUrl: 'https://instagram-copyright-appeal-center.cam/verify?next=https://malicious-token-sniff.top',
+    description: 'Impersonates Instagram Security and Copyright Support. Informs influencers their account will be deleted in 24 hours for copyright infringement, capturing passwords and 2FA backup codes.',
+    severity: 'CRITICAL',
+    expectedVerdict: 'CONFIRMED_SOCIAL_MEDIA_PHISHING',
+    mockData: {
+      url: 'https://instagram-copyright-appeal-center.cam/verify?next=https://malicious-token-sniff.top',
+      domain: 'instagram-copyright-appeal-center.cam',
+      trustScore: 7,
+      threatLevel: 'CRITICAL',
+      aiPhishing: {
+        score: 6,
+        verdict: 'CONFIRMED_SOCIAL_MEDIA_PHISHING',
+        impersonatedBrand: 'Instagram',
+        officialBrandDomain: 'instagram.com',
+        identityMismatch: true,
+        signals: [
+          'Identity Mismatch: Claims Instagram identity on suspicious .cam TLD',
+          'Copyright coercion: "Account scheduled for permanent deletion in 24 hours"',
+          'Embedded Redirect Parameter: Embeds parameter ?next= targeting malicious external token sniffer'
+        ],
+        entropy: 3.98,
+        punycodeDetected: false,
+        formFields: ['username', 'password', '2fa_backup_code'],
+        embeddedRedirects: [{ param: 'next', destination: 'https://malicious-token-sniff.top', isExternal: true }],
+        preClickRecommendation: '🛑 DO NOT OPEN: Account takeover phish targeting Instagram credentials.'
+      },
+      certTrust: { score: 35, verdict: 'CHEAP_DV', issuer: { commonName: 'Let\'s Encrypt' }, keyDetails: { algorithm: 'RSA', keySize: 2048 }, ctLogs: { present: true, status: 'LOGGED' }, chain: [] },
+      webSec: { score: 15, grade: 'F', headers: { hsts: { status: 'MISSING' }, csp: { status: 'MISSING' } }, cookies: [] },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: [] },
+      collaborativeIntel: {
+        reputationScore: 5,
+        communityVotes: { malicious: 290, benign: 0 },
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-IG-TAKEOVER-99', type: 'Influencer Account Takeover Syndicate', domainsCount: 65, sharedAsn: 'AS20473' }],
+        iocs: ['DOMAIN: instagram-copyright-appeal-center.cam', 'NEXT_DEST: malicious-token-sniff.top']
+      },
+      web3Attestation: {
+        contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
+        network: 'Ethereum Sepolia / Polygon POS',
+        targetHash: '0x2281928374918273948172938471293847192837491827394817293847129384',
+        txHash: '0x8828192837491827394817293847129384719283749182739481729384712938',
+        ipfsCid: 'bafybeih22182734981729384712938471928374918273948172938471quvyku',
+        blockNumber: 21094896,
+        attestationStandard: 'EAS-THREAT-INTEL-EIP712',
+        status: 'ATTESTED_ON_CHAIN'
+      },
+      evidenceDossier: [
+        { title: 'Social Media Takeover', detail: 'Simulates Instagram security warning to hijack accounts and 2FA recovery codes.' },
+        { title: 'Embedded External Redirect', detail: 'Chains authentication credentials directly into external token collector.' }
+      ],
+      actionableGuidance: [
+        'DO NOT enter your Instagram password or 2FA codes.',
+        'Meta/Instagram never issues copyright notices via third-party websites or DMs.',
+        'Review official copyright notices exclusively inside the Instagram App -> Settings -> Help -> Support Requests.'
+      ]
+    }
+  },
+  {
     id: 'web3-wallet-drainer-scam',
-    title: 'Web3 Scam: Uniswap Airdrop Phishing & Permit2 Wallet Drainer',
+    title: 'Web3 Crypto Scam: Uniswap Airdrop Phishing & Permit2 Wallet Drainer',
     category: 'Web3 & Crypto Security',
     type: 'url',
     targetUrl: 'https://uniswap-airdrop-reward-claim.eth.limo',
@@ -135,7 +366,9 @@ export const PRECONFIGURED_SCENARIOS = [
       aiPhishing: {
         score: 12,
         verdict: 'CONFIRMED_WEB3_PHISHING',
-        impersonatedBrand: 'Uniswap Labs',
+        impersonatedBrand: 'Uniswap Protocol',
+        officialBrandDomain: 'uniswap.org',
+        identityMismatch: true,
         signals: [
           'Unauthorized use of Uniswap trademark on unverified decentralized ENS gateway',
           'Urgency trigger: "Season 3 Retroactive Airdrop Expires in 02:45:00"',
@@ -143,28 +376,12 @@ export const PRECONFIGURED_SCENARIOS = [
         ],
         entropy: 3.96,
         punycodeDetected: false,
-        formFields: ['wallet_address', 'seed_phrase_recovery']
+        formFields: ['wallet_address', 'seed_phrase_recovery'],
+        embeddedRedirects: [],
+        preClickRecommendation: '🛑 DO NOT OPEN: Malicious Web3 smart contract wallet drainer.'
       },
-      certTrust: {
-        score: 45,
-        verdict: 'GATEWAY_WILDCARD_CERT',
-        issuer: { commonName: 'Cloudflare Inc ECC CA-3', organization: 'Cloudflare', country: 'US' },
-        subject: { commonName: '*.eth.limo' },
-        keyDetails: { algorithm: 'ECDSA', keySize: 256, fingerprint256: '88:AA:11:BB:22:CC:33:DD:44:EE:55:FF:66:00:77:11:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77' },
-        validity: { validFrom: '2026-09-01T00:00:00.000Z', validTo: '2027-09-01T00:00:00.000Z', daysRemaining: 290, isSelfSigned: false, isExpired: false },
-        ctLogs: { present: true, verifiedSCTs: 2, status: 'LOGGED_WILDCARD' },
-        chain: [{ name: 'Cloudflare Root', valid: true, status: 'Trusted' }, { name: 'Leaf: *.eth.limo', valid: true, status: 'Shared Proxy' }]
-      },
-      webSec: {
-        score: 30,
-        grade: 'D',
-        headers: {
-          hsts: { status: 'PRESENT', risk: 'NONE', note: 'Gateway HSTS' },
-          csp: { status: 'MISSING', risk: 'HIGH', note: 'Allows external websocket drainer telemetry' }
-        },
-        serverFingerprint: 'Cloudflare Decentralized Gateway',
-        cookies: []
-      },
+      certTrust: { score: 45, verdict: 'GATEWAY_WILDCARD_CERT', issuer: { commonName: 'Cloudflare Inc ECC CA-3' }, keyDetails: { algorithm: 'ECDSA', keySize: 256 }, ctLogs: { present: true, status: 'LOGGED_WILDCARD' }, chain: [] },
+      webSec: { score: 30, grade: 'D', headers: { hsts: { status: 'PRESENT' }, csp: { status: 'MISSING' } }, cookies: [] },
       web3Security: {
         isWeb3Target: true,
         score: 8,
@@ -180,9 +397,7 @@ export const PRECONFIGURED_SCENARIOS = [
       collaborativeIntel: {
         reputationScore: 6,
         communityVotes: { malicious: 298, benign: 1 },
-        matchingThreatClusters: [
-          { clusterId: 'CLUSTER-DRAINER-PERMIT-09', type: 'Inferno / Pink Drainer Web3 Kit', domainsCount: 84, sharedAsn: 'AS13335' }
-        ],
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-DRAINER-PERMIT-09', type: 'Inferno / Pink Drainer Web3 Kit', domainsCount: 84, sharedAsn: 'AS13335' }],
         iocs: ['CONTRACT: 0x98f281290381290384712093847129384712b18a', 'DOMAIN: uniswap-airdrop-reward-claim.eth.limo']
       },
       web3Attestation: {
@@ -197,8 +412,7 @@ export const PRECONFIGURED_SCENARIOS = [
       },
       evidenceDossier: [
         { title: 'Web3 Wallet Drainer', detail: 'Script executes unauthorized Permit2 signature requests targeting token balances.' },
-        { title: 'Decentralized IPFS Host', detail: 'Exploits ENS reverse-resolution proxy to bypass traditional DNS takedowns.' },
-        { title: 'Brand Deception', detail: 'Unauthorized use of Uniswap trademark logos and interface design.' }
+        { title: 'Decentralized IPFS Host', detail: 'Exploits ENS reverse-resolution proxy to bypass traditional DNS takedowns.' }
       ],
       actionableGuidance: [
         'DO NOT connect your MetaMask, Phantom, or hardware wallet to this website.',
@@ -210,7 +424,7 @@ export const PRECONFIGURED_SCENARIOS = [
   {
     id: 'sbi-bank-credential-harvester',
     title: 'Financial Phishing: SBI Online Banking Homoglyph & OTP Harvester',
-    category: 'Phishing & Brand Impersonation',
+    category: 'Banking & Payment Gateways',
     type: 'url',
     targetUrl: 'https://onlinesbi.sbi-retailbanking-verify.xyz/login.php',
     description: 'Impersonates State Bank of India with a cloned netbanking layout, punycode lookalike, and aggressive credential harvesting fields capturing username, password, profile password, and SMS OTP.',
@@ -224,47 +438,27 @@ export const PRECONFIGURED_SCENARIOS = [
       aiPhishing: {
         score: 6,
         verdict: 'CONFIRMED_BANKING_PHISHING',
-        impersonatedBrand: 'State Bank of India (SBI)',
+        impersonatedBrand: 'State Bank of India',
+        officialBrandDomain: 'onlinesbi.sbi',
+        identityMismatch: true,
         signals: [
           'Typosquatting domain using brand prefix on untrusted TLD (.xyz)',
           'Form action submits plaintext credentials to a foreign telegram bot webhook',
-          'CSS & Favicon direct hotlinking from legitimate bank server',
-          'Fake virtual keyboard overlay capturing keylogs'
+          'CSS & Favicon direct hotlinking from legitimate bank server'
         ],
         entropy: 4.12,
         punycodeDetected: true,
-        formFields: ['username', 'password', 'profile_password', 'otp', 'card_cvv']
+        formFields: ['username', 'password', 'profile_password', 'otp', 'card_cvv'],
+        embeddedRedirects: [],
+        preClickRecommendation: '🛑 DO NOT OPEN: Cloned banking portal stealing passwords and SMS OTPs.'
       },
-      certTrust: {
-        score: 35,
-        verdict: 'LOW_ASSURANCE_DV_CERT',
-        issuer: { commonName: "Let's Encrypt Authority X3", organization: 'ISRG', country: 'US' },
-        subject: { commonName: 'onlinesbi.sbi-retailbanking-verify.xyz' },
-        keyDetails: { algorithm: 'RSA', keySize: 2048, fingerprint256: '9A:44:11:88:FE:10:98:C1:22:90:33:11:AA:FF:CC:00' },
-        validity: { validFrom: '2026-11-06T14:10:00.000Z', validTo: '2027-02-06T14:10:00.000Z', daysRemaining: 90, isSelfSigned: false, isExpired: false },
-        ctLogs: { present: true, verifiedSCTs: 2, status: 'LOGGED_RECENTLY' },
-        chain: [{ name: 'ISRG Root X1', valid: true, status: 'Trusted Root' }, { name: 'Leaf: onlinesbi.sbi-retailbanking-verify.xyz', valid: false, status: 'Age < 24 Hours' }]
-      },
-      webSec: {
-        score: 18,
-        grade: 'F',
-        headers: { hsts: { status: 'MISSING', risk: 'HIGH', note: 'No HSTS' }, csp: { status: 'MISSING', risk: 'HIGH' } },
-        serverFingerprint: 'nginx/1.18.0 (Ubuntu)',
-        cookies: []
-      },
-      web3Security: {
-        isWeb3Target: false,
-        score: 100,
-        riskLevel: 'LOW',
-        drainerDetected: false,
-        findings: ['Traditional banking phishing vector']
-      },
+      certTrust: { score: 35, verdict: 'LOW_ASSURANCE_DV_CERT', issuer: { commonName: "Let's Encrypt Authority" }, keyDetails: { algorithm: 'RSA', keySize: 2048 }, ctLogs: { present: true, status: 'LOGGED' }, chain: [] },
+      webSec: { score: 18, grade: 'F', headers: { hsts: { status: 'MISSING' }, csp: { status: 'MISSING' } }, cookies: [] },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: [] },
       collaborativeIntel: {
         reputationScore: 4,
         communityVotes: { malicious: 312, benign: 0 },
-        matchingThreatClusters: [
-          { clusterId: 'CLUSTER-FINPHISH-IND-88', type: 'Banking Phish Kit V4', domainsCount: 68, sharedAsn: 'AS20473 (Choopa)' }
-        ],
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-FINPHISH-IND-88', type: 'Banking Phish Kit V4', domainsCount: 68, sharedAsn: 'AS20473' }],
         iocs: ['DOMAIN: onlinesbi.sbi-retailbanking-verify.xyz', 'IP: 149.28.18.232']
       },
       web3Attestation: {
@@ -289,60 +483,188 @@ export const PRECONFIGURED_SCENARIOS = [
     }
   },
   {
-    id: 'sbi-smishing-sms-message',
-    title: 'Smishing SMS: Fake SBI YONO Account Suspension Panic Lure',
-    category: 'SMS & Smishing Fraud',
-    type: 'message',
-    targetUrl: 'Dear Customer, Your SBI YONO account will be blocked today! Please update your PAN immediately to avoid suspension. Click: http://bit.ly/sbi-pan-kyc-verify',
-    description: 'Simulates a real-world telecom smishing message threatening immediate account block and coercing users into clicking an obfuscated shortlink to harvest PAN and banking credentials.',
+    id: 'fake-job-internship-scam',
+    title: 'Recruitment Fraud: Google / Microsoft Careers Offer & Processing Fee Scam',
+    category: 'Recruitment & Job Portals',
+    type: 'url',
+    targetUrl: 'https://careers-google-hiring-portal.online/application-fee',
+    description: 'Impersonates Google Careers recruiting. Offers remote software engineering positions and demands an upfront ₹2,500 "background verification security deposit" via fraudulent UPI.',
     severity: 'HIGH',
-    expectedVerdict: 'CONFIRMED_SMISHING_SMS',
+    expectedVerdict: 'CONFIRMED_RECRUITMENT_FRAUD',
     mockData: {
-      type: 'MESSAGE',
-      url: 'http://bit.ly/sbi-pan-kyc-verify',
-      domain: 'bit.ly (Redirecting to rogue harvester)',
-      trustScore: 7,
+      url: 'https://careers-google-hiring-portal.online/application-fee',
+      domain: 'careers-google-hiring-portal.online',
+      trustScore: 10,
       threatLevel: 'CRITICAL',
       aiPhishing: {
         score: 8,
-        verdict: 'CONFIRMED_SMISHING_ATTACK',
-        impersonatedBrand: 'State Bank of India',
+        verdict: 'CONFIRMED_RECRUITMENT_FRAUD',
+        impersonatedBrand: 'Google',
+        officialBrandDomain: 'google.com',
+        identityMismatch: true,
         signals: [
-          'High urgency panic trigger: "Account will be blocked today"',
-          'Obfuscated URL shortener used to bypass mobile telecom spam filters',
-          'Unsolicited request to submit PAN and banking KYC credentials'
+          'Identity Mismatch: Claims Google Careers (official: careers.google.com) on disposable .online domain',
+          'Advance Fee Fraud: Mandates upfront ₹2,500 payment for "interview security deposit"',
+          'Harvests applicant Aadhaar, resume PII, and bank account details'
         ],
-        entropy: 3.8,
+        entropy: 4.02,
         punycodeDetected: false,
-        formFields: ['pan_number', 'yono_password', 'otp']
+        formFields: ['full_name', 'aadhaar_card', 'bank_account_no', 'upi_transaction_id'],
+        embeddedRedirects: [],
+        preClickRecommendation: '🛑 DO NOT OPEN: Fraudulent job offer charging fake recruitment fees.'
       },
-      certTrust: { score: 20, verdict: 'HTTP_REDIRECT', issuer: { commonName: 'None' }, keyDetails: { keySize: 0, algorithm: 'None' }, ctLogs: { present: false, status: 'UNPROTECTED' }, chain: [] },
-      webSec: { score: 10, grade: 'F', headers: { hsts: { status: 'MISSING' }, csp: { status: 'MISSING' } }, cookies: [] },
-      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: ['SMS telecommunication fraud'] },
+      certTrust: { score: 32, verdict: 'CHEAP_DV', issuer: { commonName: "Let's Encrypt" }, keyDetails: { algorithm: 'RSA', keySize: 2048 }, ctLogs: { present: true, status: 'LOGGED' }, chain: [] },
+      webSec: { score: 18, grade: 'F', headers: { hsts: { status: 'MISSING' }, csp: { status: 'MISSING' } }, cookies: [] },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: [] },
       collaborativeIntel: {
-        reputationScore: 5,
-        communityVotes: { malicious: 412, benign: 0 },
-        matchingThreatClusters: [{ clusterId: 'CLUSTER-SMISH-IND-24', type: 'SMS KYC Gang', domainsCount: 110, sharedAsn: 'Telecom Bulk SMS' }],
-        iocs: ['SHORTLINK: bit.ly/sbi-pan-kyc-verify', 'LURE: YONO Account Suspension']
+        reputationScore: 6,
+        communityVotes: { malicious: 245, benign: 0 },
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-RECRUIT-FRAUD-17', type: 'Tech Hiring Impersonation Gang', domainsCount: 38, sharedAsn: 'AS20473' }],
+        iocs: ['DOMAIN: careers-google-hiring-portal.online']
       },
       web3Attestation: {
         contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
         network: 'Ethereum Sepolia / Polygon POS',
-        targetHash: '0x2218293847192837491827394817293847129384719283749182739481729384',
-        txHash: '0x4428192837491827394817293847129384719283749182739481729384712938',
+        targetHash: '0x7781928374918273948172938471293847192837491827394817293847129384',
+        txHash: '0x9928192837491827394817293847129384719283749182739481729384712938',
         ipfsCid: 'bafybeih66182734981729384712938471928374918273948172938471quvyku',
-        blockNumber: 21094895,
+        blockNumber: 21094897,
         attestationStandard: 'EAS-THREAT-INTEL-EIP712',
         status: 'ATTESTED_ON_CHAIN'
       },
       evidenceDossier: [
-        { title: 'Deceptive Shortlink', detail: 'Uses bit.ly redirection to conceal malicious landing page.' },
-        { title: 'Regulatory Impersonation', detail: 'Falsely cites mandatory PAN-Aadhaar linking to induce compliance.' }
+        { title: 'Recruitment Identity Spoof', detail: 'Falsely uses Google logos and branding to solicit job applications.' },
+        { title: 'Illegal Upfront Fee', detail: 'Legitimate employers never demand application, laptop security, or exam processing fees.' }
       ],
       actionableGuidance: [
-        'NEVER share OTP, CVV, or passwords in response to an SMS.',
-        'Banks never ask you to update KYC via bit.ly or third-party links.',
-        'Report this smishing number immediately to 1930 / cybercrime.gov.in.'
+        'NEVER pay money to secure a job or interview. Google never charges fees at any stage.',
+        'Verify job listings solely at https://careers.google.com.',
+        'Report recruitment scams to cybercrime.gov.in.'
+      ]
+    }
+  },
+  {
+    id: 'shortened-url-redirect-chain',
+    title: 'Redirect Abuse: Shortened URL with Obfuscated Open Redirect Chain',
+    category: 'Redirect Chains & URL Shorteners',
+    type: 'url',
+    targetUrl: 'https://tinyurl.com/sbi-quick-kyc-auth?url=https://open-redirect-relay.biz/jump?dest=https://dark-credential-vault.top',
+    description: 'Employs a multi-hop redirect chain using a URL shortener and open redirect relays to obscure the final malicious credential-harvesting payload from URL reputation scanners.',
+    severity: 'CRITICAL',
+    expectedVerdict: 'MALICIOUS_REDIRECT_CHAIN',
+    mockData: {
+      url: 'https://tinyurl.com/sbi-quick-kyc-auth?url=https://open-redirect-relay.biz/jump?dest=https://dark-credential-vault.top',
+      domain: 'tinyurl.com',
+      trustScore: 14,
+      threatLevel: 'CRITICAL',
+      aiPhishing: {
+        score: 12,
+        verdict: 'MALICIOUS_REDIRECT_CHAIN',
+        impersonatedBrand: 'State Bank of India',
+        officialBrandDomain: 'onlinesbi.sbi',
+        identityMismatch: true,
+        signals: [
+          'Multi-hop open redirect chain: 3 nested redirect parameters detected (?url=, ?dest=)',
+          'High obfuscation risk: Shortened link masks eventual destination on bulletproof hosting (.top)',
+          'Intermediate relay domain flagged for automated traffic distribution system (TDS) activity'
+        ],
+        entropy: 4.25,
+        punycodeDetected: false,
+        formFields: ['pan_no', 'dob', 'debit_pin'],
+        embeddedRedirects: [
+          { param: 'url', destination: 'https://open-redirect-relay.biz/jump?dest=https://dark-credential-vault.top', isExternal: true },
+          { param: 'dest', destination: 'https://dark-credential-vault.top', isExternal: true }
+        ],
+        preClickRecommendation: '🛑 DO NOT OPEN: Malicious nested redirect chain terminating at credential harvester.'
+      },
+      certTrust: { score: 70, verdict: 'VALID_SHORTENER_CERT', issuer: { commonName: 'Cloudflare Inc' }, keyDetails: { algorithm: 'ECDSA', keySize: 256 }, ctLogs: { present: true, status: 'LOGGED' }, chain: [] },
+      webSec: { score: 45, grade: 'C', headers: { hsts: { status: 'PRESENT' }, csp: { status: 'MISSING' } }, cookies: [] },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: [] },
+      collaborativeIntel: {
+        reputationScore: 12,
+        communityVotes: { malicious: 412, benign: 3 },
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-TDS-RELAY-09', type: 'Traffic Distribution Exploit Chain', domainsCount: 92, sharedAsn: 'AS44034' }],
+        iocs: ['FINAL_PAYLOAD: dark-credential-vault.top', 'RELAY: open-redirect-relay.biz']
+      },
+      web3Attestation: {
+        contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
+        network: 'Ethereum Sepolia / Polygon POS',
+        targetHash: '0x8881928374918273948172938471293847192837491827394817293847129384',
+        txHash: '0x0028192837491827394817293847129384719283749182739481729384712938',
+        ipfsCid: 'bafybeih00182734981729384712938471928374918273948172938471quvyku',
+        blockNumber: 21094898,
+        attestationStandard: 'EAS-THREAT-INTEL-EIP712',
+        status: 'ATTESTED_ON_CHAIN'
+      },
+      evidenceDossier: [
+        { title: 'Evasive Redirect Chain', detail: 'URL shortener chains through relay proxies to obscure final destination dark-credential-vault.top.' },
+        { title: 'TDS Behavioral Pattern', detail: 'Distributes victims to polymorphic phishing pages based on IP geo-location.' }
+      ],
+      actionableGuidance: [
+        'DO NOT expand or click shortened links sent via SMS, email, or social media.',
+        'Inspect final unshortened URL destinations before proceeding.',
+        'Never submit financial credentials after following an automated redirect.'
+      ]
+    }
+  },
+  {
+    id: 'sbi-smishing-sms-message',
+    title: 'Smishing SMS: Fake SBI YONO Account Suspension KYC Alert',
+    category: 'SMS & Smishing Fraud',
+    type: 'message',
+    targetUrl: 'Dear SBI User, your YONO netbanking will be permanently blocked today due to pending PAN verification. Avoid suspension now: http://bit.ly/sbi-yono-kyc-renew',
+    description: 'Simulates a high-urgency SMS/WhatsApp lure tricking citizens into clicking a shortened URL to update KYC or unblock an account.',
+    severity: 'CRITICAL',
+    expectedVerdict: 'CONFIRMED_SMISHING_LURE',
+    mockData: {
+      url: 'http://bit.ly/sbi-yono-kyc-renew',
+      domain: 'bit.ly',
+      trustScore: 5,
+      threatLevel: 'CRITICAL',
+      aiPhishing: {
+        score: 5,
+        verdict: 'CONFIRMED_SMISHING_LURE',
+        impersonatedBrand: 'State Bank of India',
+        officialBrandDomain: 'onlinesbi.sbi',
+        identityMismatch: true,
+        signals: [
+          'High-urgency smishing trigger: "account will be permanently blocked today"',
+          'Sensitive PII coercion: "pending PAN verification"',
+          'URL shortener obfuscation masking unverified destination host'
+        ],
+        entropy: 3.95,
+        punycodeDetected: false,
+        formFields: ['pan_no', 'aadhaar', 'netbanking_user', 'otp'],
+        embeddedRedirects: [],
+        preClickRecommendation: '🛑 DO NOT OPEN: Dangerous SMS smishing lure harvesting KYC and bank credentials.'
+      },
+      certTrust: { score: 40, verdict: 'GENERIC_SHORTENER_CERT', issuer: { commonName: 'GlobalSign' }, keyDetails: { algorithm: 'RSA', keySize: 2048 }, ctLogs: { present: true, status: 'LOGGED' }, chain: [] },
+      webSec: { score: 20, grade: 'F', headers: { hsts: { status: 'MISSING' }, csp: { status: 'MISSING' } }, cookies: [] },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'LOW', drainerDetected: false, findings: [] },
+      collaborativeIntel: {
+        reputationScore: 5,
+        communityVotes: { malicious: 520, benign: 1 },
+        matchingThreatClusters: [{ clusterId: 'CLUSTER-SMISH-IND-101', type: 'YONO KYC SMS Ring', domainsCount: 110, sharedAsn: 'AS13335' }],
+        iocs: ['SHORT_LINK: bit.ly/sbi-yono-kyc-renew', 'SENDER_ID: VM-SBINB-ALERT']
+      },
+      web3Attestation: {
+        contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
+        network: 'Ethereum Sepolia / Polygon POS',
+        targetHash: '0x1018293847192837491827394817293847192837491827394817293847129384',
+        txHash: '0x2028192837491827394817293847129384719283749182739481729384712938',
+        ipfsCid: 'bafybeih20182734981729384712938471928374918273948172938471quvyku',
+        blockNumber: 21094899,
+        attestationStandard: 'EAS-THREAT-INTEL-EIP712',
+        status: 'ATTESTED_ON_CHAIN'
+      },
+      evidenceDossier: [
+        { title: 'Social Engineering Coercion', detail: 'Threatens immediate service deactivation unless arbitrary action is completed.' },
+        { title: 'Shortened SMS Link', detail: 'Hides actual destination server behind bit.ly shortener.' }
+      ],
+      actionableGuidance: [
+        'Banks NEVER send SMS messages with shortened bit.ly links demanding KYC or PAN updates.',
+        'Forward the SMS to 1909 (Do Not Disturb registry) and the bank fraud reporting channel.',
+        'Delete the message immediately and do not click the link.'
       ]
     }
   },
@@ -364,6 +686,8 @@ export const PRECONFIGURED_SCENARIOS = [
         score: 99,
         verdict: 'OFFICIAL_AUTHENTIC_PLATFORM',
         impersonatedBrand: null,
+        officialBrandDomain: 'github.com',
+        identityMismatch: false,
         signals: [
           'Authoritative verified domain matching official brand identity',
           'Clean structural DOM with zero fraudulent credential harvesting redirects',
@@ -371,7 +695,9 @@ export const PRECONFIGURED_SCENARIOS = [
         ],
         entropy: 2.82,
         punycodeDetected: false,
-        formFields: ['login', 'password']
+        formFields: ['login', 'password'],
+        embeddedRedirects: [],
+        preClickRecommendation: '✅ SAFE TO OPEN: Authenticated enterprise domain with verified identity.'
       },
       certTrust: {
         score: 98,
@@ -386,31 +712,16 @@ export const PRECONFIGURED_SCENARIOS = [
       webSec: {
         score: 96,
         grade: 'A+',
-        headers: {
-          hsts: { status: 'PRESENT', risk: 'NONE', value: 'max-age=31536000; includeSubDomains; preload' },
-          csp: { status: 'PRESENT', risk: 'NONE', value: 'default-src \'none\'' },
-          xFrameOptions: { status: 'PRESENT', risk: 'NONE', value: 'DENY' }
-        },
-        serverFingerprint: 'GitHub Gateway (Hardened, banners stripped)',
+        headers: { hsts: { status: 'PRESENT', risk: 'NONE', value: 'max-age=31536000; preload' }, csp: { status: 'PRESENT', risk: 'NONE' }, xFrameOptions: { status: 'PRESENT', risk: 'NONE' } },
+        serverFingerprint: 'GitHub Gateway (Hardened)',
         cookies: [{ name: '_gh_sess', secure: true, httpOnly: true, sameSite: 'Lax' }]
       },
-      web3Security: {
-        isWeb3Target: false,
-        score: 100,
-        riskLevel: 'SAFE',
-        drainerDetected: false,
-        findings: ['Clean verified developer platform']
-      },
-      collaborativeIntel: {
-        reputationScore: 99,
-        communityVotes: { malicious: 1, benign: 4890 },
-        matchingThreatClusters: [],
-        iocs: []
-      },
+      web3Security: { isWeb3Target: false, score: 100, riskLevel: 'SAFE', drainerDetected: false, findings: [] },
+      collaborativeIntel: { reputationScore: 99, communityVotes: { malicious: 1, benign: 4890 }, matchingThreatClusters: [], iocs: [] },
       web3Attestation: {
         contractAddress: '0x71C8A336c1eB7Fa855d4715494B4E38A49c25920',
         network: 'Ethereum Sepolia / Polygon POS',
-        targetHash: '0x1182938471928374918273948172938471293847192837491827394817293847',
+        targetHash: '0x1182938471928374918273948172938471928374918273948172938471928374',
         txHash: '0x3328192837491827394817293847129384719283749182739481729384712938',
         ipfsCid: 'bafybeih11182734981729384712938471928374918273948172938471quvyku',
         blockNumber: 21094800,

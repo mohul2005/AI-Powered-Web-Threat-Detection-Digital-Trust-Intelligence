@@ -74,6 +74,18 @@ export default function TrustGauge({ result, scenarioMeta }) {
             <p className="text-xs sm:text-sm text-[#a1c4c2] mt-1 max-w-xl leading-relaxed">
               {theme.summary}
             </p>
+
+            {/* Pre-Click Decision Guidance */}
+            {aiPhishing && aiPhishing.preClickRecommendation && (
+              <div className="mt-3 p-2.5 rounded-xl bg-[#061414] border border-[#174242] flex items-center space-x-2 text-xs font-mono">
+                <span className="text-[#00f2c3] text-[10px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded bg-[#00f2c3]/15 border border-[#00f2c3]/30 shrink-0">
+                  Pre-Click Advisory
+                </span>
+                <span className={`font-bold ${trustScore < 50 ? 'text-[#f43f5e]' : 'text-[#00f2c3]'}`}>
+                  {aiPhishing.preClickRecommendation}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

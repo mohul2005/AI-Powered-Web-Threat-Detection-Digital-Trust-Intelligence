@@ -21,9 +21,15 @@ export default function ScanBar({
 
   const getCleanLabel = (scenario) => {
     if (scenario.id.includes('emudhra')) return { name: 'eMudhra Rogue Key Incident', badge: 'PKI Anomaly', color: 'rose' };
-    if (scenario.id.includes('drainer')) return { name: 'Uniswap Web3 Wallet Drainer', badge: 'Web3 Drainer', color: 'rose' };
+    if (scenario.id.includes('drainer')) return { name: 'Uniswap Permit2 Drainer', badge: 'Web3 Drainer', color: 'rose' };
+    if (scenario.id.includes('parcel')) return { name: 'India Post Delivery Scam', badge: 'Parcel / Fee', color: 'rose' };
+    if (scenario.id.includes('admission') || scenario.id.includes('exam')) return { name: 'NTA Exam Fee Scam', badge: 'Education', color: 'rose' };
+    if (scenario.id.includes('echallan') || scenario.id.includes('traffic')) return { name: 'Parivahan e-Challan Scam', badge: 'Government', color: 'rose' };
+    if (scenario.id.includes('job') || scenario.id.includes('internship')) return { name: 'Google Careers Job Scam', badge: 'Recruitment', color: 'rose' };
+    if (scenario.id.includes('instagram') || scenario.id.includes('recovery')) return { name: 'Instagram Copyright Phish', badge: 'Account Theft', color: 'rose' };
+    if (scenario.id.includes('shortened') || scenario.id.includes('redirect')) return { name: 'Nested Open Redirect Chain', badge: 'Redirect Chain', color: 'rose' };
     if (scenario.id.includes('sbi-bank')) return { name: 'Fake SBI Netbanking', badge: 'Phishing', color: 'rose' };
-    if (scenario.id.includes('smishing')) return { name: 'SBI YONO KYC Smishing', badge: 'SMS Scam', color: 'amber' };
+    if (scenario.id.includes('smishing') || scenario.type === 'message') return { name: 'SBI YONO KYC Smishing', badge: 'SMS Scam', color: 'amber' };
     return { name: 'Legitimate Site (GitHub)', badge: 'Safe Baseline', color: 'emerald' };
   };
 
