@@ -7,7 +7,7 @@
 FROM node:20-alpine AS client-builder
 WORKDIR /app/client
 COPY client/package*.json ./
-RUN npm ci
+RUN npm install
 COPY client/ ./
 RUN npm run build
 
@@ -22,7 +22,7 @@ RUN apk add --no-cache python3 py3-pip openssl ca-certificates curl
 WORKDIR /app
 COPY package*.json ./
 COPY server/package*.json ./server/
-RUN npm ci --omit=dev
+RUN npm install --omit=dev
 
 # Copy Application Source
 COPY server/ ./server/
