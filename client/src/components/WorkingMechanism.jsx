@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Lock, Cpu, Globe, Users, KeyRound, Layers, Blocks, Terminal, AlertTriangle, AlertOctagon, CheckCircle2, Info, Scale } from 'lucide-react';
+import { Shield, Lock, Cpu, Globe, Users, KeyRound, Layers, Blocks, Terminal, AlertTriangle, AlertOctagon, CheckCircle2, Info, Scale, Send, ShieldAlert, ArrowRight } from 'lucide-react';
 
 export default function WorkingMechanism() {
   return (
@@ -524,6 +524,138 @@ export default function WorkingMechanism() {
               <span className="text-[#2dd4bf] font-bold block mb-0.5">6. Validation Status Lifecycle</span>
               <span className="text-[10px] text-[#80a4a2]">Tracks lifecycle: PENDING_REVIEW &rarr; VERIFIED_MULTI_SOURCE &rarr; DISPUTED &rarr; RESOLVED.</span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Section 5: Expected User Experience (5-Step Simple Workflow Anyone Can Understand) */}
+      <div className="p-6 rounded-2xl bg-[#0b2020] border border-[#00f2c3]/40 shadow-card-dark space-y-5">
+        <div className="flex items-center space-x-3">
+          <div className="p-2.5 rounded-xl bg-[#00f2c3]/15 border border-[#00f2c3]/40 text-[#00f2c3]">
+            <CheckCircle2 className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <h3 className="font-bold text-white text-base">Section 5: Expected User Experience</h3>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#00f2c3]/20 text-[#00f2c3] border border-[#00f2c3]/40 font-bold">
+                5-Step Intuitive Workflow
+              </span>
+            </div>
+            <p className="text-xs text-[#80a4a2] font-mono">A simple, transparent end-to-end journey designed for everyday citizens and security teams</p>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl bg-[#061414] border border-[#153a3a] text-xs text-[#a1c4c2] leading-relaxed font-mono">
+          <p>
+            The platform provides a simple workflow that anyone can understand. It transforms complex technical indicators across DNS, TLS, AI NLP models, and Web3 smart contracts into intuitive, actionable decision guidance.
+          </p>
+        </div>
+
+        {/* 5-Step Detailed Visual Progression */}
+        <div className="space-y-3 font-mono text-xs">
+          {/* Step 1 */}
+          <div className="p-4 rounded-xl bg-[#061414] border border-[#174242] flex flex-col md:flex-row items-start md:items-center justify-between gap-3 hover:border-[#00f2c3]/40 transition-colors">
+            <div className="flex items-start space-x-3">
+              <div className="w-8 h-8 rounded-lg bg-[#00f2c3]/15 border border-[#00f2c3]/40 text-[#00f2c3] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                1
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-sm flex items-center space-x-2">
+                  <span>Step 1: Submit</span>
+                  <span className="text-[10px] text-[#00f2c3] font-normal px-1.5 py-0.5 rounded bg-[#00f2c3]/10">Input Ingestion</span>
+                </h4>
+                <p className="text-xs text-[#a1c4c2] mt-1 leading-relaxed">
+                  A user pastes a suspicious link, submits a domain, or provides a suspicious email or message (SMS, WhatsApp, Telegram).
+                </p>
+              </div>
+            </div>
+            <span className="text-[11px] text-[#5c8280] bg-[#0b2020] px-3 py-1 rounded-lg border border-[#174242] shrink-0">
+              URL • Domain • Email Body • SMS
+            </span>
+          </div>
+
+          {/* Step 2 */}
+          <div className="p-4 rounded-xl bg-[#061414] border border-[#174242] flex flex-col md:flex-row items-start md:items-center justify-between gap-3 hover:border-[#00f2c3]/40 transition-colors">
+            <div className="flex items-start space-x-3">
+              <div className="w-8 h-8 rounded-lg bg-[#00f2c3]/15 border border-[#00f2c3]/40 text-[#00f2c3] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                2
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-sm flex items-center space-x-2">
+                  <span>Step 2: Investigate</span>
+                  <span className="text-[10px] text-[#00f2c3] font-normal px-1.5 py-0.5 rounded bg-[#00f2c3]/10">Automated Probing</span>
+                </h4>
+                <p className="text-xs text-[#a1c4c2] mt-1 leading-relaxed">
+                  The platform collects available domain information, certificate details, threat intelligence, and relevant technical indicators without active exploitation.
+                </p>
+              </div>
+            </div>
+            <span className="text-[11px] text-[#5c8280] bg-[#0b2020] px-3 py-1 rounded-lg border border-[#174242] shrink-0">
+              DNS A/AAAA • X.509 TLS • CT Logs • URLhaus
+            </span>
+          </div>
+
+          {/* Step 3 */}
+          <div className="p-4 rounded-xl bg-[#061414] border border-[#174242] flex flex-col md:flex-row items-start md:items-center justify-between gap-3 hover:border-[#00f2c3]/40 transition-colors">
+            <div className="flex items-start space-x-3">
+              <div className="w-8 h-8 rounded-lg bg-[#00f2c3]/15 border border-[#00f2c3]/40 text-[#00f2c3] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                3
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-sm flex items-center space-x-2">
+                  <span>Step 3: Analyse</span>
+                  <span className="text-[10px] text-[#00f2c3] font-normal px-1.5 py-0.5 rounded bg-[#00f2c3]/10">Cyber + AI Core</span>
+                </h4>
+                <p className="text-xs text-[#a1c4c2] mt-1 leading-relaxed">
+                  Cybersecurity checks identify suspicious patterns (homoglyphs, weak keys, drainers), while AI correlates the findings and generates an understandable explanation.
+                </p>
+              </div>
+            </div>
+            <span className="text-[11px] text-[#5c8280] bg-[#0b2020] px-3 py-1 rounded-lg border border-[#174242] shrink-0">
+              Levenshtein • Jaccard Similarity • NLP Synthesis
+            </span>
+          </div>
+
+          {/* Step 4 */}
+          <div className="p-4 rounded-xl bg-[#061414] border border-[#174242] flex flex-col md:flex-row items-start md:items-center justify-between gap-3 hover:border-[#00f2c3]/40 transition-colors">
+            <div className="flex items-start space-x-3">
+              <div className="w-8 h-8 rounded-lg bg-[#00f2c3]/15 border border-[#00f2c3]/40 text-[#00f2c3] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                4
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-sm flex items-center space-x-2">
+                  <span>Step 4: Assess Risk</span>
+                  <span className="text-[10px] text-[#00f2c3] font-normal px-1.5 py-0.5 rounded bg-[#00f2c3]/10">Actionable Report</span>
+                </h4>
+                <p className="text-xs text-[#a1c4c2] mt-1 leading-relaxed">
+                  The platform provides a structured report describing the identified threats, their supporting evidence, and recommended precautions (safe pre-click advisories, helpline 1930).
+                </p>
+              </div>
+            </div>
+            <span className="text-[11px] text-[#5c8280] bg-[#0b2020] px-3 py-1 rounded-lg border border-[#174242] shrink-0">
+              Trust Score 0-100 • Findings Dossier • Precautions
+            </span>
+          </div>
+
+          {/* Step 5 */}
+          <div className="p-4 rounded-xl bg-[#061414] border border-[#00f2c3]/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 hover:border-[#00f2c3] transition-colors shadow-neon-sm">
+            <div className="flex items-start space-x-3">
+              <div className="w-8 h-8 rounded-lg bg-[#00f2c3] text-[#041513] flex items-center justify-center font-extrabold text-xs shrink-0 mt-0.5">
+                5
+              </div>
+              <div>
+                <h4 className="font-bold text-white text-sm flex items-center space-x-2">
+                  <span>Step 5: Report and Verify</span>
+                  <span className="text-[10px] text-[#00f2c3] font-bold px-1.5 py-0.5 rounded bg-[#00f2c3]/15">Web3 Provenance</span>
+                </h4>
+                <p className="text-xs text-[#a1c4c2] mt-1 leading-relaxed">
+                  Users can submit relevant incidents to the threat intelligence repository, where cryptographic commitments are recorded on-chain for independent verification.
+                </p>
+              </div>
+            </div>
+            <span className="text-[11px] text-[#00f2c3] bg-[#00f2c3]/10 px-3 py-1 rounded-lg border border-[#00f2c3]/30 font-bold shrink-0">
+              SHA-256 Commit • Solidity Ledger • IPFS CID
+            </span>
           </div>
         </div>
       </div>

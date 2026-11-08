@@ -383,6 +383,37 @@ When submitting threat intelligence, reports incorporate 5 standardized componen
 
 ---
 
+## 🗺️ 5. Expected User Experience (The 5-Step Workflow)
+
+The platform provides a simple, intuitive workflow that anyone can understand—from everyday citizens receiving suspicious SMS messages to enterprise SOC analysts investigating coordinated phishing campaigns.
+
+```mermaid
+flowchart LR
+    S1["Step 1: Submit<br/>(Link, Domain, Email, or SMS)"] --> S2["Step 2: Investigate<br/>(DNS, TLS, CT Logs, Threat Feeds)"]
+    S2 --> S3["Step 3: Analyse<br/>(Cyber Patterns & AI Correlation)"]
+    S3 --> S4["Step 4: Assess Risk<br/>(Structured Findings & Precautions)"]
+    S4 --> S5["Step 5: Report & Verify<br/>(On-Chain Web3 Commitment & Proof)"]
+```
+
+### The 5 Workflow Stages:
+* **Step 1: Submit**:
+  - A user pastes a suspicious link, submits a domain, or provides a suspicious email or message.
+  - Multi-modal ingestion supports URLs, domains, raw email headers/bodies, and SMS/WhatsApp communications.
+* **Step 2: Investigate**:
+  - The platform collects available domain information, certificate details, threat intelligence, and relevant technical indicators without active exploitation.
+  - Automatically resolves DNS A/AAAA records, queries Certificate Transparency logs (Google Argon, Cloudflare Nimbus), verifies TLS public key sizes, and checks multi-feed consensus (PhishTank, URLhaus, Spamhaus).
+* **Step 3: Analyse**:
+  - Cybersecurity checks identify suspicious patterns (homoglyphs, typosquatting, credential harvesting DOM fields, weak cryptographic keys, or Web3 wallet drainers).
+  - AI correlates the findings and generates an understandable, plain-English explanation of the threat mechanics and adversary modus operandi.
+* **Step 4: Assess Risk**:
+  - The platform provides a structured report describing the identified threats, their supporting evidence, and recommended precautions.
+  - Features the Unified Digital Trust Index (0-100), NIST veto overrides, actionable pre-click advice, and national escalation helplines (1930 / cybercrime.gov.in).
+* **Step 5: Report and Verify**:
+  - Users can submit relevant incidents to the threat intelligence repository, where cryptographic commitments are recorded on-chain for independent verification.
+  - Generates immutable SHA-256 report fingerprints and IPFS evidence CIDs on Ethereum Sepolia via `TrustMatrixRegistry.sol`, enabling anyone to independently verify tamper status and trace provenance history.
+
+---
+
 ## 🚀 Quickstart Guide
 ```bash
 npm run dev

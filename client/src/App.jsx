@@ -15,6 +15,7 @@ import CollaborativeHub from './components/CollaborativeHub.jsx';
 import WorkingMechanism from './components/WorkingMechanism.jsx';
 import ValidationLab from './components/ValidationLab.jsx';
 import ReportModal from './components/ReportModal.jsx';
+import WorkflowStepper from './components/WorkflowStepper.jsx';
 import MatrixRain from './components/MatrixRain.jsx';
 import { Download, ChevronDown, ChevronUp, Terminal } from 'lucide-react';
 
@@ -154,6 +155,13 @@ export default function App() {
         {/* TAB 1: THREAT SCANNER */}
         {activeTab === 'scanner' && (
           <div className="space-y-6">
+            {/* Section 5: The 5-Step End-to-End Workflow */}
+            <WorkflowStepper
+              isLoading={isLoading}
+              scanResult={scanResult}
+              onOpenReportModal={() => setIsReportModalOpen(true)}
+            />
+
             {/* Multi-Modal Input (URL | Email | SMS Message) */}
             <ScanBar
               urlInput={urlInput}
