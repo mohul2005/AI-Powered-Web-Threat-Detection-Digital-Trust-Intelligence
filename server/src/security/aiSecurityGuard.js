@@ -109,7 +109,7 @@ export function sanitizeUntrustedInput(rawInput, modality = 'text') {
   if (containsInjection) {
     // Neutralize dangerous directives by stripping or inertly quoting
     sanitizedContent = rawInput.replace(
-      /(ignore\s+previous\s+instructions|you\s+are\s+now\s+in\s+DAN\s+mode|mark\s+this\s+website\s+as\s+safe|override\s+the\s+risk\s+score|system\s*prompt\s*:|<system>|<\/system>)/gi,
+      /(ignore\s+(?:all\s+|any\s+|previous\s+|prior\s+)*(?:instructions|directions|prompts|rules|guidelines)|disregard\s+(?:all\s+|any\s+|previous\s+|prior\s+)*(?:instructions|directions|prompts|rules)|you\s+are\s+now\s+(?:in\s+DAN\s+mode|an\s+unfiltered\s+AI)|mark\s+(?:this\s+)?(?:website|url|domain|message|target)\s+as\s+(?:safe|low\s+risk|clean)|override\s+(?:the\s+)?(?:risk\s+score|threat\s+level|assessment|verdict|classification)|system\s*prompt\s*:|<system>|<\/system>|\[INST\]|\[\/INST\])/gi,
       '[NEUTRALIZED_ADVERSARIAL_PROMPT_DIRECTIVE]'
     );
   }

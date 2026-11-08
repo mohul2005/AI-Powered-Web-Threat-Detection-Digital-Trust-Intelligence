@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import EvaluationScorecard from './EvaluationScorecard.jsx';
 import { 
   Award, 
   CheckCircle2, 
@@ -278,6 +279,12 @@ export default function DeliverablesHub({ onSelectScenario, setActiveTab }) {
         </div>
 
       </div>
+
+      {/* Section 11: Official Evaluation Criteria Scorecard */}
+      <EvaluationScorecard
+        setActiveTab={setActiveTab}
+        onSelectScenario={onSelectScenario}
+      />
 
       {/* Terminal Command for Reproduction */}
       <div className="p-4 rounded-xl bg-[#061414] border border-[#174242] flex flex-col md:flex-row items-center justify-between gap-3 text-xs font-mono">
