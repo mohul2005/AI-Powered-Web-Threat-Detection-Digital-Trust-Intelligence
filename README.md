@@ -562,6 +562,29 @@ pie title HackMatrix Evaluation Criteria Weighting
 
 ---
 
+## ⚡ 12. Optional Advanced Extensions (100% Operational)
+
+TrustMatrix AI Nexus implements all non-browser advanced capabilities specified in **12. Optional Advanced Extensions**:
+
+| Extension Capability | Engine / Service | Dashboard Tab | Automated Test |
+|:---|:---|:---:|:---:|
+| **Real-time Phishing Protection** | `phishingEngine.js` | `Threat Scanner` | `npm run test:extensions` (1.1) |
+| **QR Code Scam Detection (Quishing)** | [`qrScamEngine.js`](file:///d:/hackmatrix/server/src/engines/qrScamEngine.js) | `Advanced Extensions` | `npm run test:extensions` (2.1–2.4) |
+| **Screenshot-based Impersonation Detection** | [`screenshotImpersonationEngine.js`](file:///d:/hackmatrix/server/src/engines/screenshotImpersonationEngine.js) | `Advanced Extensions` | `npm run test:extensions` (3.1–3.3) |
+| **Email Security Analysis** | [`emailEngine.js`](file:///d:/hackmatrix/server/src/engines/emailEngine.js) | `Threat Scanner` | `npm run test:extensions` (4.1) |
+| **Domain Monitoring & CT Log Alerts** | [`domainMonitoringEngine.js`](file:///d:/hackmatrix/server/src/engines/domainMonitoringEngine.js) | `Org Security` | `npm run test:extensions` (5.1–5.3) |
+| **Lookalike & Homoglyph Domains** | [`lookalikeEngine.js`](file:///d:/hackmatrix/server/src/engines/lookalikeEngine.js) | `Advanced Extensions` | `npm run test:extensions` (6.1) |
+| **Monitoring Known Compromised CAs** | [`certTrustEngine.js`](file:///d:/hackmatrix/server/src/engines/certTrustEngine.js) | `Advanced Extensions` | `npm run test:extensions` (7.1) |
+| **Automated Security Header & TLS Audits** | [`webSecEngine.js`](file:///d:/hackmatrix/server/src/engines/webSecEngine.js) | `Org Security` | `npm run test:extensions` (8.1) |
+| **Threat Intelligence Sharing APIs** | [`intel.js`](file:///d:/hackmatrix/server/src/routes/intel.js) | `Advanced Extensions` | `npm run test:extensions` (9.1) |
+| **Community Scam Reporting & Validation** | `threatStore.js` | `Community Feed` | `npm run test:extensions` (10.1) |
+| **Organisation Security Monitoring Dashboard** | [`OrganisationDashboard.jsx`](file:///d:/hackmatrix/client/src/components/OrganisationDashboard.jsx) | `Org Security` | `npm run test:extensions` (11.1) |
+
+* 🚀 **Interactive Testing**: Open **"Advanced Extensions"** and **"Org Security"** tabs in the dashboard (`http://localhost:5173`) to test live Quishing inspection, screenshot template comparison, lookalike radar generation, and CISO posture monitoring.
+
+
+---
+
 ## 🚀 Quickstart Guide
 ```bash
 npm run dev

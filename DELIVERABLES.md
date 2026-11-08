@@ -186,3 +186,24 @@ TrustMatrix AI Nexus is designed to maximize scoring across the 5 official evalu
 | **Innovation & User Experience** | **10%** | Practical relevance, usability, originality | • "The Triad" synthesis uniting AI, Cybersecurity PKI, and Web3 ledgers.<br>• Interactive 5-step user experience stepper matching Section 5.<br>• Practical national relevance: direct escalation to National Cybercrime Helpline 1930 & cybercrime.gov.in.<br>• Sentinel Nexus Cyber Green Matrix Rain UX with 3 modes. | `node server/test-section11-evaluation.js` (Checks 5.1-5.3) |
 | **Total** | **100%** | **Comprehensive Full-Scope Alignment** | **33/33 Tests Passed (100% Automated Passage)** | `npm test` |
 
+---
+
+## 11. Optional Advanced Extensions (Section 12)
+
+TrustMatrix AI Nexus implements all non-browser extensions specified in **12. Optional Advanced Extensions**:
+
+| # | Optional Advanced Extension | Technical Engine / Implementation | Live Dashboard Feature & API | Test Assertion |
+|:---:|:---|:---|:---|:---:|
+| **1** | **Real-Time Phishing Protection** | `phishingEngine.js` | Pre-click link blocker, Shannon entropy, brand distance, and credential harvest protection. | `test-section12-extensions.js:1.1` |
+| **2** | **QR Code Scam Detection (Quishing)** | `qrScamEngine.js` | Reverse UPI payment scam detection, utility mule VPA detection, APK sideloading QR payload inspection. | `test-section12-extensions.js:2.1–2.4` |
+| **3** | **Screenshot-Based Impersonation Detection** | `screenshotImpersonationEngine.js` | Palette clustering, logo perceptual hash ($pHash$), DOM layout recognition against SBI, Google, Microsoft, PayPal. | `test-section12-extensions.js:3.1–3.3` |
+| **4** | **Email Security Analysis** | `emailEngine.js` | SPF, DKIM, DMARC alignment, Return-Path vs From spoofing checks, urgency manipulation flags. | `test-section12-extensions.js:4.1` |
+| **5** | **Domain Monitoring & Suspicious Cert Issuance** | `domainMonitoringEngine.js` | Enterprise domain watchlist with real-time CT Log alert engine (Google Argon / Cloudflare Nimbus). | `test-section12-extensions.js:5.1–5.3` |
+| **6** | **Lookalike & Homoglyph Domain Radar** | `lookalikeEngine.js` | Generates IDN Cyrillic homoglyphs (`xn--...`), bitsquats, TLD permutations, and deceptive hyphenated affixes. | `test-section12-extensions.js:6.1` |
+| **7** | **Monitoring Known Compromised CAs** | `certTrustEngine.js` | Registry of historically distrusted/compromised CAs (eMudhra weak key, DigiNotar, WoSign, Symantec, Dark Caracal). | `test-section12-extensions.js:7.1` |
+| **8** | **Automated Security Header & TLS Audits** | `webSecEngine.js` | Automated audits for HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and cipher suites. | `test-section12-extensions.js:8.1` |
+| **9** | **Threat Intelligence Sharing APIs** | `intel.js` | REST endpoints for TAXII 2.1 (`/api/intel/taxii`), STIX 2.1 bundles (`/api/intel/export/stix`), and SIEM IOC feeds. | `test-section12-extensions.js:9.1` |
+| **10** | **Community Scam Reporting & Validation** | `threatStore.js` & `CollaborativeHub.jsx` | Web3 EAS on-chain attestations, community upvoting/downvoting, dispute lifecycle, and transparent provenance. | `test-section12-extensions.js:10.1` |
+| **11** | **Organisation-Level Security Dashboard** | `OrganisationDashboard.jsx` | CISO executive posture score, external attack surface monitoring, CT alert stream, and compliance report export. | `test-section12-extensions.js:11.1` |
+
+

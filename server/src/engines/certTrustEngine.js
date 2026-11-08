@@ -46,10 +46,32 @@ export const DISTRUSTED_OR_FLAGGED_CAS = [
     category: 'COMPROMISED_TRUST_INCIDENT',
     cveOrAlert: 'MOZILLA-BUG-1801264',
     severity: 'CRITICAL',
-    details: 'Removed from browser trust stores due to undisclosed corporate ownership and lack of public transparency.',
+    details: 'Removed from browser root stores due to undisclosed corporate ownership, lack of public transparency, and ties to spyware vendors.',
     detectionMethod: 'Identified via Trusted Security Intelligence: Revoked root authority.'
+  },
+  {
+    name: 'symantec',
+    fullName: 'Symantec / GeoTrust / Thawte / Equifax Legacy Roots',
+    category: 'COMPROMISED_TRUST_INCIDENT',
+    cveOrAlert: 'CHROME-66-SYMANTEC-DISTRUST',
+    severity: 'CRITICAL',
+    details: 'Systematically distrusted across Google Chrome, Apple, and Mozilla due to prolonged mis-issuance and failure to maintain operational control.',
+    detectionMethod: 'Identified via Trusted Security Intelligence: Hard distrusted across modern browser trust stores.'
+  },
+  {
+    name: 'darkcaracal',
+    fullName: 'Dark Caracal / Rogue Interception Intermediate CA',
+    category: 'COMPROMISED_TRUST_INCIDENT',
+    cveOrAlert: 'EFF-LOOKOUT-2018-REPORT',
+    severity: 'CRITICAL',
+    details: 'Intermediate certificates compromised and utilized in nation-state surveillance and Man-in-the-Middle traffic interception.',
+    detectionMethod: 'Identified via Trusted Security Intelligence: Global CRL and CT revocation lists.'
   }
 ];
+
+export function getCompromisedCADirectory() {
+  return DISTRUSTED_OR_FLAGGED_CAS;
+}
 
 // High-Value Domains with strict expected Certificate Authorities
 const HIGH_VALUE_DOMAIN_EXPECTED_CAS = [

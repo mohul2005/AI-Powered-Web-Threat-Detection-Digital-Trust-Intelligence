@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2, Binary, Award } from 'lucide-react';
+import { Shield, Sparkles, BookOpen, BarChart3, Radio, PlusCircle, FileCode2, Binary, Award, Building2, QrCode } from 'lucide-react';
 
 export default function Header({
   onOpenReportModal,
@@ -101,6 +101,30 @@ export default function Header({
           >
             <Radio className="w-3.5 h-3.5" />
             <span>Community Feed</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('extensions')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
+              activeTab === 'extensions'
+                ? 'bg-[#00f2c3] text-[#051715] shadow-neon-sm font-bold'
+                : 'text-[#85a8a6] hover:text-white'
+            }`}
+          >
+            <QrCode className="w-3.5 h-3.5" />
+            <span>Advanced Extensions</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('org-dashboard')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 whitespace-nowrap ${
+              activeTab === 'org-dashboard'
+                ? 'bg-[#00f2c3] text-[#051715] shadow-neon-sm font-bold'
+                : 'text-[#85a8a6] hover:text-white'
+            }`}
+          >
+            <Building2 className="w-3.5 h-3.5" />
+            <span>Org Security</span>
           </button>
         </nav>
 

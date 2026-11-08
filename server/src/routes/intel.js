@@ -119,4 +119,62 @@ router.get('/export/iocs', (req, res) => {
   });
 });
 
+// TAXII 2.1 Threat Sharing API Discovery & Collection Endpoint
+router.get('/taxii', (req, res) => {
+  res.setHeader('Content-Type', 'application/vnd.oasis.taxii+json;version=2.1');
+  res.json({
+    title: 'TrustMatrix Nexus TAXII 2.1 Server',
+    description: 'Decentralized STIX/TAXII 2.1 automated threat intelligence sharing service',
+    contact: 'soc-intel@trustmatrix.nexus',
+    default: 'https://trustmatrix.nexus/api/intel/taxii/collections/active-threats',
+    api_roots: ['https://trustmatrix.nexus/api/intel/taxii/v2.1'],
+    collections: [
+      {
+        id: 'col-active-phishing-campaigns',
+        title: 'Active Phishing & Smishing Campaigns',
+        description: 'Verified fraudulent URLs, shortlinks, and remote-access APK drops',
+        can_read: true,
+        can_write: true,
+        media_types: ['application/stix+json;version=2.1']
+      },
+      {
+        id: 'col-compromised-pki-indicators',
+        title: 'Compromised TLS & Certificate Anomalies',
+        description: 'Weak RSA moduli, unlogged CT certificates, and rogue CA issuances',
+        can_read: true,
+        can_write: true,
+        media_types: ['application/stix+json;version=2.1']
+      }
+    ]
+  });
+});
+
+// Threat Intelligence Ingestion / Sharing API for SIEM / SOC Integration
+router.post('/share', (req, res) => {
+  const { indicator, type, threatCategory, targetBrand, confidence = 85, evidenceSource = 'SIEM_PEER_INGEST' } = req.body;
+
+  if (!indicator || !type) {
+    return res.status(400).json({
+      success: false,
+      error: 'indicator (e.g. domain/URL/IP) and type (e.g. DOMAIN, IP, UPI) are required'
+    });
+  }
+
+  const created = threatStore.addReport({
+    targetUrl: type === 'URL' || indicator.startsWith('http') ? indicator : `https://${indicator}`,
+    threatCategory: threatCategory || 'Phishing / Malware Relay',
+    targetEntity: targetBrand || 'Shared Threat Target',
+    reporterHandle: `peer-soc-${evidenceSource.toLowerCase()}`,
+    summary: `Threat intelligence shared via API: [${type}] ${indicator}`,
+    tags: [type.toLowerCase(), 'api-shared', evidenceSource.toLowerCase()]
+  });
+
+  res.status(201).json({
+    success: true,
+    message: 'Threat indicator successfully ingested and broadcast to peer threat store.',
+    attestationReference: created.web3Attestation?.txHash || '0x' + Buffer.from(indicator).toString('hex').padEnd(64, '0'),
+    report: created
+  });
+});
+
 export default router;

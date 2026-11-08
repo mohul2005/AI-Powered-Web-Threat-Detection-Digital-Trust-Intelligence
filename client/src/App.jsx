@@ -17,6 +17,8 @@ import ValidationLab from './components/ValidationLab.jsx';
 import ReportModal from './components/ReportModal.jsx';
 import WorkflowStepper from './components/WorkflowStepper.jsx';
 import DeliverablesHub from './components/DeliverablesHub.jsx';
+import AdvancedExtensionsHub from './components/AdvancedExtensionsHub.jsx';
+import OrganisationDashboard from './components/OrganisationDashboard.jsx';
 import MatrixRain from './components/MatrixRain.jsx';
 import { Download, ChevronDown, ChevronUp, Terminal } from 'lucide-react';
 
@@ -322,6 +324,16 @@ export default function App() {
         {/* TAB 4: COMMUNITY FEED */}
         {activeTab === 'community' && (
           <CollaborativeHub onOpenReportModal={() => setIsReportModalOpen(true)} />
+        )}
+
+        {/* TAB 5: OPTIONAL ADVANCED EXTENSIONS LAB (SECTION 12) */}
+        {activeTab === 'extensions' && (
+          <AdvancedExtensionsHub />
+        )}
+
+        {/* TAB 6: ORGANISATION-LEVEL WEBSITE SECURITY MONITORING DASHBOARD */}
+        {activeTab === 'org-dashboard' && (
+          <OrganisationDashboard />
         )}
       </main>
 
