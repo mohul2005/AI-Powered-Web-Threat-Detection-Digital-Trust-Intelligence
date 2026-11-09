@@ -4,6 +4,7 @@
  */
 
 import express from 'express';
+import { generatePitchPdfBuffer } from '../../../scripts/generatePitchPdf.js';
 
 const router = express.Router();
 
@@ -1214,6 +1215,33 @@ volumes:
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Content-Disposition', 'inline; filename="TrustMatrix-Database-Architecture-Docs.html"');
   res.send(dbDocsHtml);
+});
+
+// Pitch Deck PDF Endpoint (Serves ISO 32000-1 binary PDF directly)
+router.get('/download/pitch', (req, res) => {
+  try {
+    const pdfBuffer = generatePitchPdfBuffer();
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'inline; filename="TrustMatrix_Hackathon_Pitch_Deck.pdf"');
+    res.setHeader('Content-Length', pdfBuffer.length);
+    res.send(pdfBuffer);
+  } catch (err) {
+    console.error('Failed to generate pitch PDF:', err);
+    res.status(500).json({ success: false, error: 'Failed to generate pitch PDF: ' + err.message });
+  }
+});
+
+router.get('/pitch-pdf', (req, res) => {
+  try {
+    const pdfBuffer = generatePitchPdfBuffer();
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'inline; filename="TrustMatrix_Hackathon_Pitch_Deck.pdf"');
+    res.setHeader('Content-Length', pdfBuffer.length);
+    res.send(pdfBuffer);
+  } catch (err) {
+    console.error('Failed to generate pitch PDF:', err);
+    res.status(500).json({ success: false, error: 'Failed to generate pitch PDF: ' + err.message });
+  }
 });
 
 export default router;

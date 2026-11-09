@@ -16,11 +16,12 @@ import {
   ZoomIn,
   ZoomOut,
   RotateCcw,
-  Database
+  Database,
+  Presentation
 } from 'lucide-react';
 import { API_BASE } from '../config/api.js';
 
-export default function VerificationPdfView({ onBackToScanner, onSwitchToBeginnerGuide, onSwitchToDatabaseDocs }) {
+export default function VerificationPdfView({ onBackToScanner, onSwitchToBeginnerGuide, onSwitchToDatabaseDocs, onSwitchToPitchDeck }) {
   const [paperTheme, setPaperTheme] = useState('dark'); // 'dark' | 'whitepaper'
   const [zoomScale, setZoomScale] = useState(1); // 0.9 | 1 | 1.1
 
@@ -75,6 +76,18 @@ export default function VerificationPdfView({ onBackToScanner, onSwitchToBeginne
               <Database className="w-3.5 h-3.5 text-[#00f2c3]" />
               <span className="hidden sm:inline">Database</span>
               <span>Docs</span>
+            </button>
+          )}
+
+          {onSwitchToPitchDeck && (
+            <button
+              onClick={onSwitchToPitchDeck}
+              className="px-3 py-1.5 rounded-lg bg-[#0b2525] border border-[#184444] text-[#80a4a2] hover:text-white flex items-center space-x-1.5 transition-colors"
+              title="Switch to Official HackMatrix Pitch Deck (PDF View)"
+            >
+              <Presentation className="w-3.5 h-3.5 text-[#00f2c3]" />
+              <span className="hidden sm:inline">Pitch</span>
+              <span>PDF</span>
             </button>
           )}
 

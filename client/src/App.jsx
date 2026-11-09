@@ -22,6 +22,7 @@ import OrganisationDashboard from './components/OrganisationDashboard.jsx';
 import BeginnerGuidePdfView from './components/BeginnerGuidePdfView.jsx';
 import VerificationPdfView from './components/VerificationPdfView.jsx';
 import DatabaseDocsPdfView from './components/DatabaseDocsPdfView.jsx';
+import PitchDeckPdfView from './components/PitchDeckPdfView.jsx';
 import MatrixRain from './components/MatrixRain.jsx';
 import { Download, ChevronDown, ChevronUp, Terminal, ArrowRight, Sparkles } from 'lucide-react';
 import { API_BASE } from './config/api.js';
@@ -413,6 +414,7 @@ export default function App() {
             onBackToScanner={() => setActiveTab('scanner')} 
             onSwitchToVerification={() => setActiveTab('verification-pdf')}
             onSwitchToDatabaseDocs={() => setActiveTab('database-pdf')}
+            onSwitchToPitchDeck={() => setActiveTab('pitch-pdf')}
           />
         )}
 
@@ -422,6 +424,7 @@ export default function App() {
             onBackToScanner={() => setActiveTab('scanner')} 
             onSwitchToBeginnerGuide={() => setActiveTab('pdf-guide')}
             onSwitchToDatabaseDocs={() => setActiveTab('database-pdf')}
+            onSwitchToPitchDeck={() => setActiveTab('pitch-pdf')}
           />
         )}
 
@@ -431,6 +434,17 @@ export default function App() {
             onBackToScanner={() => setActiveTab('scanner')} 
             onSwitchToBeginnerGuide={() => setActiveTab('pdf-guide')}
             onSwitchToVerification={() => setActiveTab('verification-pdf')}
+            onSwitchToPitchDeck={() => setActiveTab('pitch-pdf')}
+          />
+        )}
+
+        {/* TAB 10: OFFICIAL HACKMATRIX PITCH DECK (PDF VIEW) */}
+        {activeTab === 'pitch-pdf' && (
+          <PitchDeckPdfView 
+            onBackToScanner={() => setActiveTab('scanner')} 
+            onSwitchToBeginnerGuide={() => setActiveTab('pdf-guide')}
+            onSwitchToVerification={() => setActiveTab('verification-pdf')}
+            onSwitchToDatabaseDocs={() => setActiveTab('database-pdf')}
           />
         )}
       </main>
