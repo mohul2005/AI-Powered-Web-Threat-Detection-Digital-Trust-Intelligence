@@ -31,7 +31,7 @@ COPY --from=client-builder /app/client/dist ./client/dist
 # Environment variables
 ENV NODE_ENV=production
 ENV PORT=5000
-EXPOSE 5000
+EXPOSE 5000 3000 8080
 
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \

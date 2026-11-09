@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm --prefix client install --include=dev && npm --prefix client run build && node -e \"import('fs').then(fs => fs.cpSync('client/dist', 'dist', { recursive: true }))\",
+  "buildCommand": "npm --prefix client install --include=dev && npm --prefix client run build",
   "outputDirectory": "client/dist",
   "rewrites": [
     {

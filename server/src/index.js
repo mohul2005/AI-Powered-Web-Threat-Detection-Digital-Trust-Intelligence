@@ -59,14 +59,12 @@ app.use('/intel', intelRouter);
 app.use('/extensions', extensionsRouter);
 app.use('/guide', guideRouter);
 
-// Only listen on port and serve static files if executed directly as main script (not on Vercel / AWS Lambda)
+// Only listen on port if executed directly as main script (Docker container, standalone node, Cloud Run)
 const isDirectRun = Boolean(
   process.argv[1] && (
     process.argv[1].includes('server') && process.argv[1].includes('index.js')
   )
 );
-
-const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || !isDirectRun);
 
 // Serve Static Frontend Assets if built
 if (fs.existsSync(clientDistPath)) {
@@ -101,10 +99,10 @@ app.use((err, req, res, next) => {
   });
 });
 
-if (!isServerless) {
-  app.listen(PORT, () => {
+if (isDirectRun) {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`=======================================================`);
-    console.log(`🛡️  TrustMatrix AI Security Engine running on http://localhost:${PORT}`);
+    console.log(`🛡️  TrustMatrix AI Security Engine running on http://0.0.0.0:${PORT}`);
     console.log(`⚡  Real-time TLS & Threat Intelligence endpoints active`);
     console.log(`=======================================================`);
   });
