@@ -30,12 +30,7 @@ COPY --from=client-builder /app/client/dist ./client/dist
 
 # Environment variables
 ENV NODE_ENV=production
-ENV PORT=5000
-EXPOSE 5000 3000 8080
-
-# Healthcheck
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:5000/api/scenarios || exit 1
+EXPOSE 3000 5000 8080
 
 # Start Server
 CMD ["node", "server/src/index.js"]
