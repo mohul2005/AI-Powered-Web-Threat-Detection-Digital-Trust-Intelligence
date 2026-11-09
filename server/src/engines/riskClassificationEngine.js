@@ -90,7 +90,7 @@ export function evaluateStandardRiskClassification({
     collaborativeIntel?.matchingThreatClusters?.length > 0 ||
     collaborativeIntel?.reputationScore <= 15 ||
     (collaborativeIntel?.communityVotes?.malicious > 50 && collaborativeIntel?.communityVotes?.benign < 5) ||
-    certTrust?.caTrustIncidentDetails !== undefined ||
+    Boolean(certTrust?.caTrustIncidentDetails) ||
     certTrust?.keyDetails?.entropyRating === 'DEFICIENT_ENTROPY_DUPLICATE_MODULUS' ||
     web3Security?.drainerDetected === true ||
     aiPhishing?.verdict === 'CONFIRMED_CREDENTIAL_HARVESTER' ||
