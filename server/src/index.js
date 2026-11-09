@@ -10,7 +10,9 @@ import guideRouter from './routes/guide.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const clientDistPath = path.resolve(__dirname, '../../client/dist');
+const clientDistPath = fs.existsSync(path.resolve(__dirname, '../../client/dist'))
+  ? path.resolve(__dirname, '../../client/dist')
+  : path.resolve(__dirname, '../../dist');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
