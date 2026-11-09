@@ -75,7 +75,17 @@ router.post('/scan', async (req, res) => {
 
   // 1. Scenario Quick-Launcher
   if (scenarioId) {
-    const scenario = PRECONFIGURED_SCENARIOS.find(s => s.id === scenarioId);
+    const SCENARIO_ALIASES = {
+      'scenario-1': 'sbi-bank-credential-harvester',
+      'scenario-2': 'emudhra-weak-key-incident',
+      'scenario-3': 'parcel-delivery-customs-scam',
+      'scenario-4': 'parcel-delivery-customs-scam',
+      'uniswap-permit2-drainer': 'web3-wallet-drainer-scam',
+      'quish-reverse-upi-scam': 'parcel-delivery-customs-scam',
+      'legitimate-site-github': 'github-enterprise-legitimate-baseline'
+    };
+    const effectiveScenarioId = SCENARIO_ALIASES[scenarioId] || scenarioId;
+    const scenario = PRECONFIGURED_SCENARIOS.find(s => s.id === effectiveScenarioId || s.id === scenarioId);
     if (scenario) {
       const scanLogs = [
         `[INIT] Launching multi-vector inspection for ${scenario.title}...`,

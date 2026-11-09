@@ -82,7 +82,7 @@ export default function EvaluationScorecard({ setActiveTab, onSelectScenario }) 
         }
       ],
       demoAction: () => {
-        if (onSelectScenario) onSelectScenario('scenario-4');
+        if (onSelectScenario) onSelectScenario('parcel-delivery-customs-scam');
         if (setActiveTab) setActiveTab('scanner');
       },
       demoLabel: 'Test AI Contextual Scam Analysis'

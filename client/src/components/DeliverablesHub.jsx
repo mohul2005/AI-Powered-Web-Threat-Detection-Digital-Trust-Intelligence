@@ -32,12 +32,12 @@ export default function DeliverablesHub({ onSelectScenario, setActiveTab }) {
   };
 
   const runAiDemo = () => {
-    if (onSelectScenario) onSelectScenario('scenario-4');
+    if (onSelectScenario) onSelectScenario('parcel-delivery-customs-scam');
     if (setActiveTab) setActiveTab('scanner');
   };
 
   const runCyberDemo = () => {
-    if (onSelectScenario) onSelectScenario('scenario-1');
+    if (onSelectScenario) onSelectScenario('sbi-bank-credential-harvester');
     if (setActiveTab) setActiveTab('scanner');
   };
 

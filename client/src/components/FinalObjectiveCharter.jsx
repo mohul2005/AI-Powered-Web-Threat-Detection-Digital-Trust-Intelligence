@@ -79,7 +79,7 @@ export default function FinalObjectiveCharter({ setActiveTab, onSelectScenario }
           </div>
           <button
             onClick={() => {
-              if (onSelectScenario) onSelectScenario('scenario-4');
+              if (onSelectScenario) onSelectScenario('parcel-delivery-customs-scam');
               if (setActiveTab) setActiveTab('scanner');
             }}
             className="w-full py-2 px-3 rounded-xl bg-[#061414] border border-[#174242] text-[#00f2c3] hover:border-[#00f2c3] font-bold flex items-center justify-center space-x-1.5 transition-all text-[11px]"
@@ -109,7 +109,7 @@ export default function FinalObjectiveCharter({ setActiveTab, onSelectScenario }
           </div>
           <button
             onClick={() => {
-              if (onSelectScenario) onSelectScenario('scenario-1');
+              if (onSelectScenario) onSelectScenario('sbi-bank-credential-harvester');
               if (setActiveTab) setActiveTab('scanner');
             }}
             className="w-full py-2 px-3 rounded-xl bg-[#061414] border border-[#174242] text-[#00f2c3] hover:border-[#00f2c3] font-bold flex items-center justify-center space-x-1.5 transition-all text-[11px]"

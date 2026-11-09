@@ -202,18 +202,18 @@ export default function App() {
                 <div className="flex flex-wrap items-center gap-2 pt-0.5">
                   <span className="text-[11px] text-[#5c807e] font-semibold">Try a real example:</span>
                   <button
-                    onClick={() => triggerScenario('scenario-1')}
+                    onClick={() => triggerScenario('sbi-bank-credential-harvester')}
                     className="px-2.5 py-1 rounded-lg bg-[#140a0e] border border-[#f43f5e]/40 text-[#f43f5e] hover:bg-[#f43f5e]/15 transition-all text-[11px]"
                     title="Test a fake State Bank of India YONO login page"
                   >
                     🔴 Fake SBI Bank Phish
                   </button>
                   <button
-                    onClick={() => triggerScenario('scenario-4')}
+                    onClick={() => triggerScenario('parcel-delivery-customs-scam')}
                     className="px-2.5 py-1 rounded-lg bg-[#1a1208] border border-[#f59e0b]/40 text-[#f59e0b] hover:bg-[#f59e0b]/15 transition-all text-[11px]"
-                    title="Test an urgent electricity power disconnection SMS scam"
+                    title="Test an urgent parcel delivery customs SMS scam"
                   >
-                    📱 Electricity SMS Scam
+                    📱 SMS Phish Scam
                   </button>
                   <button
                     onClick={() => triggerScenario('emudhra-weak-key-incident')}
@@ -223,7 +223,7 @@ export default function App() {
                     🔒 Weak Padlock Key
                   </button>
                   <button
-                    onClick={() => triggerScenario('legitimate-site-github')}
+                    onClick={() => triggerScenario('github-enterprise-legitimate-baseline')}
                     className="px-2.5 py-1 rounded-lg bg-[#071917] border border-[#00f2c3]/40 text-[#00f2c3] hover:bg-[#00f2c3]/15 transition-all text-[11px]"
                     title="Test an authentic, clean site (GitHub)"
                   >
