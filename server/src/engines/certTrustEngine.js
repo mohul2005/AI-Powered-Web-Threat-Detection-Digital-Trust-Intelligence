@@ -212,8 +212,9 @@ export function analyzeCertificate(certData, hostname) {
   const isSelfSigned = cert.issuer && cert.subject && cert.issuer.CN === cert.subject.CN;
 
   // Key & Cryptography details
-  let keySize = cert.bits || 2048;
-  const algorithm = cert.pubkey ? 'RSA' : (cert.sigalg && cert.sigalg.includes('ecdsa') ? 'ECDSA' : 'RSA');
+  const isEC = Boolean(cert.asn1Curve || (cert.bits && cert.bits <= 521 && !cert.modulus));
+  const algorithm = isEC ? 'ECDSA' : 'RSA';
+  let keySize = cert.bits || (isEC ? 256 : 2048);
   const fingerprint256 = cert.fingerprint256 || cert.fingerprint || 'N/A';
 
   // 1. Hostname and Certificate Identity Match Check
@@ -274,6 +275,10 @@ export function analyzeCertificate(certData, hostname) {
   if (algorithm === 'RSA' && keySize < 2048) {
     isOrdinaryConfigIssue = true;
     signals.push(`WEAK CRYPTOGRAPHY: Inadequate RSA key size (${keySize}-bit). Current cryptographic standards mandate >= 2048-bit.`);
+    riskPenalty += 40;
+  } else if (algorithm === 'ECDSA' && keySize < 224) {
+    isOrdinaryConfigIssue = true;
+    signals.push(`WEAK CRYPTOGRAPHY: Inadequate ECC key size (${keySize}-bit). Current cryptographic standards mandate >= 224-bit.`);
     riskPenalty += 40;
   }
 
@@ -357,7 +362,7 @@ export function analyzeCertificate(certData, hostname) {
   chain.push({
     name: `Leaf Cert: ${subjectCN}`,
     valid: score > 30 && !isExpired && hostnameMatch.matches,
-    status: isExpired ? 'Expired' : (!hostnameMatch.matches ? 'Hostname Mismatch' : (keySize < 2048 ? 'Deficient Key' : 'Valid'))
+    status: isExpired ? 'Expired' : (!hostnameMatch.matches ? 'Hostname Mismatch' : ((algorithm === 'RSA' ? keySize < 2048 : keySize < 224) ? 'Deficient Key' : 'Valid'))
   });
 
   // Formal Module 2: TLS Certificate and Web Trust Security Report
@@ -392,7 +397,7 @@ export function analyzeCertificate(certData, hostname) {
       publicKeyAndSignature: {
         algorithm,
         keySize,
-        isAdequate: (algorithm === 'RSA' ? keySize >= 2048 : keySize >= 256),
+        isAdequate: (algorithm === 'RSA' ? keySize >= 2048 : keySize >= 224),
         fingerprint256
       },
       certificateTransparency: {
@@ -429,7 +434,7 @@ export function analyzeCertificate(certData, hostname) {
       algorithm,
       keySize,
       fingerprint256,
-      entropyRating: keySize >= 2048 ? 'CRYPTOGRAPHICALLY_STRONG' : 'WEAK_ENTROPY'
+      entropyRating: (algorithm === 'RSA' ? keySize >= 2048 : keySize >= 224) ? 'CRYPTOGRAPHICALLY_STRONG' : 'WEAK_ENTROPY'
     },
     validity: {
       validFrom: validFrom ? validFrom.toISOString() : null,

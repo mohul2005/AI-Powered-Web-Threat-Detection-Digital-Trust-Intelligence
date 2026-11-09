@@ -100,27 +100,31 @@ export function evaluateStandardRiskClassification({
   );
 
   const significantIndicatorsCount = [
-    aiPhishing?.signals?.length > 0,
-    aiPhishing?.impersonatedBrand !== null && aiPhishing?.impersonatedBrand !== undefined,
+    (aiPhishing?.identityMismatch === true || (aiPhishing?.score !== undefined && aiPhishing.score < 70)),
+    (aiPhishing?.impersonatedBrand && aiPhishing?.identityMismatch === true),
     aiPhishing?.punycodeDetected === true,
-    certTrust?.signals?.length > 0,
+    certTrust?.signals?.some(s => s.includes('SECURITY INCIDENT') || s.includes('WEAK CRYPTOGRAPHY') || s.includes('IDENTITY MISMATCH')),
     certTrust?.validity?.isExpired === true,
-    certTrust?.ctLogs?.present === false,
-    dnsInfo?.signals?.length > 0,
-    webSec?.grade === 'F',
+    dnsInfo?.isFastFluxCandidate === true,
+    webSec?.grade === 'F' && trustScore < 60,
     web3Security?.isWeb3Target === true && web3Security?.findings?.length > 0,
     scamForensics?.indicators?.unusualPayments?.detected === true,
     aiSecurity?.promptInjectionDetected === true
   ].filter(Boolean).length;
 
+  const isVerifiedAuthentic = (
+    aiPhishing?.verdict === 'OFFICIAL_AUTHENTIC_PLATFORM' ||
+    (trustScore >= 70 && !aiPhishing?.identityMismatch && !hasAuthoritativeThreatMatch)
+  );
+
   if (isUnreachable || insufficientData) {
     classification = CLASSIFICATION_TIERS.INCONCLUSIVE;
   } else if (hasAuthoritativeThreatMatch || trustScore <= 25) {
     classification = CLASSIFICATION_TIERS.CONFIRMED_MALICIOUS;
-  } else if (significantIndicatorsCount >= 2 || trustScore <= 50) {
+  } else if (trustScore <= 50 || (significantIndicatorsCount >= 2 && !isVerifiedAuthentic)) {
     classification = CLASSIFICATION_TIERS.HIGH_RISK;
-  } else if (significantIndicatorsCount >= 1 || trustScore <= 70) {
-    classification = CLASSIFICATION_TIERS.SUSPICIOUS;
+  } else if (trustScore <= 75 || significantIndicatorsCount >= 1) {
+    classification = isVerifiedAuthentic ? CLASSIFICATION_TIERS.LOW_RISK : CLASSIFICATION_TIERS.SUSPICIOUS;
   } else {
     classification = CLASSIFICATION_TIERS.LOW_RISK;
   }
@@ -150,6 +154,7 @@ export function evaluateStandardRiskClassification({
   // Source: AI Content & Impersonation
   if (aiPhishing?.signals && aiPhishing.signals.length > 0) {
     for (const sig of aiPhishing.signals) {
+      if (sig.startsWith('No ') || sig.toLowerCase().includes('clean') || sig.toLowerCase().includes('authentic')) continue;
       threatIndicators.push(sig);
       sourceOfFindings.push({
         finding: sig,
