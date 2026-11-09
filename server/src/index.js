@@ -29,7 +29,7 @@ const sendHealth = (req, res) => {
   res.json({
     status: 'ONLINE',
     service: 'TrustMatrix Intelligence API',
-    version: '2.0.0-PROD',
+    version: '2.0.1-PROD',
     engines: {
       phishingAI: 'READY',
       certTrustPKI: 'READY',
