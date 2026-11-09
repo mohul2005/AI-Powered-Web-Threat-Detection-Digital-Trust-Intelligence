@@ -4,7 +4,7 @@
  */
 
 import express from 'express';
-import { generatePitchPdfBuffer } from '../../../scripts/generatePitchPdf.js';
+import { generatePitchPdfBuffer } from '../engines/pitchPdfEngine.js';
 
 const router = express.Router();
 

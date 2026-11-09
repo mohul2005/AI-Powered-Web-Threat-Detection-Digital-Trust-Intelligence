@@ -66,11 +66,18 @@ const isDirectRun = Boolean(
 
 const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || !isDirectRun);
 
-// Serve Static Frontend Assets only in local/standalone server mode
-if (!isServerless && fs.existsSync(clientDistPath)) {
+// Serve Static Frontend Assets if built
+if (fs.existsSync(clientDistPath)) {
   app.use(express.static(clientDistPath));
   app.get('*', (req, res, next) => {
-    if (req.url.startsWith('/api')) return next();
+    if (
+      req.url.startsWith('/api') ||
+      req.url.startsWith('/intel') ||
+      req.url.startsWith('/extensions') ||
+      req.url.startsWith('/guide')
+    ) {
+      return next();
+    }
     res.sendFile(path.join(clientDistPath, 'index.html'));
   });
 }

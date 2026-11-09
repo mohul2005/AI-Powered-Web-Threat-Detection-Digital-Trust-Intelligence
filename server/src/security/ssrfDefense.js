@@ -1,3 +1,4 @@
+import net from 'net';
 import dns from 'dns';
 import http from 'http';
 import https from 'https';
@@ -65,6 +66,11 @@ const DANGEROUS_MIME_TYPES = [
 export function isPrivateOrReservedIP(ipAddress) {
   if (!ipAddress) return false;
   const ip = String(ipAddress).trim();
+
+  // If not a valid IP address (e.g. domain name), it is not a private IP
+  if (!net.isIP(ip)) {
+    return false;
+  }
 
   // IPv6 Check
   if (ip.includes(':')) {
@@ -147,8 +153,8 @@ export async function validateUrlSafety(rawUrl) {
     }
   }
 
-  // 3. Direct IP Check (if hostname is already an IP address)
-  if (isPrivateOrReservedIP(hostname)) {
+  // 3. Direct IP Check (ONLY if hostname is already an IP address)
+  if (net.isIP(hostname) && isPrivateOrReservedIP(hostname)) {
     return {
       safe: false,
       blocked: true,
@@ -161,11 +167,15 @@ export async function validateUrlSafety(rawUrl) {
   try {
     const lookupResults = await dns.promises.lookup(hostname, { all: true });
     if (!lookupResults || lookupResults.length === 0) {
+      // Graceful offline fallback: allow heuristic analysis for simulation / unresolvable domains
       return {
-        safe: false,
-        blocked: true,
+        safe: true,
+        blocked: false,
+        isUnreachable: true,
         code: 'DNS_RESOLUTION_FAILED',
-        reason: `Could not resolve hostname '${hostname}'. Inspection aborted.`
+        reason: `Could not resolve hostname '${hostname}'. Proceeding with offline heuristic analysis.`,
+        hostname,
+        resolvedIps: []
       };
     }
 
@@ -189,13 +199,15 @@ export async function validateUrlSafety(rawUrl) {
       resolvedIps
     };
   } catch (dnsErr) {
-    // Return structured failure if domain does not resolve
+    // If public domain (e.g. offline simulation or dead phish), allow offline heuristic analysis
     return {
-      safe: false,
+      safe: true,
       blocked: false,
       isUnreachable: true,
       code: 'DNS_NXDOMAIN',
-      reason: `DNS resolution error: ${dnsErr.message}`
+      reason: `DNS resolution error: ${dnsErr.message}`,
+      hostname,
+      resolvedIps: []
     };
   }
 }
